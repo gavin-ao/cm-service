@@ -1,0 +1,24 @@
+##<link href="/static/service/css/bootstrap.css" rel='stylesheet' type='text/css' />
+##<link href="/static/service/css/style.css?v=20170703154841" rel='stylesheet' type='text/css' />
+##<link href="/static/service/css/custom.css" rel="stylesheet">
+####<link href="/static/service/images/ico/inter3i.ico?v=20170703154841" mce_href="favicon.ico" rel="bookmark" type="image/x-icon" />
+####<link href="/static/service/images/ico/inter3i.ico?v=20170703154841" mce_href="favicon.ico" rel="icon" type="image/x-icon" />
+####<link href="/static/service/images/ico/inter3i.ico?v=20170703154841" mce_href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+##<link rel="stylesheet" href="/static/plugins/css/jquery-confirm.css" type="text/css" />
+##<link rel="stylesheet" href="/static/plugins/css/jquery-ui.min.css" type="text/css" />
+<title>博晓通</title>
+<div class="main-content">
+    <!-- header-starts -->
+    <div class="header-section ">
+        <div class="header-right">
+            <ul class="nofitications-dropdown">
+
+
+
+            </ul>
+        </div>
+
+        <!--toggle button end-->
+    </div>
+    <div class="clearfix"> </div>
+</div>

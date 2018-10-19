@@ -1,0 +1,19 @@
+<div class="copy-section" style="z-index: 10;">
+   <div class="foot_content">
+       <div class="content">
+           Copyright ©2010 - 2018 博晓通 京ICP备12047578号 Powered by
+       </div>
+   </div>
+</div>
+
+<script type="text/javascript" src="/static/plugins/jquery.min.js"></script>
+##<script type="text/javascript" src="/static/plugins/bootstrap.min.js"></script>
+<script type="text/javascript" src="/static/plugins/jquery.validate.min.js"></script>
+<script type="text/javascript" src="/static/plugins/messages_zh.js"></script>
+<script type="text/javascript" src="/static/plugins/md5.js"></script>
+<script type="text/javascript" src="/static/plugins/jquery.cookie.js"></script>
+<script type="text/javascript" src="/static/plugins/jquery-confirm.js"></script>
+<script type="text/javascript" src="/static/plugins/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/static/plugins/baidu-statistics.js"></script>
+<script type="text/javascript" src="/static/common/js/application-common.js?v=20170703154841"></script>
+<script type="text/javascript" src="/static/plugins/common.js"></script>

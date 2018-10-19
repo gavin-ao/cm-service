@@ -1,0 +1,45 @@
+<link href="/static/service/css/bootstrap.css" rel='stylesheet' type='text/css' />
+<link href="/static/service/css/style.css?v=20170703154841" rel='stylesheet' type='text/css' />
+##<link href="/static/service/css/custom.css" rel="stylesheet">
+##<link href="/static/service/images/ico/inter3i.ico?v=20170703154841" mce_href="favicon.ico" rel="bookmark" type="image/x-icon" />
+##<link href="/static/service/images/ico/inter3i.ico?v=20170703154841" mce_href="favicon.ico" rel="icon" type="image/x-icon" />
+##<link href="/static/service/images/ico/inter3i.ico?v=20170703154841" mce_href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+<link rel="stylesheet" href="/static/plugins/css/jquery-confirm.css" type="text/css" />
+<link rel="stylesheet" href="/static/plugins/css/jquery-ui.min.css" type="text/css" />
+<style>
+    #main-menu{
+        width: 100%;
+    }
+    #main-menu li{
+        text-align: center;
+        line-height: 80px;
+        cursor: pointer;
+        color: #fff;
+        /*color: #219DEF;*/
+    }
+    .rule-btn button {
+        width: 70px;
+        padding: 3px 5px;
+        margin-right: 5px;
+    }
+</style>
+<div style="width: 220px;float: left;background-color: ">
+    <div class="header-left">
+        <div class="logo">
+            <img src="/static/service/images/login/login.png" id="logoImgUnique" onclick="window.location.href='/'">
+        </div>
+        <div class="logo_title" >
+            <span>获客e管理后台</span>
+        </div>
+    </div>
+    <nav class="navbar-default navbar-side" id="navbarH" role="navigation" style="background-color: #4E546C; width: 100%;height:calc(100% - 80px) ;float: left;font-size: 16px;">
+        <div class="sidebar-collapse">
+            <ul class="nav" id="main-menu">
+                <li name="companyManage" style="background-color: #EEF4F9;color: #219DEF;">数据统计</li>
+##                <li name="userManage">素材管理</li>
+            </ul>
+
+        </div>
+
+    </nav>
+</div>

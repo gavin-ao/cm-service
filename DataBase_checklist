@@ -1,0 +1,27 @@
+### 字符编码改成utf8mb4
+MySQL版本必须为5.5.3以上版本，否则不支持字符集utf8mb4
+
+1. 改三个地方：客户端、到数据库实例的连接、实例内部
+ show variables like '%character%'; //查看编码
+ # 修改数据库:
+ ALTER DATABASE database_name CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+ # 修改表:
+ ALTER TABLE table_name CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+ # 修改表字段:
+ ALTER TABLE table_name CHANGE column_name column_name VARCHAR(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+ 修改mysql的配置文件
+         [client]
+         default-character-set = utf8mb4
+
+         [mysql]
+         default-character-set = utf8mb4
+
+         [mysqld]
+         character-set-client-handshake = FALSE
+         character-set-server = utf8mb4
+         collation-server = utf8mb4_unicode_ci
+         init_connect='SET NAMES utf8mb4'
+
+
+2. 如果是阿里云RDS，详见https://help.aliyun.com/knowledge_detail/41702.html
