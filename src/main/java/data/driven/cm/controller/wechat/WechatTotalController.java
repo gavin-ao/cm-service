@@ -27,7 +27,7 @@ public class WechatTotalController {
 
     @RequestMapping(value = "/dataStatistics")
     public ModelAndView productManage(){
-        ModelAndView mv = new ModelAndView("/data-statistics/index");
+        ModelAndView mv = new ModelAndView("/manage/index");
         return mv;
     }
 
