@@ -4,7 +4,8 @@
         <pattern>/static/*</pattern>
     </excludes>
 
-    <decorator name="normalDecorator" page="normalDecorator.vm">
-        <pattern>/wechat/total/dataStatistics</pattern>
-    </decorator>
+    <!--<decorator name="normalDecorator" page="normalDecorator.vm">-->
+        <!--<pattern>/wechat/total/manage</pattern>-->
+        <!--<pattern>/wechat/total/dataStatistics</pattern>-->
+    <!--</decorator>-->
 </decorators>

@@ -19,15 +19,41 @@ function navSelect() {
         console.log(navName)
         $(this).siblings().removeClass("bgStyle");
         $(this).addClass("bgStyle");
-        if(navName == "companyManage"){
+        if(navName == "storeManage"){
             // $.getScript("/static/plugins/common/data-statistics.js",function(){
             //
             // });
-        }else if(navName == "userManage"){
+            $.ajax({
+                url: "/wechat/total/storeManage",
+                type: "get",
+                dataType: "html",
+                success: function (data) {
+                    $("#main-contain").html("");
+                    $("#main-contain").html(data);
+                }
+            })
+        }else if(navName == "activityManage"){
+            $.ajax({
+                url: "/wechat/total/activityManage",
+                type: "get",
+                dataType: "html",
+                success: function (data) {
+                    $("#main-contain").html("");
+                    $("#main-contain").html(data);
+                }
+            })
+        }else if(navName == "dataStatistics"){
 
-            // $.getScript("/static/plugins/common/data-statistics.js",function(){
-            //
-            // });
+
+            $.ajax({
+                url: "/wechat/total/dataStatistics",
+                type: "get",
+                dataType: "html",
+                success: function (data) {
+                    $("#main-contain").html("");
+                    $("#main-contain").html(data);
+                }
+            })
         }
     });
 }

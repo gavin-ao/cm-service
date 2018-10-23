@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
     <head>
-        <title>获客e</title>
+        <title>分销e</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
         <meta http-equiv="Expires" content="0">
@@ -24,7 +24,10 @@
             <div id="page-wrapper" class="person-edit-form" style="height: 100%;">
                 <div class="main-page" style="display: flex;height: 100%;">
                     #parse("/WEB-INF/decorators/frame/left.vm")
-                    $!{body}
+                    <div id="main-contain" style="width: 100%;">
+                        $!{body}
+                    </div>
+
                 </div>
             </div>
         </div>

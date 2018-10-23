@@ -24,13 +24,35 @@
     line-height: 30px;
     font-size: 18px;
     font-weight: 400;
-    background-color:#fff;
+    background-color:#ccc;
     color: red;
     float: right;
     /*margin-top: -30px;*/
     cursor: pointer;
 }
+.formContain{
+    width: 100%;
+}
+.formContain > form{
+    margin: 0 auto;
+    padding-top: 50px;
+    width: 80%;
+    text-align: center;
+}
+.formContain > form>p>span.text{
+    display: inline-block;
+    width: 15%;
+    text-align: right;
+    margin-right: 5px;
+}
+.formContain > form>p>input{
+    width: 74%;
+    display: inline-block;
+}
+#submitBtn{
 
+
+}
 
 
 .contain_main  .addAccount{

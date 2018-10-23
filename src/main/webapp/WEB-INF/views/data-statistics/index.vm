@@ -1,3 +1,4 @@
+<link href="/static/service/css/style.css" rel="stylesheet">
 <div id="user_manage">
     <div class="contain_head" style="">
         <div class="contain_head_left" style="" id="contain_head_left">
@@ -75,3 +76,6 @@
         </div>
     </div>
 </div>
+
+###parse("../decorators/frame/bottom.vm")
+<script src="/static/plugins/common/data-statistics.js"></script>

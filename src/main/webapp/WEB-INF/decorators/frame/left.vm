@@ -5,21 +5,28 @@
 <link href="/static/plugins/css/commonStyle.css" rel="stylesheet">
 <link rel="stylesheet" href="/static/plugins/css/jquery-confirm.css" type="text/css"/>
 <link rel="stylesheet" href="/static/plugins/css/jquery-ui.min.css" type="text/css"/>
+<style>
+    html,body{
+        height: 100%;
+        overflow: hidden;
+    }
+</style>
 <div style="width: 220px;float: left;background-color: ">
     <div class="header-left">
         <div class="logo">
             <img src="/static/service/images/login/login.png" id="logoImgUnique" onclick="window.location.href='/'">
         </div>
         <div class="logo_title">
-            <span>获客e管理后台</span>
+            <span>分销e管理后台</span>
         </div>
     </div>
     <nav class="navbar-default navbar-side" id="navbarH" role="navigation"
          style="background-color: #4E546C; width: 100%;height:calc(100% - 80px) ;float: left;font-size: 16px;">
         <div class="sidebar-collapse">
             <ul class="nav" id="main-menu">
-                <li name="companyManage" class="bgStyle">数据统计</li>
-                <li name="userManage">素材管理</li>
+                <li name="storeManage" class="bgStyle">门店管理</li>
+                <li name="activityManage">活动管理</li>
+                <li name="dataStatistics">数据统计</li>
             </ul>
 
         </div>

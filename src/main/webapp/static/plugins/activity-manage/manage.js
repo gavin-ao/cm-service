@@ -42,8 +42,21 @@
                     "sLast": "尾页"
                 }
             },
+            aoColumnDefs: [
+                {
+                    "aTargets": [6],
+                    "mRender": function (data, type, full) {
+                        return "<button class='copy_btn btn btn-primary' style='padding: 2px 4px;margin-left: 8px;' >修改</button><button class='copy_btn btn btn-primary' style='padding: 2px 4px;margin-left: 8px;' >删除</button>";
+                    }
+                },
+                {
+                    "bSortable": false,
+                    "aTargets": [ 1,2, 3, 4, 5, 6]
+                },
+
+            ],
             'fnDrawCallback': function (table) {
-                $("#example_paginate").append("  <div style='display: inline-block; position: relative;top: -14px;'>到第 <input type='text' id='changePages' class='input-text' style='width:50px;height:27px'> 页 <a class='btn btn-default shiny' href='javascript:void(0);' id='dataTables-btn' style='text-align:center'>确认</a></div>");
+                $("#example_paginate").append("<div style='display: inline-block; position: relative;top: -2px;'>到第 <input type='text' id='changePages' class='input-text' style='width:50px;height:27px'> 页 <a class='btn btn-default shiny' href='javascript:void(0);' id='dataTables-btn' style='text-align:center'>确认</a></div>");
                 var oTable = $("#example").dataTable();
                 $('#dataTables-btn').click(function (e) {
                     if ($("#changePages").val() && $("#changePages").val() > 0) {
@@ -51,7 +64,6 @@
                     } else {
                         var redirectpage = 0;
                     }
-
                     oTable.fnPageChange(redirectpage);
                 });
 
@@ -68,6 +80,16 @@
 
             }
         } );
+
+        // 初始化刪除按钮
+        $('#example tbody').on('click', 'button.delete_btn', function(e) {
+            e.preventDefault();
+            if (confirm("确定要删除该属性？")) {
+                var table = $('#example').DataTable();
+                table.row($(this).parents('tr')).remove().draw();
+            }
+
+        });
     } );
 
 

@@ -1,0 +1,213 @@
+###parse("../decorators/frame/left.vm")
+<link href="/static/plugins/activity-manage/manage.css" rel="stylesheet">
+<div id="user_manage">
+    <div class="contain_head" style="">
+        <div class="contain_head_left" style="" id="contain_head_left">
+            <div class="dropdown" style="">
+                <button class="btn btn-default dropdown-toggle" type="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <span class="selectIndex"> 老板看板</span>
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" id="contain_head_left_ul" aria-labelledby="dropdownMenu1">
+                    <li data-appInfoId="1" data-appid="1" data-secret="1"><a href="javascript:void(0)">老板看板</a></li>
+                    <li data-appInfoId="2" data-appid="2" data-secret="2"><a href="javascript:void(0)">销售业绩报表</a></li>
+                    <li data-appInfoId="3" data-appid="3" data-secret="3"><a href="javascript:void(0)">小程序流量分析</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="contain_head_right">
+            <div class="dropdown" style="">
+                <button class="btn btn-default dropdown-toggle" type="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <span class="selectIndex"> 请选择</span>
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" id="contain_head_left_ul" aria-labelledby="dropdownMenu2">
+                    <li data-appInfoId="1" data-appid="1" data-secret="1"><a href="javascript:void(0)">老板看板</a></li>
+                    <li data-appInfoId="2" data-appid="2" data-secret="2"><a href="javascript:void(0)">销售业绩报表</a></li>
+                    <li data-appInfoId="3" data-appid="3" data-secret="3"><a href="javascript:void(0)">小程序流量分析</a></li>
+                </ul>
+            </div>
+            <div id="loginOut" style="margin-right: 20px;font-size: 20px; cursor: pointer;">退出</div>
+        </div>
+
+    </div>
+    <div class="contain_main">
+        <div class="manageAdd" id="manageAdd">
+            <div class="manangeAddCon">
+            ##                <div class="closeBtn" id="closeBtn">✖</div>
+                <div class="formContain">
+                    <form id="formsearch">
+                        <p><span class="text">门店账号:</span> <a href="#list1"><input type="text" name="storeUser" class="form-control"
+                                                                                   onblur="exitName(this)"/></a> </p>
+                        <p><span class="text">门店密码:</span><a href="#list2"><input type="text" name="storePassword"
+                                                                                  class="form-control"/></a>  </p>
+                        <p><span class="text">地址:</span> <input type="text" name="storeAddress" class="form-control"/>
+                        </p>
+                        <div class="modal-footer" style="text-align: center;border: 0px;">
+                            <button type="button" class="btn btn-primary" id="submitBtn">提 交</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal" id="closeBtn">取 消
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="explainInfos">
+                    <div style="height: 100px;width: 100%;overflow-y: auto;">
+                        <div>
+                            <a href="javascript:void(0)" name="list1">ceshi1</a></div>
+                        <div style="margin-top: 200px;">
+                            <a href="javascript:void(0)" name="list2" style="margin-top: 200px;">测试</a></div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="width: 100%;height: 100%;">
+            <div class="addAccount" id="addAccount">添加账号</div>
+            <div style="background-color: #fff;">
+                <table id="example" class="display" style="width:100%">
+                    <thead>
+                    <tr>
+                        <th>门店账号</th>
+                        <th>门店密码</th>
+                        <th>门店地址</th>
+                        <th>Age</th>
+                        <th>Start date</th>
+                        <th>时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Tiger Nixon</td>
+                        <td>System Architect</td>
+                        <td>Edinburgh</td>
+                        <td>61</td>
+                        <td>2011/04/25</td>
+                        <td>$320,800</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Garrett Winters</td>
+                        <td>Accountant</td>
+                        <td>Tokyo</td>
+                        <td>63</td>
+                        <td>2011/07/25</td>
+                        <td>$170,750</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Ashton Cox</td>
+                        <td>Junior Technical Author</td>
+                        <td>San Francisco</td>
+                        <td>66</td>
+                        <td>2009/01/12</td>
+                        <td>$86,000</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Cedric Kelly</td>
+                        <td>Senior Javascript Developer</td>
+                        <td>Edinburgh</td>
+                        <td>22</td>
+                        <td>2012/03/29</td>
+                        <td>$433,060</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Airi Satou</td>
+                        <td>Accountant</td>
+                        <td>Tokyo</td>
+                        <td>33</td>
+                        <td>2008/11/28</td>
+                        <td>$162,700</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Brielle Williamson</td>
+                        <td>Integration Specialist</td>
+                        <td>New York</td>
+                        <td>61</td>
+                        <td>2012/12/02</td>
+                        <td>$372,000</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Herrod Chandler</td>
+                        <td>Sales Assistant</td>
+                        <td>San Francisco</td>
+                        <td>59</td>
+                        <td>2012/08/06</td>
+                        <td>$137,500</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Rhona Davidson</td>
+                        <td>Integration Specialist</td>
+                        <td>Tokyo</td>
+                        <td>55</td>
+                        <td>2010/10/14</td>
+                        <td>$327,900</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Colleen Hurst</td>
+                        <td>Javascript Developer</td>
+                        <td>San Francisco</td>
+                        <td>39</td>
+                        <td>2009/09/15</td>
+                        <td>$205,500</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Sonya Frost</td>
+                        <td>Software Engineer</td>
+                        <td>Edinburgh</td>
+                        <td>23</td>
+                        <td>2008/12/13</td>
+                        <td>$103,600</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Jena Gaines</td>
+                        <td>Office Manager</td>
+                        <td>London</td>
+                        <td>30</td>
+                        <td>2008/12/19</td>
+                        <td>$90,560</td>
+                         <td></td>
+                    </tr>
+                    <tr>
+                        <td>Quinn Flynn</td>
+                        <td>Support Lead</td>
+                        <td>Edinburgh</td>
+                        <td>22</td>
+                        <td>2013/03/03</td>
+                        <td>$342,000</td>
+                         <td></td>
+                    </tr>
+                    <tr>
+                        <td>Charde Marshall</td>
+                        <td>Regional Director</td>
+                        <td>San Francisco</td>
+                        <td>36</td>
+                        <td>2008/10/16</td>
+                        <td>$470,600</td>
+                         <td></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+###parse("../decorators/frame/bottom.vm")
+<script src="/static/plugins/activity-manage/manage.js"></script>
+

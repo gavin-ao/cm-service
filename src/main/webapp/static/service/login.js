@@ -22,7 +22,8 @@ function login(){
                 var success = data.success;
                 if(success && success == true){
                     // alert(data.msg);
-                    window.location.href = "/wechat/total/dataStatistics";
+                    console.log(data)
+                    window.location.href = "/wechat/total/index";
                 }else{
                     alert("登录失败");
                 }
