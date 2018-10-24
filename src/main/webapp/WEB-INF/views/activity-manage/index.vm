@@ -1,5 +1,8 @@
 ###parse("../decorators/frame/left.vm")
+<link href="/static/plugins/imgareaselect/css/imgareaselect-default.css" rel="stylesheet">
 <link href="/static/plugins/activity-manage/manage.css" rel="stylesheet">
+<script src="/static/plugins/imgareaselect/scripts/jquery.imgareaselect.js"></script>
+<script src="/static/plugins/activity-manage/manage.js"></script>
 <div id="user_manage">
     <div class="contain_head" style="">
         <div class="contain_head_left" style="" id="contain_head_left">
@@ -39,11 +42,72 @@
             ##                <div class="closeBtn" id="closeBtn">✖</div>
                 <div class="formContain">
                     <form id="formsearch">
-                        <p><span class="text">门店账号:</span> <a href="#list1"><input type="text" name="storeUser" class="form-control"
-                                                                                   onblur="exitName(this)"/></a> </p>
-                        <p><span class="text">门店密码:</span><a href="#list2"><input type="text" name="storePassword"
-                                                                                  class="form-control"/></a>  </p>
-                        <p><span class="text">地址:</span> <input type="text" name="storeAddress" class="form-control"/>
+                        <p>
+                            <span class="text">活动id:</span>
+                            <a href="#" class="anchorss" onclick="anchorss('storeId')">
+                                <input type="number" name="storeId" class="form-control" onblur="exitId(this)"/>
+                            </a>
+                        </p>
+                        <p>
+                            <span class="text">活动标题:</span>
+                            <a href="#" class="anchorss" onclick="anchorss('storeTitle')">
+                                <input type="text" name="storeTitle" class="form-control" onblur="fieldLength(this)"/>
+                            </a>
+                        </p>
+                        <p>
+                            <span class="text">分享标题:</span>
+                            <a href="#" class="anchorss" onclick="anchorss('shareTitle')">
+                                <input type="text" name="shareTitle" class="form-control"/>
+                            </a>
+                        </p>
+                        <p>
+                            <span class="text">海报文案:</span>
+                            <a href="#" class="anchorss" onclick="anchorss('posterCopywriting')">
+                                <input type="text" name="posterCopywriting" class="form-control"/>
+                            </a>
+                        </p>
+                        <p>
+                            <span class="text">邀请按钮:</span>
+                            <a href="#" class="anchorss" onclick="anchorss('invitingButton')">
+                                <input type="text" name="invitingButton" class="form-control"/>
+                            </a>
+                        </p>
+                        <p>
+                            <span class="text">助力按钮:</span>
+                            <a href="#" class="anchorss" onclick="anchorss('helpButton')">
+                                <input type="text" name="helpButton" class="form-control"/>
+                            </a>
+                        </p>
+                        <p>
+                            <span class="text">已助力按钮:</span>
+                            <a href="#" class="anchorss" onclick="anchorss('boosterButton')">
+                                <input type="text" name="boosterButton" class="form-control"/>
+                            </a>
+                        </p>
+                        <p>
+                            <span class="text">助力已满按钮:</span>
+                            <a href="#" class="anchorss" onclick="anchorss('fullHelpButton')">
+                                <input type="text" name="fullHelpButton" class="form-control"/>
+                            </a>
+                        </p>
+                        <p>
+                            <span class="text">海报图片:</span>
+                            <a href="#" class="anchorss" onclick="anchorss('posterImage')">
+                                <input id="file" type="file" class="btn btn-primary" name="uploadPicture" value="上传图片"  onchange="changepic(this)"/>
+                                <button id="corpper">裁剪</button>
+                                <button id="saveCorpper">保存</button>
+                            </a>
+                            <span style="display: inline-block;">
+                                <img src="" id="show" height="200">
+                            </span>
+                        </p>
+                        <p>
+                            <span class="text">活动规则:</span>
+                            <a href="#" class="anchorss" onclick="anchorss('activityRules')" >
+                                <textarea name="" id="" name="activityRules" >
+
+                                </textarea>
+                            </a>
                         </p>
                         <div class="modal-footer" style="text-align: center;border: 0px;">
                             <button type="button" class="btn btn-primary" id="submitBtn">提 交</button>
@@ -53,11 +117,39 @@
                     </form>
                 </div>
                 <div class="explainInfos">
-                    <div style="height: 100px;width: 100%;overflow-y: auto;">
-                        <div>
-                            <a href="javascript:void(0)" name="list1">ceshi1</a></div>
-                        <div style="margin-top: 200px;">
-                            <a href="javascript:void(0)" name="list2" style="margin-top: 200px;">测试</a></div>
+                    <div style="height: 200px;width: 100%;overflow-y: auto; margin-top: 50%;background-color: #ccc;">
+                        <div style="height: 300px;">
+                            <a href="javascript:void(0)" id="storeId">活动id</a>
+                        </div>
+                        <div style="height: 300px;">
+                            <a href="javascript:void(0)" id="storeTitle">活动标题</a>
+                        </div>
+                        <div style="height: 300px;">
+                            <a href="javascript:void(0)" id="shareTitle">分享标题</a>
+                        </div>
+                        <div style="height: 300px;">
+                            <a href="javascript:void(0)" id="posterCopywriting">海报文案</a>
+                        </div>
+                        <div style="height: 300px;">
+                            <a href="javascript:void(0)" id="invitingButton">邀请按钮</a>
+                        </div>
+
+                        <div style="height: 300px;">
+                            <a href="javascript:void(0)" id="helpButton">助力按钮</a>
+                        </div>
+                        <div style="height: 300px;">
+                            <a href="javascript:void(0)" id="boosterButton">已助力按钮</a>
+                        </div>
+                        <div style="height: 300px;">
+                            <a href="javascript:void(0)" id="fullHelpButton">助力已满按钮</a>
+                        </div>
+                        <div style="height: 300px;">
+                            <a href="javascript:void(0)" id="posterImage">海报图片</a>
+                        </div>
+                        <div style="height: 300px;">
+                            <a href="javascript:void(0)" id="activityRules">活动规则</a>
+                        </div>
+
 
                     </div>
                 </div>
@@ -176,7 +268,7 @@
                         <td>30</td>
                         <td>2008/12/19</td>
                         <td>$90,560</td>
-                         <td></td>
+                        <td></td>
                     </tr>
                     <tr>
                         <td>Quinn Flynn</td>
@@ -185,7 +277,7 @@
                         <td>22</td>
                         <td>2013/03/03</td>
                         <td>$342,000</td>
-                         <td></td>
+                        <td></td>
                     </tr>
                     <tr>
                         <td>Charde Marshall</td>
@@ -194,7 +286,7 @@
                         <td>36</td>
                         <td>2008/10/16</td>
                         <td>$470,600</td>
-                         <td></td>
+                        <td></td>
                     </tr>
                     </tbody>
                 </table>
@@ -209,5 +301,4 @@
 
 </div>
 ###parse("../decorators/frame/bottom.vm")
-<script src="/static/plugins/activity-manage/manage.js"></script>
 

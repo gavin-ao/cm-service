@@ -3,7 +3,12 @@
  */
 
 (function () {
-
+    // 退出登录
+    $("#loginOut").on("click", function (){
+        console.log(6645346)
+        loginOut();
+    });
+    // 添加账号
     $("#addAccount").off("click");
     $("#addAccount").on("click",function(){
         $("#manageAdd").show();
@@ -12,6 +17,7 @@
     $("#closeBtn").on("click",function(){
         $("#manageAdd").hide();
     });
+    // 提交用户信息
     $("#submitBtn").off("click");
     $("#submitBtn").on("click",function(){
         $("#manageAdd").hide();

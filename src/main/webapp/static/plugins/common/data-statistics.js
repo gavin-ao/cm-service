@@ -3,7 +3,11 @@
  */
 var wholeAppInfoId,wholeStartTime,wholeEndTime;
 (function () {
-
+    // 退出登录
+    $("#loginOut").on("click", function (){
+        console.log(6645346)
+        loginOut();
+    });
 // 获取用户所有小程序
     allSmallProgram();
     // 自定义时间选择

@@ -1,9 +1,7 @@
 $(function (){
-    $("#loginbtn").bind("click", function (){
+    $("#loginbtn").off("click");
+    $("#loginbtn").on("click", function (){
         login();
-    });
-    $("#loginOut").bind("click", function (){
-        loginOut();
     });
 });
 
