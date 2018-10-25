@@ -7,7 +7,6 @@
     navSelect();
     $($("#main-menu").find("li")[0]).trigger("click");
     console.log($("#main-menu").find("li")[0])
-    $("#loginOut").off("click");
 
 }(jQuery));
 

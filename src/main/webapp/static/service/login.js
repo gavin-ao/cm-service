@@ -3,6 +3,12 @@ $(function (){
     $("#loginbtn").on("click", function (){
         login();
     });
+    // 退出登录
+    $("#loginOut").off("click");
+    $("#loginOut").on("click", function (){
+        console.log(6645346)
+        loginOut();
+    });
 });
 
 function login(){

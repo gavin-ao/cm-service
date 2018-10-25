@@ -3,16 +3,7 @@
  */
 
 (function () {
-    // 退出登录
-    // $("#loginOut").on("click", function (){
-    //     console.log(6645346)
-    //     loginOut();
-    // });
 
-    $("#addAccount").off("click");
-    $("#addAccount").on("click", function () {
-        $("#manageAdd").show();
-    });
     $("#closeBtn").off("click");
     $("#closeBtn").on("click", function () {
         $("#manageAdd").hide();

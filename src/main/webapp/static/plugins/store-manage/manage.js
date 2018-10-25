@@ -4,10 +4,10 @@
 
 (function () {
     // 退出登录
-    $("#loginOut").on("click", function (){
-        console.log(6645346)
-        loginOut();
-    });
+    // $("#loginOut").on("click", function (){
+    //     console.log(6645346)
+    //     loginOut();
+    // });
     // 添加账号
     $("#addAccount").off("click");
     $("#addAccount").on("click",function(){

@@ -3,40 +3,7 @@
 <link href="/static/plugins/activity-manage/manage.css" rel="stylesheet">
 <script src="/static/plugins/imgareaselect/scripts/jquery.imgareaselect.js"></script>
 <script src="/static/plugins/activity-manage/manage.js"></script>
-<div id="user_manage">
-    <div class="contain_head" style="">
-        <div class="contain_head_left" style="" id="contain_head_left">
-            <div class="dropdown" style="">
-                <button class="btn btn-default dropdown-toggle" type="button"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    <span class="selectIndex"> 老板看板</span>
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" id="contain_head_left_ul" aria-labelledby="dropdownMenu1">
-                    <li data-appInfoId="1" data-appid="1" data-secret="1"><a href="javascript:void(0)">老板看板</a></li>
-                    <li data-appInfoId="2" data-appid="2" data-secret="2"><a href="javascript:void(0)">销售业绩报表</a></li>
-                    <li data-appInfoId="3" data-appid="3" data-secret="3"><a href="javascript:void(0)">小程序流量分析</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="contain_head_right">
-            <div class="dropdown" style="">
-                <button class="btn btn-default dropdown-toggle" type="button"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    <span class="selectIndex"> 请选择</span>
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" id="contain_head_left_ul" aria-labelledby="dropdownMenu2">
-                    <li data-appInfoId="1" data-appid="1" data-secret="1"><a href="javascript:void(0)">老板看板</a></li>
-                    <li data-appInfoId="2" data-appid="2" data-secret="2"><a href="javascript:void(0)">销售业绩报表</a></li>
-                    <li data-appInfoId="3" data-appid="3" data-secret="3"><a href="javascript:void(0)">小程序流量分析</a></li>
-                </ul>
-            </div>
-            <div id="loginOut" style="margin-right: 20px;font-size: 20px; cursor: pointer;">退出</div>
-        </div>
 
-    </div>
-    <div class="contain_main">
         <div class="manageAdd" id="manageAdd">
             <div class="manangeAddCon">
             ##                <div class="closeBtn" id="closeBtn">✖</div>
@@ -45,7 +12,7 @@
                         <p>
                             <span class="text">活动id:</span>
                             <a href="#" class="anchorss" onclick="anchorss('storeId')">
-                                <input type="number" name="storeId" class="form-control" onblur="exitId(this)"/>
+                                <input type="number" name="storeId" class="form-control" min="0" onblur="exitId(this)"/>
                             </a>
                         </p>
                         <p>
@@ -93,9 +60,8 @@
                         <p>
                             <span class="text">海报图片:</span>
                             <a href="#" class="anchorss" onclick="anchorss('posterImage')">
-                                <input id="file" type="file" class="btn btn-primary" name="uploadPicture" value="上传图片"  onchange="changepic(this)"/>
-                                <button id="corpper">裁剪</button>
-                                <button id="saveCorpper">保存</button>
+                                <span class="upImage form-control" id="upImage">上传图片</span>
+                                <input id="file" type="file" class="btn btn-primary" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg" name="uploadPicture" value="上传图片"  onchange="changepic(this)"/>
                             </a>
                             <span style="display: inline-block;">
                                 <img src="" id="show" height="200">
@@ -107,6 +73,13 @@
                                 <textarea name="" id="" name="activityRules" >
 
                                 </textarea>
+                            </a>
+                        </p>
+                        <p>
+                            <span class="text">助力已满按钮:</span>
+                            <a href="#" class="anchorss actTimes" onclick="anchorss('activityTimes')">
+                                <input type="text" name="startTimes" class="form-control"  placeholder="开始时间" id="startTime"/>
+                                至 <input type="text" name="endTimes" class="form-control" placeholder="结束时间" id="endTime" />
                             </a>
                         </p>
                         <div class="modal-footer" style="text-align: center;border: 0px;">
@@ -149,7 +122,9 @@
                         <div style="height: 300px;">
                             <a href="javascript:void(0)" id="activityRules">活动规则</a>
                         </div>
-
+                        <div style="height: 300px;">
+                            <a href="javascript:void(0)" id="activityTimes">活动时间</a>
+                        </div>
 
                     </div>
                 </div>
@@ -296,9 +271,7 @@
         </div>
 
 
-    </div>
 
 
-</div>
-###parse("../decorators/frame/bottom.vm")
+
 
