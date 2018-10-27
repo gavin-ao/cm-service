@@ -1,8 +1,12 @@
 $(function (){
-    $("#loginbtn").bind("click", function (){
+    $("#loginbtn").off("click");
+    $("#loginbtn").on("click", function (){
         login();
     });
-    $("#loginOut").bind("click", function (){
+    // 退出登录
+    $("#loginOut").off("click");
+    $("#loginOut").on("click", function (){
+        console.log(6645346)
         loginOut();
     });
 });
@@ -22,7 +26,8 @@ function login(){
                 var success = data.success;
                 if(success && success == true){
                     // alert(data.msg);
-                    window.location.href = "/wechat/total/dataStatistics";
+                    console.log(data)
+                    window.location.href = "/wechat/total/index";
                 }else{
                     alert("登录失败");
                 }

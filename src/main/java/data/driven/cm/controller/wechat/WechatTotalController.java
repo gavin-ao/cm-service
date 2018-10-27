@@ -24,13 +24,33 @@ public class WechatTotalController {
     @Autowired
     private WechatTotalService wechatTotalService;
 
-
-    @RequestMapping(value = "/dataStatistics")
-    public ModelAndView productManage(){
-        ModelAndView mv = new ModelAndView("/data-statistics/index");
+    @RequestMapping(value = "/index")
+    public ModelAndView index(){
+        ModelAndView mv = new ModelAndView("index");
         return mv;
     }
 
+    @RequestMapping(value = "/storeManage")
+    public ModelAndView storeManage(){
+        ModelAndView mv = new ModelAndView("/store-manage/index");
+        return mv;
+    }
+
+    @RequestMapping(value = "/dataStatistics")
+    public ModelAndView dataStatistics(){
+        ModelAndView mv = new ModelAndView("/data-statistics/index");
+        return mv;
+    }
+    @RequestMapping(value = "/activityManage")
+    public ModelAndView activityManage(){
+        ModelAndView mv = new ModelAndView("/activity-manage/index");
+        return mv;
+    }
+    @RequestMapping(value = "/personalCenter")
+    public ModelAndView personalCenter(){
+        ModelAndView mv = new ModelAndView("/personal-center/index");
+        return mv;
+    }
     /**
      * 统计上面五个指标
      * @param appInfoId
