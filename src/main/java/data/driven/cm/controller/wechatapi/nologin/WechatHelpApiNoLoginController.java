@@ -94,7 +94,7 @@ public class WechatHelpApiNoLoginController {
      * @param openid
      */
     @RequestMapping(path = "/openHelpRewardUrl")
-    public void openHelpRewardUrl(HttpServletResponse response, String appid, String openid){
+    public void openHelpRewardUrl(HttpServletResponse response, String appid, String openid, String storeId){
         if(appid == null || openid == null){
             printMsg(response, "访问错误，错误代码105");
             return;
@@ -105,7 +105,7 @@ public class WechatHelpApiNoLoginController {
             printMsg(response, "访问错误，错误代码101");
             return;
         }
-        MatActivityVO matActivityInfo = matActivityService.getAnyMatActivityInfoByApp(appInfoEntity.getAppInfoId());
+        MatActivityVO matActivityInfo = matActivityService.getAnyMatActivityInfoByStore(storeId);
         if(matActivityInfo != null){
             if(matActivityInfo.getRewardUrl() != null && matActivityInfo.getRewardUrl().trim().length() > 0){
                 try {

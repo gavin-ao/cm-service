@@ -12,6 +12,8 @@ public class WechatShareDetailEntity {
     private String shareDetailId;
     /** 分享信息主键 **/
     private String shareId;
+    /** 门店id **/
+    private String storeId;
     /** 小程序id **/
     private String appInfoId;
     /** 分享者（微信用户与小程序关联表主键sys_mapId） **/
@@ -43,6 +45,14 @@ public class WechatShareDetailEntity {
 
     public void setShareId(String shareId) {
         this.shareId = shareId;
+    }
+
+    public String getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(String storeId) {
+        this.storeId = storeId;
     }
 
     public String getAppInfoId() {

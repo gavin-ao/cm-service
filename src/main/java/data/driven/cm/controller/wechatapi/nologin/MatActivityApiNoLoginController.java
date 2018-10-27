@@ -5,8 +5,6 @@ import data.driven.cm.business.material.BtnCopywritingService;
 import data.driven.cm.business.material.MatActivityService;
 import data.driven.cm.business.wechat.WechatAppInfoService;
 import data.driven.cm.common.Constant;
-import data.driven.cm.entity.wechat.WechatAppInfoEntity;
-import data.driven.cm.util.JSONUtil;
 import data.driven.cm.vo.material.MatActivityVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,9 +38,9 @@ public class MatActivityApiNoLoginController {
     public JSONObject getActivityPicture(String actId){
         String filePath = matActivityService.getMatActivityPictureUrl(actId);
         if(filePath != null){
-            JSONObject result = putMsg(true, "200", "获取成功");
-            result.put("url", Constant.STATIC_FILE_PATH + filePath);
-            return result;
+                JSONObject result = putMsg(true, "200", "获取成功");
+                result.put("url", Constant.STATIC_FILE_PATH + filePath);
+                return result;
         }else{
             return putMsg(false, "101", "获取失败");
         }
@@ -56,18 +54,14 @@ public class MatActivityApiNoLoginController {
     }
 
     /**
-     * 根据appid获取当前有效的任务
-     * @param appid
+     * 根据storeId获取当前有效的任务
+     * @param storeId
      * @return
      */
     @ResponseBody
     @RequestMapping(path = "/getCurrentActivityInfo")
-    public JSONObject getCurrentActivityInfo(String appid){
-        WechatAppInfoEntity appInfoEntity = wechatAppInfoService.getAppInfo(appid);
-        if(appInfoEntity == null){
-            return JSONUtil.putMsg(false, "102", "小程序为空");
-        }
-        MatActivityVO matActivityInfo = matActivityService.getMatActivityInfoByApp(appInfoEntity.getAppInfoId());
+    public JSONObject getCurrentActivityInfo(String storeId){
+        MatActivityVO matActivityInfo = matActivityService.getMatActivityInfoByStore(storeId);
         return putActivityInfoJson(matActivityInfo);
     }
 

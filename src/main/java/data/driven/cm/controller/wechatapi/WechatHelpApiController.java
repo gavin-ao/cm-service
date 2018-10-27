@@ -130,13 +130,17 @@ public class WechatHelpApiController {
     public JSONObject execuHelp(String sessionID, String actId){
         WechatApiSessionBean wechatApiSessionBean = WechatApiSession.getSessionBean(sessionID);
         String wechatUserId = wechatApiSessionBean.getUserInfo().getWechatUserId();
+        MatActivityVO matActivityVO = matActivityService.getValidMatActivityInfo(actId);
+        if(matActivityVO == null){
+            return putMsg(false, "101", "不是一个有效的活动");
+        }
         try{
             String helpId = UUIDUtil.getUUID();
             WechatHelpInfoEntity wechatHelpInfoEntity = wechatHelpInfoService.getHelpInfoByActId(actId, wechatUserId);
             if(wechatHelpInfoEntity != null){
                 helpId = wechatHelpInfoEntity.getHelpId();
             }else{
-                wechatHelpInfoService.insertHelp(helpId, actId, wechatUserId, wechatApiSessionBean.getUserInfo().getAppInfoId());
+                wechatHelpInfoService.insertHelp(helpId, actId, wechatUserId, matActivityVO.getStoreId(), wechatApiSessionBean.getUserInfo().getAppInfoId());
             }
             JSONObject result = putMsg(true, "200", "邀请助力成功");
             result.put("helpId", helpId);

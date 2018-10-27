@@ -19,6 +19,8 @@ public class RewardActCommandEntity {
     private String actId;
     /** 活动用户id **/
     private String userId;
+    /** 门店id **/
+    private String storeId;
     /** 小程序id **/
     private String appInfoId;
     /** 是否已使用  1 - 已使用 ， 0 - 未使用 **/
@@ -64,6 +66,14 @@ public class RewardActCommandEntity {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(String storeId) {
+        this.storeId = storeId;
     }
 
     public String getAppInfoId() {

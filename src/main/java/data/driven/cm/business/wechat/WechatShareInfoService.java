@@ -14,9 +14,10 @@ public interface WechatShareInfoService {
      * @param shareId
      * @param wechatUserId
      * @param content
+     * @param storeId
      * @param appInfoId
      */
-    public String insertShare(String shareId, String wechatUserId, String content, String appInfoId);
+    public String insertShare(String shareId, String wechatUserId, String content, String storeId, String appInfoId);
 
     /**
      * 根据分享id获取分享信息

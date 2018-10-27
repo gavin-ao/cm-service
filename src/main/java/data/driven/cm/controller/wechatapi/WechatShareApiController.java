@@ -53,10 +53,10 @@ public class WechatShareApiController {
      */
     @ResponseBody
     @RequestMapping(path = "/execuShare")
-    public JSONObject execuShare(String sessionID, String shareId, String content){
+    public JSONObject execuShare(String sessionID, String shareId, String content, String storeId){
         WechatApiSessionBean wechatApiSessionBean = WechatApiSession.getSessionBean(sessionID);
         try{
-            wechatShareInfoService.insertShare(shareId, wechatApiSessionBean.getUserInfo().getWechatUserId(), content, wechatApiSessionBean.getUserInfo().getAppInfoId());
+            wechatShareInfoService.insertShare(shareId, wechatApiSessionBean.getUserInfo().getWechatUserId(), content, storeId, wechatApiSessionBean.getUserInfo().getAppInfoId());
             JSONObject result = JSONUtil.putMsg(true, "200", "分享成功");
             return result;
         }catch (Exception e){

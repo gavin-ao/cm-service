@@ -59,6 +59,7 @@ public class WechatHelpDetailServiceImpl implements WechatHelpDetailService {
         helpDetailEntity.setHelpDetailId(helpDetailId);
         helpDetailEntity.setHelpId(helpInfo.getHelpId());
         helpDetailEntity.setActId(helpInfo.getActId());
+        helpDetailEntity.setStoreId(helpInfo.getStoreId());
         helpDetailEntity.setAppInfoId(helpInfo.getAppInfoId());
         helpDetailEntity.setFormId(fromUserInfo.getWechatMapId());
         helpDetailEntity.setFormWechatUserId(fromUserInfo.getWechatUserId());

@@ -14,6 +14,8 @@ public class WechatShareInfoEntity {
     private String wechatUserId;
     /** 分享内容 **/
     private String content;
+    /** 门店id **/
+    private String storeId;
     /** 小程序id **/
     private String appInfoId;
     /** 分享创建时间 **/
@@ -41,6 +43,14 @@ public class WechatShareInfoEntity {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(String storeId) {
+        this.storeId = storeId;
     }
 
     public String getAppInfoId() {

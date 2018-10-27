@@ -13,9 +13,10 @@ public interface WechatHelpInfoService {
      * @param helpId
      * @param actId
      * @param wechatUserId
+     * @param storeId
      * @param appInfoId
      */
-    public String insertHelp(String helpId, String actId, String wechatUserId, String appInfoId);
+    public String insertHelp(String helpId, String actId, String wechatUserId, String storeId, String appInfoId);
 
     /**
      * 根据助力id获取助力信息

@@ -14,6 +14,8 @@ public class WechatHelpDetailEntity {
     private String helpId;
     /** 活动主键 **/
     private String actId;
+    /** 门店id **/
+    private String storeId;
     /** 小程序id **/
     private String appInfoId;
     /** 被助力者（微信用户与小程序关联表主键sys_map_id） **/
@@ -53,6 +55,14 @@ public class WechatHelpDetailEntity {
 
     public void setActId(String actId) {
         this.actId = actId;
+    }
+
+    public String getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(String storeId) {
+        this.storeId = storeId;
     }
 
     public String getAppInfoId() {

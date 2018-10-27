@@ -51,8 +51,8 @@ public class RewardActCommandServiceImpl implements RewardActCommandService {
     public void insertRewardActCommandHelpMapping(RewardActCommandEntity command, WechatHelpInfoEntity helpInfoEntity) {
         String mapId = UUIDUtil.getUUID();
         Date createAt = new Date();
-        String sql = "insert into reward_act_command_help_mapping(map_id,help_id,command_id,act_id,app_info_id,wechat_user_id,create_at) values(?,?,?,?,?,?,?)";
-        jdbcBaseDao.executeUpdate(sql, mapId, helpInfoEntity.getHelpId(), command.getCommandId(), helpInfoEntity.getActId(), helpInfoEntity.getAppInfoId(), helpInfoEntity.getWechatUserId(), createAt);
+        String sql = "insert into reward_act_command_help_mapping(map_id,help_id,command_id,act_id,store_id,app_info_id,wechat_user_id,create_at) values(?,?,?,?,?,?,?,?)";
+        jdbcBaseDao.executeUpdate(sql, mapId, helpInfoEntity.getHelpId(), command.getCommandId(), helpInfoEntity.getActId(), helpInfoEntity.getStoreId(), helpInfoEntity.getAppInfoId(), helpInfoEntity.getWechatUserId(), createAt);
     }
 
 }

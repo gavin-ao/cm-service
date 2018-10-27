@@ -12,6 +12,8 @@ public class MatActivityEntity {
     private String actId;
     /** 活动用户id **/
     private String userId;
+    /** 门店id **/
+    private String storeId;
     /** 微信小程序id **/
     private String appInfoId;
     /** 活动名称 **/
@@ -61,6 +63,14 @@ public class MatActivityEntity {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(String storeId) {
+        this.storeId = storeId;
     }
 
     public String getAppInfoId() {

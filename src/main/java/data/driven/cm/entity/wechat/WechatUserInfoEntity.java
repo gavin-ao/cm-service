@@ -1,8 +1,5 @@
 package data.driven.cm.entity.wechat;
 
-import com.alibaba.fastjson.JSONObject;
-import data.driven.cm.vo.wechat.WechatUserInfoVO;
-
 import java.util.Date;
 
 /**
@@ -11,20 +8,6 @@ import java.util.Date;
  * @date 2018/6/26
  */
 public class WechatUserInfoEntity {
-
-    public static void main(String[] args){
-//        String data = "{\"nickName\":\"Band\",\"gender\":1,\"language\":\"zh_CN\",\"city\":\"Guangzhou\",\"province\":\"Guangdong\",\"country\":\"CN\",\"avatarUrl\":\"http:wx.qlogo.cn/mmopen/vi_32/aSKcBBPpibyKNicHNTMM0qJVh8Kjgiak2AHWr8MHM4WgMEm7GFhsf8OYrySdbvAMvTsw3mo8ibKicsnfN5pRjl1p8HQ/0\",\"unionId\":\"ocMvos6NjeKLIBqg5Mr9QjxrP1FA\",\"watermark\":{\"timestamp\":1477314187,\"appid\":\"wx4f4bc4dec97d474b\"}}";
-        String data = "{\"country\":\"中国\",\"watermark\":{\"appid\":\"wx6f8fab67827259b0\",\"timestamp\":1530782286},\"gender\":1,\"province\":\"河南\",\"city\":\"开封\",\"avatarUrl\":\"https://wx.qlogo.cn/mmopen/vi_32/icKhY9ibryN0F17RbC3OMfLgSE2paNG1NLc7xsmbWibJbnicbG4IwRTvIFe0dStzHSzWNkpD0zAicG400ic4KRPLkJNQ/132\",\"openId\":\"oOTql5IWertb6pO8E9pyEX1jgKIA\",\"nickName\":\"孙建辉\",\"language\":\"zh_CN\"}";
-        System.out.println(data);
-        JSONObject j = JSONObject.parseObject(data);
-
-        WechatUserInfoVO u = JSONObject.parseObject(data, WechatUserInfoVO.class);
-        System.out.println(JSONObject.toJSONString(u));
-
-        WechatUserInfoEntity x = j.toJavaObject(WechatUserInfoEntity.class);
-        System.out.println(JSONObject.toJSONString(x));
-
-    }
 
     /** 用户主键 **/
     private String wechatUserId;

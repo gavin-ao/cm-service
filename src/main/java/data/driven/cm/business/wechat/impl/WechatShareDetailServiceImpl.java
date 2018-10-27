@@ -34,6 +34,7 @@ public class WechatShareDetailServiceImpl implements WechatShareDetailService {
             WechatShareDetailEntity shareDetailEntity = new WechatShareDetailEntity();
             shareDetailEntity.setShareDetailId(shareDetailId);
             shareDetailEntity.setShareId(shareInfo.getShareId());
+            shareDetailEntity.setStoreId(shareInfo.getStoreId());
             shareDetailEntity.setAppInfoId(shareInfo.getAppInfoId());
             shareDetailEntity.setFormId(fromUserInfo.getWechatMapId());
             shareDetailEntity.setFormWechatUserId(fromUserInfo.getWechatUserId());

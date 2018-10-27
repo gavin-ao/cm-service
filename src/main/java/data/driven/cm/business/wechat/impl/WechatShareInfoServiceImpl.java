@@ -20,16 +20,16 @@ public class WechatShareInfoServiceImpl implements WechatShareInfoService {
     private JDBCBaseDao jdbcBaseDao;
 
     @Override
-    public String insertShare(String shareId, String wechatUserId, String content, String appInfoId) {
+    public String insertShare(String shareId, String wechatUserId, String content, String storeId, String appInfoId) {
         Date createAt = new Date();
-        String sql = "insert into wechat_share_info(share_id,wechat_user_id,content,app_info_id,create_at) values(?,?,?,?,?)";
-        jdbcBaseDao.executeUpdate(sql, shareId, wechatUserId, content, appInfoId, createAt);
+        String sql = "insert into wechat_share_info(share_id,wechat_user_id,content,store_id,app_info_id,create_at) values(?,?,?,?,?,?)";
+        jdbcBaseDao.executeUpdate(sql, shareId, wechatUserId, content, storeId, appInfoId, createAt);
         return shareId;
     }
 
     @Override
     public WechatShareInfoEntity getEntityById(String shareId) {
-        String sql = "select share_id,wechat_user_id,content,app_info_id,create_at from wechat_share_info where share_id = ?";
+        String sql = "select share_id,wechat_user_id,content,store_id,app_info_id,create_at from wechat_share_info where share_id = ?";
         List<WechatShareInfoEntity> list = jdbcBaseDao.queryList(WechatShareInfoEntity.class, sql, shareId);
         if(list != null && list.size() > 0){
             return list.get(0);
