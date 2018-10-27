@@ -47,7 +47,6 @@
     <link href="/static/plugins/imgareaselect/css/imgareaselect-default.css" rel="stylesheet">
     <link href="/static/plugins/personal-center/manage.css" rel="stylesheet">
     <script src="/static/plugins/imgareaselect/scripts/jquery.imgareaselect.js"></script>
-    <script src="/static/plugins/personal-center/manage.js"></script>
 </head>
 
 <body>
@@ -66,7 +65,7 @@
                                         <p>
                                             <span class="text">活动id:</span>
                                             <a href="#" class="anchorss" onclick="anchorss('storeId')">
-                                                <input type="number" name="storeId" class="form-control" min="0" onblur="exitId(this)"/>
+                                                <input type="number" name="storeId" class="form-control" min="1" onblur="exitId(this)"/>
                                             </a>
                                         </p>
                                         <p>
@@ -332,6 +331,7 @@
     </div>
 </div>
 </body>
+<script src="/static/plugins/personal-center/manage.js"></script>
 </html>
 
 

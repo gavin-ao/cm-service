@@ -4,6 +4,11 @@
 
 (function () {
 
+    $("#addAccount").off("click");
+    $("#addAccount").on("click", function () {
+        console.log(33333)
+        $("#manageAdd").show();
+    });
     $("#closeBtn").off("click");
     $("#closeBtn").on("click", function () {
         $("#manageAdd").hide();

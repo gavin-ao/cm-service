@@ -26,7 +26,7 @@
             <ul class="nav" id="main-menu">
                 <li name="storeManage" class="bgStyle">门店管理</li>
                 <li name="activityManage">活动管理</li>
-                <li name="dataStatistics">数据统计</li>
+##                <li name="dataStatistics">数据统计</li>
             </ul>
 
         </div>

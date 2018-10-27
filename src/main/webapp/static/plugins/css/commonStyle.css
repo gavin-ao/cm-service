@@ -8,8 +8,12 @@ input:-moz-placeholder,textarea:-moz-placeholder{font-size: 12px;}
 input::-moz-placeholder,textarea::-moz-placeholder{font-size: 12px;}
 input:-ms-input-placeholder,textarea:-ms-input-placeholder{font-size: 12px;}
 button,input,textarea,select{outline:none;box-shadow:none;}
+a{
+    color: #000;
+}
 a:hover,a:active,a:link{
-    text-decoration:none
+    text-decoration:none;
+    color: #000;
 }
 .header-left {
     width: 100%;

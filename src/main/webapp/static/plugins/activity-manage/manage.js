@@ -128,6 +128,15 @@ function exitId(tar) {
 //判断每个字段允许的长度
 function fieldLength(tar) {
     console.log($(tar).val())
+    console.log($(tar).attr("name"))
+    var titleName = $.trim($(tar).attr("name"));
+    var titleValue = $.trim($(tar).val());
+    switch (titleName){
+        case 'storeTitle':
+            judgmenLength(titleValue,20);
+            break;
+            
+    }
     return false;
 }
 //js锚点效果
@@ -230,6 +239,27 @@ function currentTime(myDate) {
     var mounth = (myDate.getMonth() + 1) > 9 ? (myDate.getMonth() + 1) : "0" + (myDate.getMonth() + 1);
     var date = myDate.getDate() > 9 ? myDate.getDate() : "0" + myDate.getDate();
     return year + "-" + mounth + "-" + date;
+}
+
+//判断字数长度 是否符合要求
+function judgmenLength(text,lens) {
+    if(text==""){
+        alert("内容不能为空。");
+        return false;
+    }
+    var realLength = 0, len = text.length, charCode = -1;
+    for (var i = 0; i < len; i++) {
+        charCode = text.charCodeAt(i);
+        if (charCode >= 0 && charCode <= 128)
+            realLength += 1;
+        else
+            realLength += 2;
+    }
+    if(realLength>lens){
+        alert("超出字数限制。");
+        return false;
+    }
+
 }
 
 
