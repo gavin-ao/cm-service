@@ -9,11 +9,12 @@ public interface BehaviorAnalysisHelpOpenUrlService {
 
     /**
      * 插入数据
+     * @param storeId
      * @param appInfoId
      * @param actId
      * @param kfOpenId
      * @return
      */
-    public boolean insert(String appInfoId, String actId, String kfOpenId);
+    public boolean insert(String storeId, String appInfoId, String actId, String kfOpenId);
 
 }

@@ -462,7 +462,7 @@ public class WechatHelpApiController {
             if(!wechatApiSessionBean.getUserInfo().getWechatUserId().equals(helpInfoEntity.getWechatUserId())){
                 return putMsg(false, "101", "记录失败,领取奖励必须是本人。");
             }
-            behaviorAnalysisHelpCommandService.openWindowInsert(helpInfoEntity.getHelpId(), helpInfoEntity.getActId(), helpInfoEntity.getAppInfoId(), wechatApiSessionBean.getUserInfo().getWechatUserId());
+            behaviorAnalysisHelpCommandService.openWindowInsert(helpInfoEntity.getHelpId(), helpInfoEntity.getActId(), helpInfoEntity.getStoreId(), helpInfoEntity.getAppInfoId(), wechatApiSessionBean.getUserInfo().getWechatUserId());
             return putMsg(true, "200", "调用成功");
         }else{
             return putMsg(false, "102", "记录失败，助力信息不存在。");
@@ -482,7 +482,7 @@ public class WechatHelpApiController {
         String currentUserId = wechatApiSessionBean.getUserInfo().getWechatUserId();
         WechatHelpDetailEntity wechatHelpDetailEntity = wechatHelpDetailService.getWechatHelpDetailEntityByToUser(actId, currentUserId);
         if(wechatHelpDetailEntity != null){
-            behaviorAnalysisHelpCommandService.openWindowInsert(wechatHelpDetailEntity.getHelpId(), wechatHelpDetailEntity.getActId(), wechatHelpDetailEntity.getAppInfoId(), currentUserId);
+            behaviorAnalysisHelpCommandService.openWindowInsert(wechatHelpDetailEntity.getHelpId(), wechatHelpDetailEntity.getActId(), wechatHelpDetailEntity.getStoreId(), wechatHelpDetailEntity.getAppInfoId(), currentUserId);
             return putMsg(true, "200", "调用成功");
         }else{
             return putMsg(false, "101", "记录失败，该活动中未给任何人助力，请先助力。");

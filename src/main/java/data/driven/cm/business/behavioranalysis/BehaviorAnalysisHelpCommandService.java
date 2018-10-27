@@ -9,13 +9,14 @@ public interface BehaviorAnalysisHelpCommandService {
 
     /**
      * 领取奖励并弹出窗，插入行为数据
-     * @param help_id
-     * @param act_id
-     * @param app_info_id
-     * @param wechat_user_id
+     * @param helpId
+     * @param actId
+     * @param storeId
+     * @param appInfoId
+     * @param wechatUserId
      * @return
      */
-    public boolean openWindowInsert(String help_id, String act_id, String app_info_id, String wechat_user_id);
+    public boolean openWindowInsert(String helpId, String actId, String storeId, String appInfoId, String wechatUserId);
 
     /**
      * 点击url触发的接口

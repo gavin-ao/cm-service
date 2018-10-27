@@ -94,7 +94,7 @@ public class WechatHelpDetailServiceImpl implements WechatHelpDetailService {
 
     @Override
     public WechatHelpDetailEntity getWechatHelpDetailEntityByToUser(String actId, String toWechatUserId) {
-        String sql = "select act_id,help_id,app_info_id,form_id,form_wechat_user_id,to_id,to_wechat_user_id,help_effect,help_at from wechat_help_detail where act_id = ? and to_wechat_user_id = ? and status = 1";
+        String sql = "select act_id,help_id,store_id,app_info_id,form_id,form_wechat_user_id,to_id,to_wechat_user_id,help_effect,help_at from wechat_help_detail where act_id = ? and to_wechat_user_id = ? and status = 1";
         List<WechatHelpDetailEntity> list = jdbcBaseDao.queryList(WechatHelpDetailEntity.class, sql, actId, toWechatUserId);
         if(list != null && list.size() > 0){
             return list.get(0);

@@ -109,7 +109,7 @@ public class WechatHelpApiNoLoginController {
         if(matActivityInfo != null){
             if(matActivityInfo.getRewardUrl() != null && matActivityInfo.getRewardUrl().trim().length() > 0){
                 try {
-                    behaviorAnalysisHelpOpenUrlService.insert(appInfoEntity.getAppInfoId(), matActivityInfo.getActId(), openid);
+                    behaviorAnalysisHelpOpenUrlService.insert(storeId, appInfoEntity.getAppInfoId(), matActivityInfo.getActId(), openid);
                     response.sendRedirect(matActivityInfo.getRewardUrl());
                 }catch (Exception e){
                     logger.error(e.getMessage(), e);
