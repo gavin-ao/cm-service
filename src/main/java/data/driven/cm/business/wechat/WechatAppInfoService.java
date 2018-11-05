@@ -19,6 +19,13 @@ public interface WechatAppInfoService {
     public WechatAppInfoEntity getAppInfo(String appid);
 
     /**
+     * 根据appInfoId查询对象
+     * @param appInfoId
+     * @return
+     */
+    public WechatAppInfoEntity getAppInfoById(String appInfoId);
+
+    /**
      * 根据用户id查询小程序
      * @param userInfoId
      * @return

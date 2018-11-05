@@ -21,7 +21,7 @@ public class QRCodeUtil {
 
     private static final int width = 430; // 二维码图片宽度
     private static final int height = 430; // 二维码图片高度
-    private static final String fileType = "jpg"; // 二维码图片类型
+    public static final String fileType = "jpg"; // 二维码图片类型
 
     public static void main(String[] args)throws Exception {
 //        String content = "http://101.201.34.29/tourism/scenery/findSceneryList?scenicSpotId=5b17a5bba9cbc1379427d3ba";

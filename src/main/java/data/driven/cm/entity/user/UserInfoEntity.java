@@ -32,6 +32,8 @@ public class UserInfoEntity {
     private String job;
     /** 创建时间 **/
     private Date createAt;
+    /** 创建人 **/
+    private String creator;
 
     public String getUserId() {
         return userId;
@@ -127,5 +129,13 @@ public class UserInfoEntity {
 
     public void setCreateAt(Date createAt) {
         this.createAt = createAt;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
     }
 }

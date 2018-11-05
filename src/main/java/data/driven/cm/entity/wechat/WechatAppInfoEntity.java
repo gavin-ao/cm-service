@@ -16,6 +16,8 @@ public class WechatAppInfoEntity {
     private String appid;
     /** 小程序secret  **/
     private String secret;
+    /** 小程序首页  **/
+    private String pageUrl;
     /** 创建时间 **/
     private Date createAt;
     /** 创建人 **/
@@ -51,6 +53,14 @@ public class WechatAppInfoEntity {
 
     public void setSecret(String secret) {
         this.secret = secret;
+    }
+
+    public String getPageUrl() {
+        return pageUrl;
+    }
+
+    public void setPageUrl(String pageUrl) {
+        this.pageUrl = pageUrl;
     }
 
     public Date getCreateAt() {

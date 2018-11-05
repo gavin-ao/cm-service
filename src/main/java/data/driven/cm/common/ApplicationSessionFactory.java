@@ -15,6 +15,7 @@ public class ApplicationSessionFactory {
     public static final String CACHE_TYPE_REDIS = "redis";
 
     public static final String SESSION_KEY_USER = "user";
+    public static final String SESSION_KEY_AUTHORIZE = "authorize";
     public static final String SESSION_KEY_VALIDATE_CODE_PREFIX = "validateCode_";
 
 
@@ -65,7 +66,18 @@ public class ApplicationSessionFactory {
      */
     public static void setUser(HttpServletRequest request, HttpServletResponse response, UserInfoEntity user){
         getSession(request, response).set(SESSION_KEY_USER, user);
-
+    }
+    /**
+     * 设置用户角色信息
+     */
+    public static void setAuthorize(HttpServletRequest request, HttpServletResponse response, AuthorizeBean authorizeBean){
+        getSession(request, response).set(SESSION_KEY_AUTHORIZE, authorizeBean);
+    }
+    /**
+     * 设置用户角色信息
+     */
+    public static AuthorizeBean getAuthorize(HttpServletRequest request, HttpServletResponse response){
+        return getSession(request,response).get(SESSION_KEY_AUTHORIZE, AuthorizeBean.class);
     }
 
     public static void init(HttpServletRequest request, HttpServletResponse response){

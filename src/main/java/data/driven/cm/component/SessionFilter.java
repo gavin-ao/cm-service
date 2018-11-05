@@ -1,6 +1,8 @@
 package data.driven.cm.component;
 
 import data.driven.cm.common.ApplicationSessionFactory;
+import data.driven.cm.common.AuthorizeBean;
+import data.driven.cm.entity.user.RoleEntity;
 import data.driven.cm.entity.user.UserInfoEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -51,6 +54,20 @@ public class SessionFilter implements Filter{
                 if(user == null){
                     response.sendRedirect(serverName + SERVICE_URL + "/login");
                     return ;
+                }
+                AuthorizeBean authorizeBean = ApplicationSessionFactory.getAuthorize(request, response);
+                List<RoleEntity> roleList = authorizeBean.getRoleList();
+                if(roleList == null || roleList.size() < 1){
+                    request.setAttribute("storeSuperAdmin", false);
+//                    if(uri.startsWith("/system/store")){
+//                        request.setAttribute("success", "false");
+//                        request.setAttribute("msg", "no Authorize");
+//                        return ;
+//                    }
+                }else {
+                    if(roleList.stream().anyMatch(roleEntity -> "STORE_SUPER_ADMIN".equals(roleEntity.getRoleCode()))){
+                        request.setAttribute("storeSuperAdmin", true);
+                    }
                 }
             }
         }

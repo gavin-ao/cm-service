@@ -1,4 +1,4 @@
-package data.driven.cm.entity.sys;
+package data.driven.cm.entity.system;
 
 import java.util.Date;
 
@@ -10,6 +10,8 @@ import java.util.Date;
 public class StoreEntity {
     /** 主键 **/
     private String storeId;
+    /** 小程序id **/
+    private String appInfoId;
     /** 系统用户id **/
     private String userId;
     /** 门店名称 **/
@@ -22,6 +24,10 @@ public class StoreEntity {
     private String city;
     /** 国家 **/
     private String country;
+    /** 门店二维码 **/
+    private String pictureId;
+    /** 门店管理员 **/
+    private String manager;
     /** 创建日期 **/
     private Date createAt;
 
@@ -31,6 +37,14 @@ public class StoreEntity {
 
     public void setStoreId(String storeId) {
         this.storeId = storeId;
+    }
+
+    public String getAppInfoId() {
+        return appInfoId;
+    }
+
+    public void setAppInfoId(String appInfoId) {
+        this.appInfoId = appInfoId;
     }
 
     public String getUserId() {
@@ -79,6 +93,22 @@ public class StoreEntity {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public String getPictureId() {
+        return pictureId;
+    }
+
+    public void setPictureId(String pictureId) {
+        this.pictureId = pictureId;
+    }
+
+    public String getManager() {
+        return manager;
+    }
+
+    public void setManager(String manager) {
+        this.manager = manager;
     }
 
     public Date getCreateAt() {
