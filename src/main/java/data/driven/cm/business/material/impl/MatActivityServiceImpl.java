@@ -116,12 +116,12 @@ public class MatActivityServiceImpl implements MatActivityService{
         if(activity == null || btnCopywritingJson == null){
             return JSONUtil.putMsg(false, "101", "参数为空");
         }
+        if(activity.getStartAt() == null || activity.getEndAt() == null){
+            return JSONUtil.putMsg(false, "103", "活动开始日期和结束日期不能为空");
+        }
         JSONObject temp = checkActivityStartDate(activity);
         if(temp.containsValue(false)){
             return JSONUtil.putMsg(false, "102", "开始日期不允许");
-        }
-        if(activity.getStartAt() == null || activity.getEndAt() == null){
-            return JSONUtil.putMsg(false, "103", "活动开始日期和结束日期不能为空");
         }
         JSONObject btnJsonObj = JSONObject.parseObject(btnCopywritingJson);
         Date date = new Date();
@@ -133,7 +133,7 @@ public class MatActivityServiceImpl implements MatActivityService{
             activity.setCreateAt(date);
             activity.setUserId(creator);
             jdbcBaseDao.insert(activity, "mat_activity");
-            String sql = "insert into btn_copywriting(id,act_id,btn_text,btn_code,create_at,creator) VALUES";
+            String sql = "insert into btn_copywriting(id,act_id,btn_text,btn_code,create_at,creator)";
             String valuesSql = "(:id,:act_id,:btn_text,:btn_code,:create_at,:creator)";
             List<BtnCopywritingEntity> btnList = getBtnCopywritingEntities(btnJsonObj, activity.getActId(), creator, date);
             jdbcBaseDao.executeBachOneSql(sql, valuesSql, btnList);
@@ -195,6 +195,7 @@ public class MatActivityServiceImpl implements MatActivityService{
     /** 设置btn属性 **/
     private BtnCopywritingEntity setBtnEntity(String actId, String creator, Date date, Map.Entry<String, Object> entry) {
         BtnCopywritingEntity btnCopywritingEntity = new BtnCopywritingEntity();
+        btnCopywritingEntity.setId(UUIDUtil.getUUID());
         btnCopywritingEntity.setActId(actId);
         btnCopywritingEntity.setBtnCode(entry.getKey());
         btnCopywritingEntity.setBtnText(entry.getValue() != null?entry.getValue().toString(): null);
