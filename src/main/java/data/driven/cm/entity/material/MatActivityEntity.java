@@ -16,6 +16,8 @@ public class MatActivityEntity {
     private String storeId;
     /** 微信小程序id **/
     private String appInfoId;
+    /** 活动类型 0 - 助力 1 - 拼团 2 - 砍价 **/
+    private String actType;
     /** 活动名称 **/
     private String actName;
     /** 活动介绍 **/
@@ -79,6 +81,14 @@ public class MatActivityEntity {
 
     public void setAppInfoId(String appInfoId) {
         this.appInfoId = appInfoId;
+    }
+
+    public String getActType() {
+        return actType;
+    }
+
+    public void setActType(String actType) {
+        this.actType = actType;
     }
 
     public String getActName() {

@@ -1,5 +1,8 @@
 package data.driven.cm.business.material;
 
+import com.alibaba.fastjson.JSONObject;
+import data.driven.cm.component.Page;
+import data.driven.cm.component.PageBean;
 import data.driven.cm.vo.material.MatActivityVO;
 
 /**
@@ -43,5 +46,43 @@ public interface MatActivityService {
      * @return
      */
     public MatActivityVO getAnyMatActivityInfoByStore(String storeId);
+
+
+
+    //后台新增代码 20181106
+
+    /**
+     * 分页查询活动列表
+     * @param keyword
+     * @param storeId
+     * @param pageBean
+     * @return
+     */
+    public Page<MatActivityVO> findActivityPage(String keyword, String storeId, PageBean pageBean);
+
+    /**
+     * 更新活动 - 新增actId为空，修改时actId不为空
+     * @param activity 活动信息
+     * @param btnCopywritingJson 活动文案部分信息
+     * @param creator   当前用户
+     */
+    public JSONObject updateActivity(MatActivityVO activity, String btnCopywritingJson, String creator);
+
+    /**
+     * 验证时间是否正确
+     * @param activity
+     * @return
+     */
+    public JSONObject checkActivityStartDate(MatActivityVO activity);
+
+    /**
+     * 获得下次能修改的时间
+     * @param storeId
+     * @return
+     */
+    public JSONObject getNextActivityStartDate(String storeId);
+
+    public void deleteActivity(String ids);
+
 
 }

@@ -69,6 +69,13 @@ public interface StoreService {
     public JSONObject updateStoreManagerPwd(String storeId, String pwd);
 
     /**
+     * 根据当前用户获取门店id  -  如果当前登录人是门店管理员的话
+     * @param userId
+     * @return
+     */
+    public String getStoreIdByCurrentUser(String userId);
+
+    /**
      * 删除门店 - 待定
      * @return
      */

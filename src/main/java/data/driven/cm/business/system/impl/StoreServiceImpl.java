@@ -193,6 +193,16 @@ public class StoreServiceImpl implements StoreService {
         return JSONUtil.putMsg(true, "200", "修改成功");
     }
 
+    @Override
+    public String getStoreIdByCurrentUser(String userId) {
+        String sql = "select store_id from sys_store where manager = ?";
+        Object obj = jdbcBaseDao.getColumn(sql, userId);
+        if (obj != null){
+            return obj.toString();
+        }
+        return null;
+    }
+
     //TODO 删除方法暂不提供
     @Override
     public JSONObject deleteStore(String ids) {

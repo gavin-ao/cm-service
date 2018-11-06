@@ -9,6 +9,7 @@ import data.driven.cm.component.Page;
 import data.driven.cm.component.PageBean;
 import data.driven.cm.entity.system.StoreEntity;
 import data.driven.cm.entity.user.UserInfoEntity;
+import data.driven.cm.util.JSONUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,8 +82,12 @@ public class StoreController {
 
     @ResponseBody
     @RequestMapping(path = "/getStoreQrCode")
-    public JSONObject getStoreQrCode(String storeId){
+    public JSONObject getStoreQrCode(HttpServletRequest request, HttpServletResponse response, String storeId){
         JSONObject result = new JSONObject();
+        if(storeId == null){
+            UserInfoEntity user = ApplicationSessionFactory.getUser(request, response);
+            storeId = storeService.getStoreIdByCurrentUser(user.getUserId());
+        }
         String filePath = storeService.getStoreQrCode(storeId);
         if(filePath != null){
             filePath = Constant.FILE_UPLOAD_PATH + filePath;
@@ -121,6 +126,16 @@ public class StoreController {
     @RequestMapping(path = "/updateStoreManagerPwd")
     public JSONObject updateStoreManagerPwd(String storeId, String pwd){
         return storeService.updateStoreManagerPwd(storeId, pwd);
+    }
+
+    @ResponseBody
+    @RequestMapping(path = "/getStoreId")
+    public JSONObject getStoreId(HttpServletRequest request, HttpServletResponse response){
+        UserInfoEntity user = ApplicationSessionFactory.getUser(request, response);
+        String storeId = storeService.getStoreIdByCurrentUser(user.getUserId());
+        JSONObject result = JSONUtil.putMsg(true, "200", "操作成功");
+        result.put("storeId", storeId);
+        return result;
     }
 
 }

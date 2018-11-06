@@ -1,5 +1,7 @@
 package data.driven.cm.entity.material;
 
+import java.util.Date;
+
 /**
  * 按钮文案
  * @author hejinkai
@@ -15,7 +17,7 @@ public class BtnCopywritingEntity {
     /** 按钮编码 **/
     private String btnCode;
     /** 创建时间 **/
-    private String createAt;
+    private Date createAt;
     /** 创建人 **/
     private String creator;
 
@@ -51,11 +53,11 @@ public class BtnCopywritingEntity {
         this.btnCode = btnCode;
     }
 
-    public String getCreateAt() {
+    public Date getCreateAt() {
         return createAt;
     }
 
-    public void setCreateAt(String createAt) {
+    public void setCreateAt(Date createAt) {
         this.createAt = createAt;
     }
 
