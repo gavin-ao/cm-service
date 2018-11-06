@@ -54,6 +54,16 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
+    public String getStoreQrCode(String storeId) {
+        String sql = "select p.file_path from sys_store s left join sys_picture p on s.picture_id = p.picture_id where s.store_id = ?";
+        Object filePath = jdbcBaseDao.getColumn(sql, storeId);
+        if(filePath != null){
+            return filePath.toString();
+        }
+        return null;
+    }
+
+    @Override
     public Page<StoreEntity> findStorePage(String keyword, String appInfoId, PageBean pageBean) {
         String sql = "select store_id,app_info_id,user_id,store_name,store_addr,province,city,country,picture_id,manager,create_at from sys_store";
         StringBuffer where = new StringBuffer();

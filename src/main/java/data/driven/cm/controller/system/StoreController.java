@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import data.driven.cm.business.system.StoreService;
 import data.driven.cm.business.user.UserInfoService;
 import data.driven.cm.common.ApplicationSessionFactory;
+import data.driven.cm.common.Constant;
 import data.driven.cm.component.Page;
 import data.driven.cm.component.PageBean;
 import data.driven.cm.entity.system.StoreEntity;
@@ -77,6 +78,21 @@ public class StoreController {
         result.put("store", store);
         return result;
     }
+
+    @ResponseBody
+    @RequestMapping(path = "/getStoreQrCode")
+    public JSONObject getStoreQrCode(String storeId){
+        JSONObject result = new JSONObject();
+        String filePath = storeService.getStoreQrCode(storeId);
+        if(filePath != null){
+            filePath = Constant.FILE_UPLOAD_PATH + filePath;
+        }
+        result.put("success", true);
+        result.put("filePath", filePath);
+        return result;
+    }
+
+
 
     @ResponseBody
     @RequestMapping(path = "/addStore")

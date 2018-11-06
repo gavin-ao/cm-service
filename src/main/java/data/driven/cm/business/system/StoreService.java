@@ -20,6 +20,13 @@ public interface StoreService {
     public StoreEntity getStoreById(String storeId);
 
     /**
+     * 根据id查询数据对象
+     * @param storeId
+     * @return
+     */
+    public String getStoreQrCode(String storeId);
+
+    /**
      * 分页查询数据
      * @param keyword   关键词查询
      * @param appInfoId   小程序id
