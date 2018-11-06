@@ -135,7 +135,27 @@ function fieldLength(tar) {
         case 'storeTitle':
             judgmenLength(titleValue,20);
             break;
-            
+        case 'invitingButton':
+            judgmenLength(titleValue,36);
+            break;
+        case 'helpButton':
+            judgmenLength(titleValue,26);
+            break;
+        case 'boosterButton':
+            judgmenLength(titleValue,26);
+            break;
+        case 'fullHelpButton':
+            judgmenLength(titleValue,26);
+            break;
+        case 'partsActivity':
+            judgmenLength(titleValue,18);
+            break;
+        case 'posterCopywriting':
+            judgmenLength(titleValue,72);
+            break;
+        case 'shareTitle':
+            judgmenLength(titleValue,52);
+            break;
     }
     return false;
 }
@@ -244,8 +264,7 @@ function currentTime(myDate) {
 //判断字数长度 是否符合要求
 function judgmenLength(text,lens) {
     if(text==""){
-        alert("内容不能为空。");
-        return false;
+        $.MsgBox.Alert("温馨提示", "内容不能为空。");
     }
     var realLength = 0, len = text.length, charCode = -1;
     for (var i = 0; i < len; i++) {
@@ -255,8 +274,9 @@ function judgmenLength(text,lens) {
         else
             realLength += 2;
     }
+    console.log(realLength)
     if(realLength>lens){
-        alert("超出字数限制。");
+        $.MsgBox.Alert("温馨提示", "超出字数限制。");
         return false;
     }
 

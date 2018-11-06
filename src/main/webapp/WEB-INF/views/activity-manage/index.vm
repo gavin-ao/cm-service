@@ -47,31 +47,31 @@
                 <p>
                     <span class="text">邀请按钮:</span>
                     <a class="anchorss" onclick="anchorss('invitingButton')">
-                        <input type="text" name="invitingButton" class="form-control"/>
+                        <input type="text" name="invitingButton" class="form-control" onblur="fieldLength(this)"/>
                     </a>
                 </p>
                 <p>
                     <span class="text">助力按钮:</span>
                     <a class="anchorss" onclick="anchorss('helpButton')">
-                        <input type="text" name="helpButton" class="form-control"/>
+                        <input type="text" name="helpButton" class="form-control" onblur="fieldLength(this)"/>
                     </a>
                 </p>
                 <p>
                     <span class="text">已助力按钮:</span>
                     <a class="anchorss" onclick="anchorss('boosterButton')">
-                        <input type="text" name="boosterButton" class="form-control"/>
+                        <input type="text" name="boosterButton" class="form-control" onblur="fieldLength(this)"/>
                     </a>
                 </p>
                 <p>
                     <span class="text">助力已满按钮:</span>
                     <a class="anchorss" onclick="anchorss('fullHelpButton')">
-                        <input type="text" name="fullHelpButton" class="form-control"/>
+                        <input type="text" name="fullHelpButton" class="form-control" onblur="fieldLength(this)"/>
                     </a>
                 </p>
                 <p>
                     <span class="text">参加活动按钮:</span>
                     <a class="anchorss" onclick="anchorss('partsActivity')">
-                        <input type="text" name="partsActivity" class="form-control"/>
+                        <input type="text" name="partsActivity" class="form-control" onblur="fieldLength(this)"/>
                     </a>
                 </p>
                 <p>
@@ -83,9 +83,7 @@
                 <p>
                     <span class="text">活动规则:</span>
                     <a class="anchorss" onclick="anchorss('activityRules')">
-                                <textarea name="" id="" name="activityRules">
-
-                                </textarea>
+                                <textarea name="" id="" name="activityRules"></textarea>
                     </a>
                 </p>
                 <p>
@@ -98,7 +96,7 @@
                 <p>
                     <span class="text">分享标题:</span>
                     <a class="anchorss" onclick="anchorss('shareTitle')">
-                        <input type="text" name="shareTitle" class="form-control"/>
+                        <input type="text" name="shareTitle" class="form-control" onblur="fieldLength(this)"/>
                     </a>
                 </p>
 

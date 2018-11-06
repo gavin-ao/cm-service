@@ -17,52 +17,118 @@
     height: 90%;
     margin-top: 50px;
 }
-.closeBtn{
+
+.closeBtn {
     width: 30px;
     height: 30px;
     text-align: center;
     line-height: 30px;
     font-size: 18px;
     font-weight: 400;
-    background-color:#ccc;
+    background-color: #ccc;
     color: red;
     float: right;
     /*margin-top: -30px;*/
     cursor: pointer;
 }
-.formContain{
+
+.formContain {
     width: 100%;
 }
-.formContain > form{
+
+.formContain > form {
     margin: 0 auto;
     padding-top: 50px;
     width: 80%;
-    text-align: center;
+    /*text-align: center;*/
 }
-.formContain > form>p>span.text{
+
+.formContain > form > div {
+    margin-bottom: 10px;
+}
+
+.formContain > form > div > span.text {
     display: inline-block;
     width: 15%;
     text-align: right;
     margin-right: 5px;
 }
-.formContain > form>p>input{
+
+.formContain > form > div > input,.formContain > form > div > select {
     width: 74%;
     display: inline-block;
 }
-#submitBtn{
 
+#distpicker {
+    display: inline-block;
+    width: 74%;
+}
+
+#distpicker > div {
+    display: inline-block;
+    max-width: 32.6%;
+}
+
+#distpicker > div.form-group {
+    margin-bottom: 0px;
+}
+
+#submitBtn {
 
 }
 
+.dataTables {
+    background-color: #fff;
+    height: calc(100% - 75px);
+    overflow-y: auto;
+}
+.dataTables>div{
+    width: calc(100% - 15px);
 
-.contain_main  .addAccount{
-    width: 100px;
-    height: 30px;
-    line-height: 30px;
+}
+
+table tr th ,table tr td{
     text-align: center;
-    font-size: 16px;
-    color: #219DEF;
-    border: 1px solid #ccc;
+}
+
+.contain_main .addAccount {
+    width: 120px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    font-size: 13px;
+    color: #FFF;
+    border: none;
     border-radius: 5px;
+    cursor: pointer;
+    background-color: rgba(22, 155, 213, 1);
+}
+#storeQRCode{
+    display: none;
+
+}
+#storeQRCode>div.code{
+    padding-top: 80px;
+    margin-bottom: 20px;
+}
+#downloadQRCode{
+    display: inline-block;
+    width: 80px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    margin-left: 10px;
+    background: inherit;
+    background-color: rgba(22, 155, 213, 1);
+    border: none;
+    border-radius: 5px;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    font-family: 'PingFangSC-Regular', 'PingFang SC';
+    font-weight: 400;
+    font-style: normal;
+    font-size: 16px;
+    color: #fff;
     cursor: pointer;
 }

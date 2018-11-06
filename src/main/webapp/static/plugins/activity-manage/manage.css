@@ -44,7 +44,7 @@
     margin: 0 auto;
     padding-top: 50px;
     width: 90%;
-    text-align: center;
+    /*text-align: center;*/
 }
 
 .formContain > form > p > span.text {
@@ -92,7 +92,7 @@
     float: left;
     height: 34px;
     line-height: 34px;
-    text-align: left;
+    text-align: center;
 }
 .formContain > form > p > a>span.radios >input[name='activityType']{
     margin:0 5px;

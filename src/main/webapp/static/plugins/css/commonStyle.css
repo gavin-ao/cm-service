@@ -44,7 +44,7 @@ a:hover,a:active,a:link{
 }
 #main-menu li {
     text-align: center;
-    line-height: 80px;
+    line-height: 50px;
     cursor: pointer;
     color: #fff;
     /*color: #219DEF;*/
@@ -103,6 +103,24 @@ a:hover,a:active,a:link{
     height: calc(100% - 40px);
     padding: 20px 20px;
     background-color: #EEF4F9
+}
+.mineStyle>li{
+    border-bottom: 1px solid #EEF4F9;
+}
+.mineStyle>li>div{
+    font-weight: 650;
+    font-style: normal;
+    font-size: 20px;
+    color: #FFFFFF;
+    height: 60px;
+    line-height: 60px;
+    padding-left: 20px;
+}
+.mineStyle>li>div>img{
+    width: 30px;
+    height: 30px;
+    vertical-align: middle;
+    /*padding-left: 30px;*/
 }
 
 
