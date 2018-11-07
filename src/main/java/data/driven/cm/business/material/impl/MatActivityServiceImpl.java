@@ -1,12 +1,15 @@
 package data.driven.cm.business.material.impl;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import data.driven.cm.business.material.BtnCopywritingService;
 import data.driven.cm.business.material.MatActivityService;
+import data.driven.cm.business.reward.RewardActCommandService;
 import data.driven.cm.component.Page;
 import data.driven.cm.component.PageBean;
 import data.driven.cm.dao.JDBCBaseDao;
 import data.driven.cm.entity.material.BtnCopywritingEntity;
+import data.driven.cm.entity.reward.RewardActContentEntity;
 import data.driven.cm.util.DateFormatUtil;
 import data.driven.cm.util.JSONUtil;
 import data.driven.cm.util.UUIDUtil;
@@ -34,6 +37,8 @@ public class MatActivityServiceImpl implements MatActivityService{
     private JDBCBaseDao jdbcBaseDao;
     @Autowired
     private BtnCopywritingService btnCopywritingService;
+    @Autowired
+    private RewardActCommandService rewardActCommandService;
 
 
     @Override
@@ -49,6 +54,27 @@ public class MatActivityServiceImpl implements MatActivityService{
     @Override
     public MatActivityVO getMatActivityInfo(String actId) {
         String sql = "select p.file_path,ma.store_id,ma.act_id,ma.act_type,ma.act_name,ma.act_reply,ma.act_title,ma.act_share_title,ma.act_share_copywriting,ma.act_rule,ma.exchange_rule,ma.partake_num from mat_activity ma left join sys_picture p on p.picture_id = ma.picture_id where ma.act_id = ?";
+        List<MatActivityVO> list = jdbcBaseDao.queryList(MatActivityVO.class, sql, actId);
+        if(list != null && list.size() > 0){
+            return list.get(0);
+        }
+        return null;
+    }
+
+    @Override
+    public MatActivityVO getMatActivityAllInfo(String actId, String storeId) {
+        String sql = "select p.file_path,ma.act_id, ma.act_type, ma.act_name, ma.act_introduce, ma.picture_id, ma.act_url, ma.act_reply, ma.act_title, ma.act_share_title, ma.act_share_copywriting, ma.act_rule, ma.exchange_rule, ma.partake_num, ma.reward_url, ma.start_at, ma.end_at from mat_activity ma" +
+                " left join sys_picture p on p.picture_id = ma.picture_id where ma.act_id = ? and ma.store_id = ?";
+        List<MatActivityVO> list = jdbcBaseDao.queryList(MatActivityVO.class, sql, actId, storeId);
+        if(list != null && list.size() > 0){
+            return list.get(0);
+        }
+        return null;
+    }
+
+    @Override
+    public MatActivityVO getMatActivityAnyID(String actId) {
+        String sql = "select ma.act_id,ma.user_id,ma.store_id,ma.app_info_id,ma.start_at,ma.end_at from mat_activity ma where ma.act_id = ?";
         List<MatActivityVO> list = jdbcBaseDao.queryList(MatActivityVO.class, sql, actId);
         if(list != null && list.size() > 0){
             return list.get(0);
@@ -112,8 +138,8 @@ public class MatActivityServiceImpl implements MatActivityService{
     }
 
     @Override
-    public JSONObject updateActivity(MatActivityVO activity, String btnCopywritingJson, String creator) {
-        if(activity == null || btnCopywritingJson == null){
+    public JSONObject updateActivity(MatActivityVO activity, String btnCopywritingJson, String rewardActContentJson, Integer rewardNum, String creator) {
+        if(activity == null || btnCopywritingJson == null || rewardActContentJson == null){
             return JSONUtil.putMsg(false, "101", "参数为空");
         }
         if(activity.getStartAt() == null || activity.getEndAt() == null){
@@ -128,15 +154,28 @@ public class MatActivityServiceImpl implements MatActivityService{
         if(activity.getEndAt().before(date)){
             return JSONUtil.putMsg(false, "104", "活动结束日期必须大于当前日期");
         }
+        List<RewardActContentEntity> rewardActContentList = JSONArray.parseArray(rewardActContentJson, RewardActContentEntity.class);
         if(activity.getActId() == null){//新增
             activity.setActId(UUIDUtil.getUUID());
             activity.setCreateAt(date);
             activity.setUserId(creator);
+            //插入活动
             jdbcBaseDao.insert(activity, "mat_activity");
-            String sql = "insert into btn_copywriting(id,act_id,btn_text,btn_code,create_at,creator)";
-            String valuesSql = "(:id,:act_id,:btn_text,:btn_code,:create_at,:creator)";
+            String btnSql = "insert into btn_copywriting(id,act_id,btn_text,btn_code,create_at,creator)";
+            String btnValuesSql = "(:id,:act_id,:btn_text,:btn_code,:create_at,:creator)";
             List<BtnCopywritingEntity> btnList = getBtnCopywritingEntities(btnJsonObj, activity.getActId(), creator, date);
-            jdbcBaseDao.executeBachOneSql(sql, valuesSql, btnList);
+            //插入活动文案数据
+            jdbcBaseDao.executeBachOneSql(btnSql, btnValuesSql, btnList);
+            //插入奖励文案数据
+            String rewardSql = "insert into reward_act_content(content_id,act_id,content_title,content_head,content_mid,content_foot,content_btn,command_type,remark,create_at)";
+            String rewardValuesSql = "(:content_id,:act_id,:content_title,:content_head,:content_mid,:content_foot,:content_btn,:command_type,:remark,:create_at)";
+            for(RewardActContentEntity rewardActContentEntity : rewardActContentList){
+                rewardActContentEntity.setContentId(UUIDUtil.getUUID());
+                rewardActContentEntity.setActId(activity.getActId());
+                rewardActContentEntity.setCreateAt(date);
+            }
+            jdbcBaseDao.executeBachOneSql(rewardSql, rewardValuesSql, rewardActContentList);
+            rewardActCommandService.insertRewardActCommandAuto(rewardNum, activity);
         }else{//更新
             String canUpdateSql = "select act_id from mat_activity where act_id = ? and start_at > ?";
             Object obj = jdbcBaseDao.getColumn(canUpdateSql, activity.getActId(), date);
@@ -171,6 +210,12 @@ public class MatActivityServiceImpl implements MatActivityService{
                 String sql = "update btn_copywriting set btn_text = :btn_text where act_id = :act_id and btn_code = :btn_code";
                 jdbcBaseDao.executeBach(sql, updateBtnList);
             }
+
+            for(RewardActContentEntity rewardActContentEntity : rewardActContentList){
+//                rewardActContentEntity.setActId(activity.getActId());
+                jdbcBaseDao.update(rewardActContentEntity, "reward_act_content", "content_id", false);
+            }
+
         }
         return JSONUtil.putMsg(true, "200", "更新成功");
     }
@@ -216,8 +261,8 @@ public class MatActivityServiceImpl implements MatActivityService{
     @Override
     public JSONObject getNextActivityStartDate(String storeId) {
         Date date = DateFormatUtil.convertDate(new Date());
-        String sql = "select end_at from mat_activity where store_id = ? and start_at <= ? and end_at >= ?";
-        Object endDateObj = jdbcBaseDao.getColumn(sql, storeId, date, date);
+        String sql = "select end_at from mat_activity where store_id = ? order by end_at desc,act_id limit 1";
+        Object endDateObj = jdbcBaseDao.getColumn(sql, storeId);
         Date endDate = (Date) endDateObj;
         JSONObject result = JSONUtil.putMsg(true, "200", "操作成功");
         long nowTime = date.getTime();

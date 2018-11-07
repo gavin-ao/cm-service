@@ -1,10 +1,15 @@
 package data.driven.cm.business.reward;
 
+import data.driven.cm.component.Page;
+import data.driven.cm.component.PageBean;
 import data.driven.cm.entity.reward.RewardActContentEntity;
+import data.driven.cm.vo.reward.RewardActContentVO;
+
+import java.util.List;
 
 /**
  * 活动奖励文案Service
- * @author hejinkai
+ * @author hejinkai11
  * @date 2018/8/8
  */
 public interface RewardActContentService {
@@ -16,5 +21,21 @@ public interface RewardActContentService {
      * @return
      */
     public RewardActContentEntity getRewardActContentByActAndType(String actId, Integer commandType);
+
+    /**
+     * 分页查询
+     * @param keyword
+     * @param storeId
+     * @param pageBean
+     * @return
+     */
+    public Page<RewardActContentVO> findRewardActContentPage(String keyword, String storeId, PageBean pageBean);
+
+    /**
+     * 根据活动id查询奖励文案列表
+     * @param actId
+     * @return
+     */
+    public List<RewardActContentEntity> findRewardActContentList(String actId);
 
 }

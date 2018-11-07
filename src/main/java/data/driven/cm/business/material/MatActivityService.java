@@ -27,6 +27,20 @@ public interface MatActivityService {
     public MatActivityVO getMatActivityInfo(String actId);
 
     /**
+     * 根据活动id和storeId获取所有活动信息
+     * @param actId
+     * @return
+     */
+    public MatActivityVO getMatActivityAllInfo(String actId, String storeId);
+
+    /**
+     * 根据活动id获取四个id  ma.act_id,ma.user_id,ma.store_id,ma.app_info_id,ma.start_at,ma.end_at
+     * @param actId
+     * @return
+     */
+    public MatActivityVO getMatActivityAnyID(String actId);
+
+    /**
      * 根据获取有效的活动信息
      * @param actId
      * @return
@@ -64,9 +78,11 @@ public interface MatActivityService {
      * 更新活动 - 新增actId为空，修改时actId不为空
      * @param activity 活动信息
      * @param btnCopywritingJson 活动文案部分信息
+     * @param rewardActContentJson 活动奖励文案部分信息
+     * @param rewardNum 奖励数量
      * @param creator   当前用户
      */
-    public JSONObject updateActivity(MatActivityVO activity, String btnCopywritingJson, String creator);
+    public JSONObject updateActivity(MatActivityVO activity, String btnCopywritingJson, String rewardActContentJson, Integer rewardNum, String creator);
 
     /**
      * 验证时间是否正确

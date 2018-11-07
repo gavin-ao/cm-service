@@ -1,6 +1,9 @@
 package data.driven.cm.util;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+
+import java.util.Collection;
 
 /**
  * json工具类
@@ -24,4 +27,19 @@ public class JSONUtil {
         return result;
     }
 
+    /**
+     * 利用json去除为null的属性
+     * @param obj
+     * @return
+     */
+    public static Object replaceNull(Object obj){
+        if(obj != null){
+            if (obj instanceof Collection){
+                return JSON.parseArray(JSON.toJSONString(obj));
+            }else {
+                return JSON.parseObject(JSON.toJSONString(obj));
+            }
+        }
+        return obj;
+    }
 }

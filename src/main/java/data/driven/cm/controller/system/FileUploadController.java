@@ -112,7 +112,7 @@ public class FileUploadController {
         pictureEntity.setCreator(user.getUserId());
         pictureEntity.setCreateAt(date);
         try {
-            fileName = pictureEntity.getPictureId() + fileName.substring(fileName.lastIndexOf("."));
+            fileName = pictureEntity.getPictureId() + ".jpg";
             String[] pictureJsonArr = pictureJson.split(",");
             JSONObject uploadResult = FileUtil.uploadFile(decoder.decode(pictureJsonArr[pictureJsonArr.length - 1]), fileName);
             pictureEntity.setFilePath(uploadResult.getString("relativePath"));

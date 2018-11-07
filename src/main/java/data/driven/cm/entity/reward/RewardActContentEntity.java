@@ -24,6 +24,8 @@ public class RewardActContentEntity {
     private String contentBtn;
     /** 奖励口令类型，1 - 发起人奖励，2 - 参与人奖励 **/
     private Integer commandType;
+    /** 备注 **/
+    private String remark;
     /** 创建时间 **/
     private Date createAt;
 
@@ -89,6 +91,14 @@ public class RewardActContentEntity {
 
     public void setCommandType(Integer commandType) {
         this.commandType = commandType;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
     public Date getCreateAt() {

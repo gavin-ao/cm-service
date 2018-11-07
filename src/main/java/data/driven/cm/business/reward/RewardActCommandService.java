@@ -1,7 +1,10 @@
 package data.driven.cm.business.reward;
 
+import data.driven.cm.component.Page;
+import data.driven.cm.component.PageBean;
 import data.driven.cm.entity.reward.RewardActCommandEntity;
 import data.driven.cm.entity.wechat.WechatHelpInfoEntity;
+import data.driven.cm.vo.material.MatActivityVO;
 
 /**
  * 活动奖励口令service
@@ -39,4 +42,37 @@ public interface RewardActCommandService {
      */
     public void insertRewardActCommandHelpMapping(RewardActCommandEntity command, WechatHelpInfoEntity helpInfoEntity);
 
+    /**
+     * 根据活动自动生成奖励数据
+     * @param rewardNum
+     * @param matActivity
+     */
+    public void insertRewardActCommandAuto(Integer rewardNum, MatActivityVO matActivity);
+    /**
+     * 根据活动生成奖励数据 - 只生成某一种
+     * @param rewardNum
+     * @param matActivity
+     * @param commandType
+     */
+    public void insertRewardActCommand(Integer rewardNum, MatActivityVO matActivity, Integer commandType);
+
+
+    /**
+     * 分页查询奖励码
+     * @param actId
+     * @param commandType
+     * @param storeId
+     * @param pageBean
+     * @return
+     */
+    public Page<RewardActCommandEntity> findRewardActCommandPage(String actId, Integer commandType, String storeId, PageBean pageBean);
+
+    /**
+     * 删除数据
+     * @param actId
+     * @param commandType
+     * @param storeId
+     * @param ids
+     */
+    public boolean deleteRewardActCommand(String actId, Integer commandType, String storeId, String ids);
 }

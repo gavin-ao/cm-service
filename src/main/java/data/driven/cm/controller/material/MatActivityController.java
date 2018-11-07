@@ -1,11 +1,14 @@
 package data.driven.cm.controller.material;
 
 import com.alibaba.fastjson.JSONObject;
+import data.driven.cm.business.material.BtnCopywritingService;
 import data.driven.cm.business.material.MatActivityService;
+import data.driven.cm.business.reward.RewardActContentService;
 import data.driven.cm.business.system.StoreService;
 import data.driven.cm.common.ApplicationSessionFactory;
 import data.driven.cm.component.Page;
 import data.driven.cm.component.PageBean;
+import data.driven.cm.entity.reward.RewardActContentEntity;
 import data.driven.cm.entity.system.StoreEntity;
 import data.driven.cm.entity.user.UserInfoEntity;
 import data.driven.cm.util.JSONUtil;
@@ -19,6 +22,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 活动controller
@@ -35,6 +40,10 @@ public class MatActivityController {
     private MatActivityService matActivityService;
     @Autowired
     private StoreService storeService;
+    @Autowired
+    private BtnCopywritingService btnCopywritingService;
+    @Autowired
+    private RewardActContentService rewardActContentService;
 
     @ResponseBody
     @RequestMapping(path = "findActivityPage")
@@ -63,7 +72,7 @@ public class MatActivityController {
 
     @ResponseBody
     @RequestMapping(path = "updateActivity")
-    public JSONObject updateActivity(HttpServletRequest request, HttpServletResponse response, MatActivityVO activity, String btnCopywritingJson){
+    public JSONObject updateActivity(HttpServletRequest request, HttpServletResponse response, MatActivityVO activity, String btnCopywritingJson, String rewardActContentJson, Integer rewardNum){
         UserInfoEntity user = ApplicationSessionFactory.getUser(request, response);
         String storeId = storeService.getStoreIdByCurrentUser(user.getUserId());
         if(storeId == null){
@@ -74,7 +83,7 @@ public class MatActivityController {
         if(storeEntity != null){
             activity.setAppInfoId(storeEntity.getAppInfoId());
         }
-        return matActivityService.updateActivity(activity, btnCopywritingJson, user.getUserId());
+        return matActivityService.updateActivity(activity, btnCopywritingJson, rewardActContentJson, rewardNum, user.getUserId());
     }
 
     @ResponseBody
@@ -86,6 +95,29 @@ public class MatActivityController {
             return JSONUtil.putMsg(false, "109", "不是门店管理员");
         }
         return matActivityService.getNextActivityStartDate(storeId);
+    }
+
+    @ResponseBody
+    @RequestMapping(path = "getMatActivityAllInfo")
+    public JSONObject getMatActivityAllInfo(HttpServletRequest request, HttpServletResponse response, String actId){
+        UserInfoEntity user = ApplicationSessionFactory.getUser(request, response);
+        String storeId = storeService.getStoreIdByCurrentUser(user.getUserId());
+        if(storeId == null){
+            return JSONUtil.putMsg(false, "109", "不是门店管理员");
+        }
+        MatActivityVO matActivityVO = matActivityService.getMatActivityAllInfo(actId, storeId);
+        if(matActivityVO == null){
+            return JSONUtil.putMsg(false, "101", "活动不存在");
+        }
+        JSONObject result = JSONUtil.putMsg(true, "200", "操作成功");
+        result.put("matActivity", matActivityVO);
+
+        Map<String, String> btnMap = btnCopywritingService.findBtnCopyWritingMapByActId(actId);
+        result.put("btnMap", btnMap);
+
+        List<RewardActContentEntity> rewardList = rewardActContentService.findRewardActContentList(actId);
+        result.put("rewardList", rewardList);
+        return result;
     }
 
 }

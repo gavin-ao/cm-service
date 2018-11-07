@@ -14,7 +14,7 @@ public class RewardActCommandEntity {
     /** 奖励的口令 **/
     private String command;
     /** 奖励口令类型，1 - 发起人奖励，2 - 参与人奖励 **/
-    private String commandType;
+    private Integer commandType;
     /** 活动id **/
     private String actId;
     /** 活动用户id **/
@@ -25,6 +25,8 @@ public class RewardActCommandEntity {
     private String appInfoId;
     /** 是否已使用  1 - 已使用 ， 0 - 未使用 **/
     private Integer used;
+    /** 是否已经核销使用 1 - 已使用 ， 0 - 未使用 **/
+    private Integer beingUsed;
     /** 口令创建时间 **/
     private Date createAt;
 
@@ -44,11 +46,11 @@ public class RewardActCommandEntity {
         this.command = command;
     }
 
-    public String getCommandType() {
+    public Integer getCommandType() {
         return commandType;
     }
 
-    public void setCommandType(String commandType) {
+    public void setCommandType(Integer commandType) {
         this.commandType = commandType;
     }
 
@@ -90,6 +92,14 @@ public class RewardActCommandEntity {
 
     public void setUsed(Integer used) {
         this.used = used;
+    }
+
+    public Integer getBeingUsed() {
+        return beingUsed;
+    }
+
+    public void setBeingUsed(Integer beingUsed) {
+        this.beingUsed = beingUsed;
     }
 
     public Date getCreateAt() {
