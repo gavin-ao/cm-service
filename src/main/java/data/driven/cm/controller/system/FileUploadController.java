@@ -6,6 +6,7 @@ import data.driven.cm.common.ApplicationSessionFactory;
 import data.driven.cm.entity.system.PictureEntity;
 import data.driven.cm.entity.user.UserInfoEntity;
 import data.driven.cm.util.FileUtil;
+import data.driven.cm.util.JSONUtil;
 import data.driven.cm.util.UUIDUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -95,6 +96,12 @@ public class FileUploadController {
     @ResponseBody
     @RequestMapping(path = "/pictureUpload")
     public JSONObject pictureUpload(HttpServletRequest request, HttpServletResponse response, String pictureJson, String pictureName) {
+        if(pictureJson == null || pictureName == null){
+            return JSONUtil.putMsg(false, "101", "参数为空");
+        }
+        if(pictureName.indexOf(".") < 0){
+            return JSONUtil.putMsg(false, "102", "文件无后缀");
+        }
         UserInfoEntity user = ApplicationSessionFactory.getUser(request, response);
         JSONObject result = new JSONObject();
         Date date = new Date();
@@ -106,7 +113,8 @@ public class FileUploadController {
         pictureEntity.setCreateAt(date);
         try {
             fileName = pictureEntity.getPictureId() + fileName.substring(fileName.lastIndexOf("."));
-            JSONObject uploadResult = FileUtil.uploadFile(decoder.decode(pictureJson), fileName);
+            String[] pictureJsonArr = pictureJson.split(",");
+            JSONObject uploadResult = FileUtil.uploadFile(decoder.decode(pictureJsonArr[pictureJsonArr.length - 1]), fileName);
             pictureEntity.setFilePath(uploadResult.getString("relativePath"));
             pictureService.insertPicture(pictureEntity);
             result.put("pictureId", pictureEntity.getPictureId());
