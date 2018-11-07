@@ -25,4 +25,9 @@ public class PictureServiceImpl implements PictureService {
         String valueSql = "(:picture_id,:file_path,:real_name,:creator,:create_at)";
         jdbcBaseDao.executeBachOneSql(sql, valueSql, list);
     }
+
+    @Override
+    public void insertPicture(PictureEntity pictureEntity) {
+        jdbcBaseDao.insert(pictureEntity, "sys_picture");
+    }
 }

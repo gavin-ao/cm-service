@@ -16,4 +16,10 @@ public interface PictureService {
      * @param list
      */
     public void insertManyPicture(List<PictureEntity> list);
+
+    /**
+     * 插入数据
+     * @param pictureEntity
+     */
+    public void insertPicture(PictureEntity pictureEntity);
 }
