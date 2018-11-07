@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,6 +35,9 @@ import java.util.stream.Collectors;
 @RequestMapping(path = "/system/file")
 public class FileUploadController {
     private static final Logger logger = LoggerFactory.getLogger(FileUploadController.class);
+
+    private Base64.Encoder encoder = Base64.getEncoder();
+    private Base64.Decoder decoder = Base64.getDecoder();
 
     @Autowired
     private PictureService pictureService;
@@ -50,8 +54,8 @@ public class FileUploadController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(path = "/pictureUpload", method = RequestMethod.POST)
-    public JSONObject pictureUpload(HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping(path = "/upload", method = RequestMethod.POST)
+    public JSONObject upload(HttpServletRequest request, HttpServletResponse response) {
         UserInfoEntity user = ApplicationSessionFactory.getUser(request, response);
         JSONObject result = new JSONObject();
         MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) request;
@@ -80,6 +84,37 @@ public class FileUploadController {
             result.put("idList", pictureList.stream().collect(Collectors.mapping(o -> o.getPictureId(), Collectors.toList())));
         }
         result.put("success", true);
+        return result;
+    }
+
+    /**
+     * 图片上传
+     * @param request
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(path = "/pictureUpload")
+    public JSONObject pictureUpload(HttpServletRequest request, HttpServletResponse response, String pictureJson, String pictureName) {
+        UserInfoEntity user = ApplicationSessionFactory.getUser(request, response);
+        JSONObject result = new JSONObject();
+        Date date = new Date();
+        PictureEntity pictureEntity = new PictureEntity();
+        String fileName = pictureName;
+        pictureEntity.setPictureId(UUIDUtil.getUUID());
+        pictureEntity.setRealName(fileName);
+        pictureEntity.setCreator(user.getUserId());
+        pictureEntity.setCreateAt(date);
+        try {
+            fileName = pictureEntity.getPictureId() + fileName.substring(fileName.lastIndexOf("."));
+            JSONObject uploadResult = FileUtil.uploadFile(decoder.decode(pictureJson), fileName);
+            pictureEntity.setFilePath(uploadResult.getString("relativePath"));
+            pictureService.insertPicture(pictureEntity);
+            result.put("pictureId", pictureEntity.getPictureId());
+            result.put("success", true);
+        } catch (Exception e) {
+            result.put("success", false);
+            logger.error(e.getMessage(), e);
+        }
         return result;
     }
 
