@@ -51,6 +51,11 @@ public class WechatTotalController {
         ModelAndView mv = new ModelAndView("/personal-center/index");
         return mv;
     }
+    @RequestMapping(value = "/materialDownloading")
+    public ModelAndView materialDownloading(){
+        ModelAndView mv = new ModelAndView("/material-downloading/index");
+        return mv;
+    }
     /**
      * 统计上面五个指标
      * @param appInfoId

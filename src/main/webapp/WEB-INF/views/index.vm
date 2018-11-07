@@ -20,6 +20,7 @@
 <body>
 <div style="margin: 0;background-color: #ccc;height: 100%;">
     <div id="page-wrapper" class="person-edit-form" style="height: 100%;">
+        <input type="hidden" datastoreid="" id="dataStoreId">
         <div class="main-page" style="display: flex;height: 100%;">
             #parse("../decorators/frame/left.vm")
             #parse("../decorators/frame/bottom.vm")

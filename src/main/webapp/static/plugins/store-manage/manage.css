@@ -79,8 +79,9 @@
 
 .dataTables {
     background-color: #fff;
-    height: calc(100% - 75px);
+    height: calc(100% - 85px);
     overflow-y: auto;
+    margin-top: 10px;
 }
 .dataTables>div{
     width: calc(100% - 15px);

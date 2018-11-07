@@ -52,7 +52,7 @@
                 </div>
                 <div>
                     <span class="text">密码:</span>
-                    <input type="text" name="storePassword" class="form-control" onblur="exitNameNull(this)"/>
+                    <input type="password" name="storePassword" class="form-control" onblur="exitNameNull(this)"/>
                 </div>
 
             ##                        <div>

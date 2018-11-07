@@ -1,8 +1,8 @@
 <link href="/static/service/css/bootstrap.css" rel='stylesheet' type='text/css'/>
-##<link rel="stylesheet" href="/static/plugins/dataTables/datatables.css"/>
+<link rel="stylesheet" href="/static/plugins/dataTables/datatables.css"/>
 ##<link rel="stylesheet"  href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"/>
 
-<link href="https://cdn.bootcss.com/datatables/1.10.16/css/dataTables.bootstrap.min.css" rel="stylesheet">
+##<link href="https://cdn.bootcss.com/datatables/1.10.16/css/dataTables.bootstrap.min.css" rel="stylesheet">
 ##<link href="/static/service/css/style.css?v=20170703154841" rel='stylesheet' type='text/css'/>
 <link href="/static/plugins/css/commonStyle.css" rel="stylesheet">
 <link rel="stylesheet" href="/static/plugins/css/jquery-confirm.css" type="text/css"/>
@@ -33,9 +33,12 @@
                         门店
                     </div>
                     <ul class="nav" id="main-menu">
-                        <li name="storeManage" class="bgStyle">门店管理</li>
+                        #if($storeSuperAdmin)
+                            <li name="storeManage" class="bgStyle">门店管理</li>
+                        #end
                         <li name="activityManage">活动管理</li>
                         <li name="awardCancel">奖品核销</li>
+                        <li name="materialDownloading">物料下载</li>
                     </ul>
 
                 </li>
