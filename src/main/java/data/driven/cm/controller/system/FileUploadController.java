@@ -95,19 +95,16 @@ public class FileUploadController {
      */
     @ResponseBody
     @RequestMapping(path = "/pictureUpload")
-    public JSONObject pictureUpload(HttpServletRequest request, HttpServletResponse response, String pictureJson, String pictureName) {
-        if(pictureJson == null || pictureName == null){
+    public JSONObject pictureUpload(HttpServletRequest request, HttpServletResponse response, String pictureJson) {
+        if(pictureJson == null){
             return JSONUtil.putMsg(false, "101", "参数为空");
-        }
-        if(pictureName.indexOf(".") < 0){
-            return JSONUtil.putMsg(false, "102", "文件无后缀");
         }
         UserInfoEntity user = ApplicationSessionFactory.getUser(request, response);
         JSONObject result = new JSONObject();
         Date date = new Date();
         PictureEntity pictureEntity = new PictureEntity();
-        String fileName = pictureName;
-        pictureEntity.setPictureId(UUIDUtil.getUUID());
+        String fileName = UUIDUtil.getUUID();
+        pictureEntity.setPictureId(fileName);
         pictureEntity.setRealName(fileName);
         pictureEntity.setCreator(user.getUserId());
         pictureEntity.setCreateAt(date);
