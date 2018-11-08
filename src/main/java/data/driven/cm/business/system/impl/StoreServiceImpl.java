@@ -117,8 +117,9 @@ public class StoreServiceImpl implements StoreService {
             }
             storeEntity.setManager(userInfoEntity.getUserId());
             jdbcBaseDao.insert(storeEntity, "sys_store");
+            return JSONUtil.putMsg(true, "200", "门店新增成功");
         }
-        return JSONUtil.putMsg(true, "200", "门店新增成功");
+        return JSONUtil.putMsg(false, "102", "二维码创建失败");
     }
 
     /**
@@ -140,7 +141,7 @@ public class StoreServiceImpl implements StoreService {
         String fileUUid = UUIDUtil.getUUID();
         String fileName = folderPath + fileUUid;
         try{
-            String sql = "insert into sys_picture(picture_id,file_path,real_name,wechat_user,create_at) values(?,?,?,?,?)";
+            String sql = "insert into sys_picture(picture_id,file_path,real_name,creator,create_at) values(?,?,?,?,?)";
             String pictureId = UUIDUtil.getUUID();
             jdbcBaseDao.executeUpdate(sql, pictureId, fileName + "." + QRCodeUtil.fileType, fileUUid + "." + QRCodeUtil.fileType, storeEntity.getUserId(), date);
             QRCodeUtil.createQRCode(context, fileName);
