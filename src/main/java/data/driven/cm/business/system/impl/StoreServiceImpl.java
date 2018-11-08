@@ -131,7 +131,8 @@ public class StoreServiceImpl implements StoreService {
      */
     private String createStoreQRcode(StoreEntity storeEntity, Date date, String context) {
         SimpleDateFormat sdf = DateFormatUtil.getLocal("yyyyMM");
-        String folderPath = Constant.FILE_UPLOAD_PATH + sdf.format(date) + File.separator + storeQrcodeFolder;
+        String tempFolderPath = sdf.format(date) + File.separator + storeQrcodeFolder;
+        String folderPath = Constant.FILE_UPLOAD_PATH + tempFolderPath;
         //判断文件夹不存在则新增
         Path path = Paths.get(folderPath);
         File file = path.toFile();
@@ -143,7 +144,7 @@ public class StoreServiceImpl implements StoreService {
         try{
             String sql = "insert into sys_picture(picture_id,file_path,real_name,creator,create_at) values(?,?,?,?,?)";
             String pictureId = UUIDUtil.getUUID();
-            jdbcBaseDao.executeUpdate(sql, pictureId, fileName + "." + QRCodeUtil.fileType, fileUUid + "." + QRCodeUtil.fileType, storeEntity.getUserId(), date);
+            jdbcBaseDao.executeUpdate(sql, pictureId, tempFolderPath + fileUUid + "." + QRCodeUtil.fileType, fileUUid + "." + QRCodeUtil.fileType, storeEntity.getUserId(), date);
             QRCodeUtil.createQRCode(context, fileName);
             return pictureId;
         }catch (Exception e){
