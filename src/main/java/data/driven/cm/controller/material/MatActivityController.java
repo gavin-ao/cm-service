@@ -68,8 +68,8 @@ public class MatActivityController {
         pageBean.setPageSize(pageSize);
 
         Page<MatActivityVO> page = matActivityService.findActivityPage(keyword, storeId, pageBean);
-        Date date = DateFormatUtil.convertDate(new Date());
         if(page != null && page.getResult() != null && page.getResult().size() > 0){
+            Date date = DateFormatUtil.convertDate(new Date());
             //判断活动状态
             for (MatActivityVO matActivityVO : page.getResult()){
                 if(matActivityVO.getStartAt() == null || matActivityVO.getEndAt() == null){
