@@ -102,7 +102,7 @@ table tr th ,table tr td{
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    background-color: rgba(22, 155, 213, 1);
+    background-color: rgba(22, 155, 213, 1);;
 }
 #storeQRCode{
     display: none;

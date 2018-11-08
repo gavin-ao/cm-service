@@ -66,11 +66,24 @@
                     </button>
                 </div>
             </form>
+            <form id="formsearch1" style="display: none;">
+                <input type="hidden" data-storeid="" id="dataStoreId">
+                <div>
+                    <span class="text">密码:</span>
+                    <input type="password" name="storePassword1" class="form-control" onblur="exitNameNull(this)"/>
+                </div>
+                <div class="modal-footer" style="text-align: center;border: 0px;">
+                    <button type="button" class="btn btn-primary" id="submitBtn1">提 交</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" id="closeBtn1">取 消
+                    </button>
+                </div>
+            </form>
             <div id="storeQRCode" style="width: 80%;margin: 0 auto;">
                 <div class="code">
                     <span class="text">门店二维码:</span>
-                    <img src="/static/service/images/login/backgroung.png" id="QRCodeImg" alt=""
-                         style="vertical-align: middle;width: 200px;height: 200px;">
+                    <div style="display: inline-block;width: 200px;height: 200px;vertical-align: middle;">
+                        <img src="/static/service/images/login/backgroung.png" id="QRCodeImg" alt="二维码加载失败" style="width: 200px;height: 200px;">
+                    </div>
                     <div id="downloadQRCode">下载</div>
                 </div>
 

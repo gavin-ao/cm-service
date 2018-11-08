@@ -10,6 +10,7 @@ var wholeStartTime, wholeEndTime, startDates, endDates;
     // });
 //表格数据
     tablesData();
+    $("#manageAdd").hide();
     $("#addAccount").off("click");
     $("#addAccount").on("click", function () {
         $("#manageAdd").show();
@@ -23,6 +24,7 @@ var wholeStartTime, wholeEndTime, startDates, endDates;
     $("#submitBtn").off("click");
     $("#submitBtn").on("click", function () {
         var params = decodeURIComponent($("#formsearch").serialize())
+        console.log(params)
         var dataPars = params.split("&");
         var dataObjArr = []
         for (var i = 0; i < dataPars.length; i++) {
@@ -30,24 +32,26 @@ var wholeStartTime, wholeEndTime, startDates, endDates;
             dataObjArr[par[0]] = par[1];
         }
         console.log(dataObjArr)
-        var src = $("#show").attr("src")
+        var src = $("#show").attr("src");
         if(src){
             $.ajax({
                 type: "post",
                 url: "/system/file/pictureUpload",
                 cache: false,  //禁用缓存
-                data: JSON.stringify({pictureJson: src,pictureName:"posterImage"}),  //传入组装的参数?
-                headers: {"Content-type": "text/plain;charset=utf-8;"},
+                data: {pictureJson: src},  //传入组装的参数?
+                // headers: {"Content-type": "text/plain;charset=utf-8;"},
                 dataType: "json",
                 success: function (result) {
                     console.log(result)
                     if (result.success) {
-
+                        if(result.idList[0]){
+                            addActivity(result.idList[0],dataObjArr);
+                        }
                     }
                 }
             })
         }else{
-
+            $.MsgBox.Alert("温馨提示", "活动海报不能为空。");
         }
 
     });
@@ -272,7 +276,7 @@ function tablesData() {
                 }
             },
             {
-                "aTargets": [5],
+                "aTargets": [6],
                 "mRender": function (data, type, full, meta) {
                     // console.log(meta);
                     // console.log(data);
@@ -393,18 +397,18 @@ function fieldLength(tar) {
         case 'invitingButton':
             judgmenLength(titleValue, 36);
             break;
-        case 'helpButton':
-            judgmenLength(titleValue, 26);
-            break;
-        case 'boosterButton':
-            judgmenLength(titleValue, 26);
-            break;
-        case 'fullHelpButton':
-            judgmenLength(titleValue, 26);
-            break;
-        case 'partsActivity':
-            judgmenLength(titleValue, 18);
-            break;
+        // case 'helpButton':
+        //     judgmenLength(titleValue, 26);
+        //     break;
+        // case 'boosterButton':
+        //     judgmenLength(titleValue, 26);
+        //     break;
+        // case 'fullHelpButton':
+        //     judgmenLength(titleValue, 26);
+        //     break;
+        // case 'partsActivity':
+        //     judgmenLength(titleValue, 18);
+        //     break;
         case 'posterCopywriting':
             judgmenLength(titleValue, 72);
             break;
@@ -428,9 +432,10 @@ function changepic() {
     console.log(f)
     if (f) {
         fileSize = f.size;
+
         var size = fileSize / 1024;
-        if (size > 300) {
-            alert("文件大小不能大于300Kb！");
+        if (size > 200) {
+            alert("文件大小不能大于200Kb！");
             file.value = "";
             return false;
         } else if (size <= 0) {
@@ -438,9 +443,12 @@ function changepic() {
             file.value = "";
             return false;
         } else {
+            // $('#show').attr("names",f.name);
             reads.onload = function (e) {
                 console.log(this)
+                $("#show").parent().show();
                 document.getElementById('show').src = this.result;
+
                 // $("#selShow").attr("src",this.result);
                 //开启裁剪功能
                 // $('#show ').imgAreaSelect(
@@ -550,6 +558,63 @@ function judgmenLength(text, lens) {
         return false;
     }
 
+}
+
+
+//添加活动
+function addActivity(picId,par) {
+
+    var btnCopywritingJson ={
+        bxt_invite:par.invitingButton,
+        bxt_full:"助力已满，我也要领奖",
+        bxt_help: "给他助力",
+        bxt_alhelp:"已助力，我也要领奖",
+        bxt_continue:"立即邀请",
+        bxt_continue1:"继续邀请",
+        bxt_reward:"领取奖励",
+        bxt_share:"分享",
+        bxt_saveImg:"保存图片"
+    };
+    par.posterCopywriting = '<p style=" font-size: 14px;text-align: center;color: #4A4A4A;margin-bottom: 5px;">'+ par.posterCopywriting+';</p>'
+    par.activityRules = par.activityRules.split("\n");
+    var actRuls = '';
+    for(var i=0;i<par.activityRules.length;i++){
+        actRuls+='<p style="font-size: 13px; line-height: 17px; color: #4A4A4A; margin-top: 5px; font-weight: lighter;"> <span style="display: inline-block;width: 7%; float: left">'+(i+1)+'、</span>'+
+        '<span style="display: inline-block;width: 92%;">'+par.activityRules[i]+'</span> </p>';
+    }
+
+    var activity = {
+        actName:par.storeTitle,
+        pictureId:picId,
+        actReplay:'',
+        actTitle:par.storeTitle,
+        actShareTitle:par.shareTitle,
+        actShareCopywriting:'',
+        actRule:actRuls,
+        exchangeRule:'',
+        partakeNum:par.helpNumber,
+        rewardUrl:'',
+        startAt:par.startTimes,
+        endAt:par.endTimes
+    };
+    $.ajax({
+        type: "post",
+        url: "/mat/activity/updateActivity",
+        cache: false,  //禁用缓存
+        data: {activity: activity,btnCopywritingJson:JSON.stringify(btnCopywritingJson)},  //传入组装的参数?
+        // headers: {"Content-type": "text/plain;charset=utf-8;"},
+        dataType: "json",
+        success: function (result) {
+            console.log(result)
+            if (result.success) {
+                var table = $('#example').DataTable();
+                $("#manageAdd").hide();
+                table.draw(false)
+            }else{
+                $.MsgBox.Alert("温馨提示", "添加活动失败。");
+            }
+        }
+    })
 }
 
 

@@ -170,7 +170,7 @@
 table tr th ,table tr td{
     text-align: center;
 }
-.contain_main .addAccount {
+ .addAccount {
     width: 100px;
     height: 30px;
     line-height: 30px;
@@ -181,3 +181,11 @@ table tr th ,table tr td{
     border-radius: 5px;
     cursor: pointer;
 }
+ .modal-footer>button{
+     width: 33%;
+     height: 40px;
+ }
+.modal-footer>button.btn-primary{
+     background-color: rgba(22, 155, 213, 1);
+    border: 0px;
+ }
