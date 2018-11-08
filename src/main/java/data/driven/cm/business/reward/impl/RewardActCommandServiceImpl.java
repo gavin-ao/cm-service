@@ -1,16 +1,25 @@
 package data.driven.cm.business.reward.impl;
 
 import data.driven.cm.business.reward.RewardActCommandService;
+import data.driven.cm.business.system.PictureService;
+import data.driven.cm.common.Constant;
 import data.driven.cm.component.Page;
 import data.driven.cm.component.PageBean;
 import data.driven.cm.dao.JDBCBaseDao;
 import data.driven.cm.entity.reward.RewardActCommandEntity;
+import data.driven.cm.entity.system.PictureEntity;
 import data.driven.cm.entity.wechat.WechatHelpInfoEntity;
+import data.driven.cm.util.DateFormatUtil;
+import data.driven.cm.util.QRCodeUtil;
 import data.driven.cm.util.UUIDUtil;
 import data.driven.cm.vo.material.MatActivityVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -25,6 +34,8 @@ public class RewardActCommandServiceImpl implements RewardActCommandService {
     private static final int maxCount = 50000;
     @Autowired
     private JDBCBaseDao jdbcBaseDao;
+    @Autowired
+    private PictureService pictureService;
 
     @Override
     public RewardActCommandEntity getNextRewardActCommandByActId(String actId, Integer commandType) {
@@ -45,6 +56,26 @@ public class RewardActCommandServiceImpl implements RewardActCommandService {
         }
         return null;
     }
+
+    @Override
+    public String getCommandQrcodeByHelpId(String helpId, String wechatUserId) {
+        String sql = "select p.file_path,m.map_id from reward_act_command_help_mapping m left join sys_picture p on p.picture_id = m.picture_id where m.help_id = ? and m.wechat_user_id = ? limit 1";
+        List<Map<String, Object>> list = jdbcBaseDao.queryMapList(sql, helpId, wechatUserId);
+        if(list != null && list.size() > 0){
+            Map<String, Object> map = list.get(0);
+            if(map.get("file_path") == null){
+                String mapId = map.get("map_id").toString();
+                PictureEntity pictureEntity = insertPicture(wechatUserId, mapId);
+                String updateSql = "update reward_act_command_help_mapping set picture_id = ? where map_id = ?";
+                jdbcBaseDao.executeUpdate(sql, pictureEntity.getPictureId(), mapId);
+                return pictureEntity.getFilePath();
+            }else{
+                return map.get("file_path").toString();
+            }
+        }
+        return null;
+    }
+
     @Override
     public void updateRewardActCommandUsed(String commandId){
         String sql = "update reward_act_command set used = 1 where command_id = ?";
@@ -53,10 +84,43 @@ public class RewardActCommandServiceImpl implements RewardActCommandService {
 
     @Override
     public void insertRewardActCommandHelpMapping(RewardActCommandEntity command, WechatHelpInfoEntity helpInfoEntity) {
-        String mapId = UUIDUtil.getUUID();
         Date createAt = new Date();
         String sql = "insert into reward_act_command_help_mapping(map_id,help_id,command_id,act_id,store_id,app_info_id,wechat_user_id,create_at) values(?,?,?,?,?,?,?,?)";
-        jdbcBaseDao.executeUpdate(sql, mapId, helpInfoEntity.getHelpId(), command.getCommandId(), helpInfoEntity.getActId(), helpInfoEntity.getStoreId(), helpInfoEntity.getAppInfoId(), helpInfoEntity.getWechatUserId(), createAt);
+        jdbcBaseDao.executeUpdate(sql, UUIDUtil.getUUID(), helpInfoEntity.getHelpId(), command.getCommandId(), helpInfoEntity.getActId(), helpInfoEntity.getStoreId(), helpInfoEntity.getAppInfoId(), helpInfoEntity.getWechatUserId(), createAt);
+    }
+
+    /**
+     * 根据mapId生成二维码并存到数据库中
+     * @param creator
+     * @param mapId
+     * @return
+     */
+    private PictureEntity insertPicture(String creator, String mapId){
+        Date date = new Date();
+        SimpleDateFormat sdf = DateFormatUtil.getLocal("yyyyMM");
+        String tempFolderPath = sdf.format(date) + File.separator + Constant.WXQRCODE_TEMP_FILE_FOLDER_REWARD;
+        String folderPath = Constant.FILE_UPLOAD_PATH + tempFolderPath;
+        //判断文件夹不存在则新增
+        Path path = Paths.get(folderPath);
+        File file = path.toFile();
+        if(!file.exists()){
+            file.mkdirs();
+        }
+        String fileUUid = UUIDUtil.getUUID();
+        String fileName = folderPath + fileUUid;
+        try{
+            QRCodeUtil.createQRCode(mapId, fileName);
+        }catch (Exception e){
+            return null;
+        }
+        PictureEntity pictureEntity = new PictureEntity();
+        pictureEntity.setPictureId(UUIDUtil.getUUID());
+        pictureEntity.setFilePath(tempFolderPath + fileUUid + QRCodeUtil.fileType);
+        pictureEntity.setRealName(fileUUid + QRCodeUtil.fileType);
+        pictureEntity.setCreator(creator);
+        pictureEntity.setCreateAt(date);
+        pictureService.insertPicture(pictureEntity);
+        return pictureEntity;
     }
 
     @Override

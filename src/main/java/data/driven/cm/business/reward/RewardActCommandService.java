@@ -30,6 +30,14 @@ public interface RewardActCommandService {
     public String getCommandByHelpId(String helpId, String wechatUserId);
 
     /**
+     * 根据helpId获取奖励二维码路径
+     * @param helpId
+     * @param wechatUserId
+     * @return
+     */
+    public String getCommandQrcodeByHelpId(String helpId, String wechatUserId);
+
+    /**
      * 将奖励口令状态修改为已使用
      * @param commandId
      */

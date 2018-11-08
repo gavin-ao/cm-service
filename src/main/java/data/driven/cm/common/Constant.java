@@ -13,6 +13,8 @@ public class Constant {
     public static String FILE_UPLOAD_PATH;
     /** 微信二维码生成临时目录 **/
     public static String WXQRCODE_TEMP_FILE_FOLDER = "tempwxqrcode/";
+    /** 微信领取奖励二维码生成临时目录 **/
+    public static String WXQRCODE_TEMP_FILE_FOLDER_REWARD = "rewardqrcode/";
     /** 静态资源访问路径 **/
     public static String STATIC_FILE_PATH = "/static/file/";
     public static final String SESSIONID_COOKIE_NAME = "SESSIONID";
