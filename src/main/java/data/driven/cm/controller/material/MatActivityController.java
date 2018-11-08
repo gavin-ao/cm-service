@@ -6,6 +6,7 @@ import data.driven.cm.business.material.MatActivityService;
 import data.driven.cm.business.reward.RewardActContentService;
 import data.driven.cm.business.system.StoreService;
 import data.driven.cm.common.ApplicationSessionFactory;
+import data.driven.cm.common.Constant;
 import data.driven.cm.component.Page;
 import data.driven.cm.component.PageBean;
 import data.driven.cm.entity.reward.RewardActContentEntity;
@@ -109,6 +110,7 @@ public class MatActivityController {
         if(matActivityVO == null){
             return JSONUtil.putMsg(false, "101", "活动不存在");
         }
+        matActivityVO.setFilePath(Constant.STATIC_FILE_PATH + matActivityVO.getFilePath());
         JSONObject result = JSONUtil.putMsg(true, "200", "操作成功");
         result.put("matActivity", matActivityVO);
 
