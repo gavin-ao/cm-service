@@ -117,7 +117,7 @@ public class MatActivityServiceImpl implements MatActivityService{
 
     @Override
     public Page<MatActivityVO> findActivityPage(String keyword, String storeId, PageBean pageBean) {
-        String sql = "select ma.act_id,ma.store_id,ma.app_info_id,ma.act_type,ma.act_name,ma.act_introduce,ma.partake_num from mat_activity ma";
+        String sql = "select ma.act_id,ma.store_id,ma.app_info_id,ma.act_type,ma.act_name,ma.act_introduce,ma.act_title,ma.start_at,ma.end_at from mat_activity ma";
         StringBuffer where = new StringBuffer();
         List<Object> paramList = new ArrayList<Object>();
         if(keyword != null){

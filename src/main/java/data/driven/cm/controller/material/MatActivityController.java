@@ -12,6 +12,7 @@ import data.driven.cm.component.PageBean;
 import data.driven.cm.entity.reward.RewardActContentEntity;
 import data.driven.cm.entity.system.StoreEntity;
 import data.driven.cm.entity.user.UserInfoEntity;
+import data.driven.cm.util.DateFormatUtil;
 import data.driven.cm.util.JSONUtil;
 import data.driven.cm.vo.material.MatActivityVO;
 import org.slf4j.Logger;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -66,6 +68,27 @@ public class MatActivityController {
         pageBean.setPageSize(pageSize);
 
         Page<MatActivityVO> page = matActivityService.findActivityPage(keyword, storeId, pageBean);
+        Date date = DateFormatUtil.convertDate(new Date());
+        if(page != null && page.getResult() != null && page.getResult().size() > 0){
+            //判断活动状态
+            for (MatActivityVO matActivityVO : page.getResult()){
+                if(matActivityVO.getStartAt() == null || matActivityVO.getEndAt() == null){
+                    continue;
+                }
+                int stats = 0;
+                if(matActivityVO.getStartAt().after(date)){
+                    stats = 0;
+                }else{
+                    if(matActivityVO.getEndAt().before(date)){
+                        stats = 2;
+                    }else{
+                        stats = 1;
+                    }
+                }
+                matActivityVO.setStatus(stats);
+            }
+        }
+
         result.put("success", true);
         result.put("page", page);
         return result;

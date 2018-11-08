@@ -21,7 +21,7 @@ public class Page<T> {
         this.pageBean = pageBean;
     }
 
-    public List getResult()
+    public List<T> getResult()
     {
         return this.result;
     }
