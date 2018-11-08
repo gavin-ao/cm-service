@@ -35,9 +35,9 @@
                                accept="image/gif,image/jpeg,image/jpg,image/png,image/svg" name="uploadPicture"
                                value="上传图片" onchange="changepic(this)"/>
                     </a>
-##                    <span style="display: inline-block;">
-                                <img src="" id="show" height="200" style="display: none;">
-##                            </span>
+                    <p  style="display: none;width: 100%;text-align: center;">
+                                <img src="" id="show" height="200">
+                            </p>
                 </p>
                 <p>
                     <span class="text">邀请按钮文案:</span>
@@ -45,40 +45,40 @@
                         <input type="text" name="invitingButton" class="form-control" onblur="fieldLength(this)" placeholder="简单概括活动内容，18个字以内"/>
                     </a>
                 </p>
-                <p>
-                    <span class="text">助力按钮:</span>
-                    <a class="anchorss" >
-                        <input type="text" name="helpButton" class="form-control" onblur="fieldLength(this)"/>
-                    </a>
-                </p>
-                <p>
-                    <span class="text">已助力按钮:</span>
-                    <a class="anchorss">
-                        <input type="text" name="boosterButton" class="form-control" onblur="fieldLength(this)"/>
-                    </a>
-                </p>
-                <p>
-                    <span class="text">助力已满按钮:</span>
-                    <a class="anchorss" >
-                        <input type="text" name="fullHelpButton" class="form-control" onblur="fieldLength(this)"/>
-                    </a>
-                </p>
-                <p>
-                    <span class="text">参加活动按钮:</span>
-                    <a class="anchorss">
-                        <input type="text" name="partsActivity" class="form-control" onblur="fieldLength(this)"/>
-                    </a>
-                </p>
+##                <p>
+##                    <span class="text">助力按钮:</span>
+##                    <a class="anchorss" >
+##                        <input type="text" name="helpButton" class="form-control" onblur="fieldLength(this)"/>
+##                    </a>
+##                </p>
+##                <p>
+##                    <span class="text">已助力按钮:</span>
+##                    <a class="anchorss">
+##                        <input type="text" name="boosterButton" class="form-control" onblur="fieldLength(this)"/>
+##                    </a>
+##                </p>
+##                <p>
+##                    <span class="text">助力已满按钮:</span>
+##                    <a class="anchorss" >
+##                        <input type="text" name="fullHelpButton" class="form-control" onblur="fieldLength(this)"/>
+##                    </a>
+##                </p>
+##                <p>
+##                    <span class="text">参加活动按钮:</span>
+##                    <a class="anchorss">
+##                        <input type="text" name="partsActivity" class="form-control" onblur="fieldLength(this)"/>
+##                    </a>
+##                </p>
                 <p>
                     <span class="text">活动玩法说明:</span>
                     <a class="anchorss">
-                        <input type="text" name="posterCopywriting" class="form-control" placeholder="说明达标条件和奖励，36个字以内"/>
+                        <input type="text" name="posterCopywriting" class="form-control" onblur="fieldLength(this)" placeholder="说明达标条件和奖励，36个字以内"/>
                     </a>
                 </p>
                 <p>
                     <span class="text">活动规则:</span>
                     <a class="anchorss">
-                                <textarea name="" id="" name="activityRules"></textarea>
+                                <textarea id="" name="activityRules"></textarea>
                     </a>
                 </p>
                 <p>
@@ -91,7 +91,7 @@
                 <p>
                     <span class="text">助力目标:</span>
                     <a class="anchorss">
-                        <input type="number" name="helpNumber" min="1" class="form-control"/>
+                        <input type="number" name="helpNumber" min="1" value="1" class="form-control"/>
                     </a>
                 </p>
                 <p>
@@ -112,20 +112,25 @@
                 <p>
                     <span class="text">邀请奖励:</span>
                     <a class="anchorss">
-                        <input type="text" name="shareTitle" class="form-control" onblur="fieldLength(this)" placeholder="自由设置，领取后按设置核销，如:满199减30"/>
+                        <input type="text" name="invitingAwards" class="form-control" placeholder="自由设置，领取后按设置核销，如:满199减30"/>
+                    </a>
+                </p>
+                <p>
+                    <span class="text">邀请奖励数量:</span>
+                    <a class="anchorss">
+                        <input type="number" name="invitingAwardsNum" min="1" class="form-control"/>
                     </a>
                 </p>
                 <p>
                     <span class="text">助力奖励:</span>
                     <a class="anchorss">
-                        <input type="text" name="shareTitle" class="form-control" onblur="fieldLength(this)"placeholder="应比邀请奖励小，以刺激转发，如:满199减10"/>
+                        <input type="text" name="aidReward" class="form-control" placeholder="应比邀请奖励小，以刺激转发，如:满199减10"/>
                     </a>
                 </p>
 
                 <div class="modal-footer" style="text-align: center;border: 0px;">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" id="closeBtn">取 消</button>
                     <button type="button" class="btn btn-primary" id="submitBtn">提 交</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal" id="closeBtn">取 消
-                    </button>
                 </div>
             </form>
         </div>

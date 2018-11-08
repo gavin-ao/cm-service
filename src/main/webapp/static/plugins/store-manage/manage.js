@@ -11,6 +11,8 @@
     // 添加账号
     $("#addAccount").off("click");
     $("#addAccount").on("click", function () {
+        $("#formsearch1").hide();
+        $("#formsearch").show();
         $("#manageAdd").show();
         // $("#storeQRCode").hide();
 
@@ -38,6 +40,7 @@
         console.log(44444)
         $("#manageAdd").hide();
     });
+
     // 提交用户信息
     $("#submitBtn").off("click");
     $("#submitBtn").on("click", function () {
@@ -68,8 +71,8 @@
             type: "post",
             url: "/system/store/addStore",
             cache: false,  //禁用缓存
-            data: JSON.stringify(params),  //传入组装的参数?
-            headers: {"Content-type": "text/plain;charset=utf-8"},
+            data: params,  //传入组装的参数?
+            // headers: {"Content-type": "text/plain;charset=utf-8"},
             dataType: "json",
             success: function (result) {
                 console.log(result)
@@ -81,6 +84,26 @@
         })
         // var rowData = table.row(0).data(dataArr);
         // console.log(table.api())
+
+
+    });
+    // 提交用户信息
+    $("#submitBtn1").off("click");
+    $("#submitBtn1").on("click", function () {
+        var pwd = hex_md5( $("#formsearch1 input[name='storePassword1']").val().trim());
+        $.ajax({
+            type: "post",
+            url: " /system/store/updateStoreManagerPwd",
+            cache: false,  //禁用缓存
+            data: {storeId:  $("#dataStoreId").attr("data-storeid").trim(),pwd:pwd},  //传入组装的参数?
+            dataType: "json",
+            success: function (result) {
+                console.log(result)
+                if (result.success) {
+                    $("#manageAdd").hide();
+                }
+            }
+        })
 
 
     });
@@ -217,8 +240,8 @@ function tablesData() {
                 type: "post",
                 url: "/system/store/findStorePage",
                 cache: false,  //禁用缓存
-                data: JSON.stringify(param),  //传入组装的参数?
-                headers: {"Content-type": "text/plain;charset=utf-8"},
+                data: param,  //传入组装的参数?
+                // headers: {"Content-type": "text/plain;charset=utf-8"},
                 dataType: "json",
                 success: function (result) {
                     console.log(result)
@@ -270,7 +293,7 @@ function tablesData() {
             {"data": "storeName"},
             {"data": "manager"},
             {"data": "appInfoId"},
-            {"data": "createAt"}
+            // {"data": "createAt"}
         ],
         aoColumnDefs: [
             {　　//为每一行数据添加一个checkbox，
@@ -283,8 +306,6 @@ function tablesData() {
             {
                 "aTargets": [8],
                 "mRender": function (data, type, full, meta) {
-                    // console.log(meta);
-                    // console.log(data);
                     return "<button class='modify_btn btn btn-primary' style='padding: 2px 4px;margin-left: 8px;' >修改</button><button class='see_btn btn btn-primary' style='padding: 2px 4px;margin-left: 8px;' >查看</button>";
                 }
             },
@@ -332,31 +353,11 @@ function tablesData() {
     // 初始化修改按钮
     $('#example tbody').on('click', 'button.modify_btn', function (e) {
         e.preventDefault();
-        // var index = $(this).context._DT_RowIndex; //行号
-        // console.log(index)
+        $("#storeQRCode").hide();
         var storeId = $(this).parents('tr').find("td")[0].innerHTML.trim();
-        console.log($(this).parents('tr').find("td")[0].innerHTML.trim())
-        // if (confirm("确定要修改该属性？")) {
-        var table = $('#example').DataTable();
-        var rowData = table.row($(this).parents('tr').context._DT_RowIndex).data();
-        console.log(rowData)
-        $.ajax({
-            type: "post",
-            url: "/system/store/getStoreById",
-            cache: false,  //禁用缓存
-            data: JSON.stringify({storeId: storeId}),  //传入组装的参数?
-            headers: {"Content-type": "text/plain;charset=utf-8"},
-            dataType: "json",
-            success: function (result) {
-                console.log(result)
-                if (result.success) {
-                    if (result.store) {
+        modifyInfos(storeId);
 
-                    }
-                }
-            }
-        })
-        $("#manageAdd").show();
+
 
     });
     // 查看按钮
@@ -370,13 +371,13 @@ function tablesData() {
             type: "post",
             url: "/system/store/getStoreQrCode",
             cache: false,  //禁用缓存
-            data: JSON.stringify({storeId: storeId}),  //传入组装的参数?
-            headers: {"Content-type": "text/plain;charset=utf-8"},
+            data: {storeId: storeId},  //传入组装的参数?
+            // headers: {"Content-type": "text/plain;charset=utf-8"},
             dataType: "json",
             success: function (result) {
                 console.log(result)
                 if (result.success) {
-
+                    $("#QRCodeImg").attr("src",result.filePath)
                 }
             }
         })
@@ -475,5 +476,27 @@ function downloadImg() {
     a.download = 'storeQRCode'                    // 设置a节点的download属性值
     a.href = url;                                   // 将图片的src赋值给a节点的href
     a.dispatchEvent(event)                          // 触发鼠标点击事件
+}
+
+
+//修改信息
+function modifyInfos(id) {
+    $.ajax({
+        type: "post",
+        url: "/system/store/getStoreById",
+        cache: false,  //禁用缓存
+        data: {storeId: id},  //传入组装的参数?
+        dataType: "json",
+        success: function (result) {
+            console.log(result)
+            if (result.success) {
+                if(result.store){
+                    $("#formsearch").hide();
+                    $("#formsearch1").show();
+                    $("#manageAdd").show();
+                }
+            }
+        }
+    })
 }
 
