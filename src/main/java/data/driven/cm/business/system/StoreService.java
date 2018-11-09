@@ -5,6 +5,8 @@ import data.driven.cm.component.Page;
 import data.driven.cm.component.PageBean;
 import data.driven.cm.entity.system.StoreEntity;
 
+import java.util.List;
+
 /**
  * 门店service
  * @author hejinkai
@@ -34,6 +36,14 @@ public interface StoreService {
      * @return
      */
     public Page<StoreEntity> findStorePage(String keyword, String appInfoId, PageBean pageBean);
+
+    /**
+     * 根据小程序id和关键词查询前十个门店
+     * @param keyword
+     * @param appInfoId
+     * @return
+     */
+    public List<StoreEntity> findStoreTopList(String keyword, String appInfoId);
 
     /**
      * 新增store

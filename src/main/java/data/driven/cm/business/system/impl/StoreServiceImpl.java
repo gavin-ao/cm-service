@@ -84,6 +84,26 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
+    public List<StoreEntity> findStoreTopList(String keyword, String appInfoId) {
+        String sql = "select store_id,store_name,store_addr,province,city,country,create_at from sys_store";
+        StringBuffer where = new StringBuffer();
+        List<Object> paramList = new ArrayList<Object>();
+        if(keyword != null){
+            where.append(" and store_name like ?");
+            paramList.add("%" + keyword.trim() + "%");
+        }
+        if(appInfoId != null){
+            where.append(" and app_info_id = ?");
+            paramList.add(appInfoId);
+        }
+        if(where.length() > 0){
+            sql += " where" + where.delete(0,4);
+        }
+        sql += " order by create_at desc,store_id limit 10";
+        return jdbcBaseDao.queryListWithListParam(StoreEntity.class, sql, paramList);
+    }
+
+    @Override
     public JSONObject addStore(StoreEntity storeEntity, String managerName, String pwd) {
         Date date = new Date();
         if(storeEntity == null){

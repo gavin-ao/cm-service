@@ -90,7 +90,7 @@ public class StoreController {
         }
         String filePath = storeService.getStoreQrCode(storeId);
         if(filePath != null){
-            filePath = Constant.FILE_UPLOAD_PATH + filePath;
+            filePath = Constant.STATIC_FILE_PATH + filePath;
         }
         result.put("success", true);
         result.put("filePath", filePath);
