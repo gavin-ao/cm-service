@@ -34,22 +34,32 @@
 
     <div class="code">
         <span class="text">门店二维码:</span>
-        <img src="/static/service/images/login/backgroung.png" id="QRCodeImg" alt=""
-             style="vertical-align: middle;width: 200px;height: 200px;">
+        <div style="display: inline-block;vertical-align: middle;width: 200px;height: 200px;">
+            <img src="/static/service/images/login/backgroung.png" id="QRCodeImg" alt="加载二维码失败"
+                 style="vertical-align: middle;width: 200px;height: 200px;">
+        </div>
+
         <div id="downloadQRCode">下载</div>
     </div>
 
 </div>
 <script>
+
     $.ajax({
         type: "post",
         url: "/system/store/getStoreQrCode",
         cache: false,  //禁用缓存
-        headers: {"Content-type": "text/plain;charset=utf-8"},
+//        headers: {"Content-type": "text/plain;charset=utf-8"},
         dataType: "json",
         success: function (result) {
             console.log(result)
             if (result.success) {
+                if(result.filePath){
+                    $("#QRCodeImg").attr("src",result.filePath);
+                }else{
+                    $("#QRCodeImg").attr("src","");
+                    $.MsgBox.Alert("温馨提示", "该账号没有门店。");
+                }
 
             }
         }

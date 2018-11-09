@@ -167,19 +167,17 @@
 .dataTables>div {
     width: calc(100% - 15px);
 }
-table tr th ,table tr td{
-    text-align: center;
-}
  .addAccount {
-    width: 100px;
-    height: 30px;
-    line-height: 30px;
-    text-align: center;
-    font-size: 16px;
-    color: #219DEF;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    cursor: pointer;
+     width: 120px;
+     height: 40px;
+     line-height: 40px;
+     text-align: center;
+     font-size: 13px;
+     color: #FFF;
+     border: none;
+     border-radius: 5px;
+     cursor: pointer;
+     background-color: rgba(22, 155, 213, 1);
 }
  .modal-footer>button{
      width: 33%;

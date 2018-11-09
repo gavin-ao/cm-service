@@ -40,7 +40,11 @@
         console.log(44444)
         $("#manageAdd").hide();
     });
-
+    $("#closeBtn2").off("click");
+    $("#closeBtn2").on("click", function () {
+        console.log(44444)
+        $("#manageAdd").hide();
+    });
     // 提交用户信息
     $("#submitBtn").off("click");
     $("#submitBtn").on("click", function () {
@@ -60,6 +64,8 @@
         console.log(dataObjArr)
         var params = {};
         params.managerName = dataObjArr.storeUser;
+        params.manager = dataObjArr.manager;
+        params.storePhone = dataObjArr.storePhone;
         params.pwd = hex_md5(dataObjArr.storePassword);
         params.storeName = dataObjArr.storeName;
         params.appInfoId = "5b699c9171c8a90ec8201703";
@@ -67,6 +73,56 @@
         params.province = '北京';
         params.city = '北京';
         params.country = '海淀';
+        if (!params.storeName) {
+            $.MsgBox.Alert("温馨提示", "店铺名称不能为空");
+            // $("#formsearch input[name='storeName']").focus();
+            return false;
+        }
+        if (!params.storeAddr) {
+            $.MsgBox.Alert("温馨提示", "店铺地址不能为空");
+            // $("#formsearch input[name='storeAddress']").focus();
+            return false;
+        }
+        if (!params.manager) {
+            $.MsgBox.Alert("温馨提示", "店长姓名不能为空");
+            // $("#formsearch input[name='manager']").focus();
+            return false;
+        }
+        if (!params.storePhone) {
+            $.MsgBox.Alert("温馨提示", "联系电话不能为空");
+            // $("#formsearch input[name='storePhone']").focus();
+            return false;
+        }else{
+            if(!(/^1\d{10}$/.test(params.storePhone))){
+                $.MsgBox.Alert("温馨提示", "手机号码有误，请重填");
+                // $("#formsearch input[name='storePhone']").focus();
+                return false;
+            }
+        }
+        if (!params.managerName) {
+            $.MsgBox.Alert("温馨提示", "账号不能为空");
+            // $("#formsearch input[name='storeUser']").focus();
+            return false;
+        } else {
+            var reg = /[\u4E00-\u9FA5]|[\uFE30-\uFFA0]/gi;
+            if (reg.test(params.managerName)) {
+                $.MsgBox.Alert("温馨提示", "用户账号不能输入中文");
+                // $("#formsearch input[name='storeUser']").focus();
+                return false;
+            }
+        }
+        if (!(dataObjArr.storePassword.length >= 8 && dataObjArr.storePassword.length <= 20)) {
+            $.MsgBox.Alert("温馨提示", "密码长度在8-20之间");
+            // $("#formsearch input[name='storePassword']").focus();
+            return false;
+        } else {
+            var reg = /^[a-zA-Z0-9]{4,10}$/;
+            if (reg.test(dataObjArr.storePassword) == false) {
+                $.MsgBox.Alert("温馨提示", "密码不能含有非法字符，长度在8-20之间");
+                // $("#formsearch input[name='storePassword']").focus();
+                return false;
+            }
+        }
         $.ajax({
             type: "post",
             url: "/system/store/addStore",
@@ -90,12 +146,27 @@
     // 提交用户信息
     $("#submitBtn1").off("click");
     $("#submitBtn1").on("click", function () {
-        var pwd = hex_md5( $("#formsearch1 input[name='storePassword1']").val().trim());
+        var pas = $("#formsearch1 input[name='storePassword1']").val().trim();
+        var storeid = $("#dataStoreId").attr("data-storeid");
+        console.log(storeid)
+        var pwd = hex_md5(pas);
+        if (!(pas.length >= 8 && pas.length <= 20)) {
+            $.MsgBox.Alert("温馨提示", "密码长度在8-20之间");
+            // $("#formsearch input[name='storePassword1']").focus();
+            return false;
+        } else {
+            var reg = /^[a-zA-Z0-9]{4,10}$/;
+            if (reg.test(pas) == false) {
+                $.MsgBox.Alert("温馨提示", "密码不能含有非法字符，长度在8-20之间");
+                // $("#formsearch input[name='storePassword1']").focus();
+                return false;
+            }
+        }
         $.ajax({
             type: "post",
-            url: " /system/store/updateStoreManagerPwd",
+            url: "/system/store/updateStoreManagerPwd",
             cache: false,  //禁用缓存
-            data: {storeId:  $("#dataStoreId").attr("data-storeid").trim(),pwd:pwd},  //传入组装的参数?
+            data: {storeId: storeid, pwd: pwd},  //传入组装的参数?
             dataType: "json",
             success: function (result) {
                 console.log(result)
@@ -279,6 +350,8 @@ function tablesData() {
                             // $("#dataTables-example_length").find("span").remove();
                             // $("#dataTables-example_length").append(html)
                         }, 200);
+                    } else {
+                        $.MsgBox.Alert("温馨提示", result.msg);
                     }
                     // downloaddata.search.pg.lmt = result.hit;
                 }
@@ -358,7 +431,6 @@ function tablesData() {
         modifyInfos(storeId);
 
 
-
     });
     // 查看按钮
     $('#example tbody').on('click', 'button.see_btn', function (e) {
@@ -377,11 +449,12 @@ function tablesData() {
             success: function (result) {
                 console.log(result)
                 if (result.success) {
-                    $("#QRCodeImg").attr("src",result.filePath)
+                    $("#QRCodeImg").attr("src", result.filePath)
+                    $("#manageAdd").show();
                 }
             }
         })
-        $("#manageAdd").show();
+
 
     });
 }
@@ -490,10 +563,12 @@ function modifyInfos(id) {
         success: function (result) {
             console.log(result)
             if (result.success) {
-                if(result.store){
+                if (result.store) {
                     $("#formsearch").hide();
                     $("#formsearch1").show();
                     $("#manageAdd").show();
+                    $("#dataStoreId").attr("data-storeid", id);
+                    $("#formsearch1 input[name='storePassword1']").val("");
                 }
             }
         }

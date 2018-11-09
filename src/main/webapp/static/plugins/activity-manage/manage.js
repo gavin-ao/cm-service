@@ -11,14 +11,26 @@ var wholeStartTime, wholeEndTime, startDates, endDates;
 //表格数据
     tablesData();
     $("#manageAdd").hide();
+    $("#currentActId").attr("data-curr-actid", "");
     $("#addAccount").off("click");
     $("#addAccount").on("click", function () {
+        $("#show").parent().hide()
+        $("#currentActId").attr("data-curr-actid", "");
+        $("#formsearch input[name='invitingAwardsNum']").parents("p").show();
         $("#manageAdd").show();
+        $("#formsearch>p input").each(function () {
+            $(this).val("")
+        })
+        $("#formsearch>p textarea").each(function () {
+            $(this).val("")
+        })
+        $("input[name='helpNumber']").val(1);
+        $("input[name='invitingAwardsNum']").val(1);
         //获取活动时间
         activTime();
     });
-    $("#closeBtn").off("click");
-    $("#closeBtn").on("click", function () {
+    $(".closeBtn1").off("click");
+    $(".closeBtn1").on("click", function () {
         $("#manageAdd").hide();
     });
     $("#submitBtn").off("click");
@@ -31,9 +43,22 @@ var wholeStartTime, wholeEndTime, startDates, endDates;
             var par = dataPars[i].split("=");
             dataObjArr[par[0]] = par[1];
         }
-        console.log(dataObjArr)
+        console.log(dataObjArr);
+        //校验字段
+        var flag = checkField(dataObjArr);
+        if(dataObjArr.helpNumber<=0){
+            $.MsgBox.Alert("温馨提示", "助力目标人数要大于0");
+            flag = false
+        }
+        if(dataObjArr.invitingAwardsNum<=0){
+            $.MsgBox.Alert("温馨提示", "邀请奖励数量要大于0");
+            flag = false
+        }
+        if(!flag){
+            return false;
+        }
         var src = $("#show").attr("src");
-        if(src){
+        if (src) {
             $.ajax({
                 type: "post",
                 url: "/system/file/pictureUpload",
@@ -44,13 +69,13 @@ var wholeStartTime, wholeEndTime, startDates, endDates;
                 success: function (result) {
                     console.log(result)
                     if (result.success) {
-                        if(result.idList[0]){
-                            addActivity(result.idList[0],dataObjArr);
+                        if (result.pictureId) {
+                            addActivity(result.pictureId, dataObjArr);
                         }
                     }
                 }
             })
-        }else{
+        } else {
             $.MsgBox.Alert("温馨提示", "活动海报不能为空。");
         }
 
@@ -83,7 +108,7 @@ function activTime() {
         type: "post",
         url: "/mat/activity/getNextActivityStartDate",
         cache: false,  //禁用缓存
-        headers: {"Content-type": "text/plain;charset=utf-8"},
+        // headers: {"Content-type": "text/plain;charset=utf-8"},
         dataType: "json",
         success: function (result) {
             console.log(result)
@@ -126,86 +151,7 @@ function tablesData() {
         ajax: function (data, callback, settings) {
             //封装请求参数
             console.log(data)
-            var param = {
-                "search": {
-                    "cdt": {
-                        "op": "and",
-                        "flts": [
-                            {
-                                "op": "range",
-                                "min": 1507601410000,
-                                "max": 1539137410000,
-                                "lf": "created_at"
-                            }
-                        ]
-                    },
-                    "fds": [
-                        {
-                            "fn": "screen_name"
-                        },
-                        {
-                            "fn": "post_title"
-                        },
-                        {
-                            "fn": "text"
-                        },
-                        {
-                            "fn": "page_url"
-                        },
-                        {
-                            "fn": "platform"
-                        },
-                        {
-                            "fn": "created_at"
-                        },
-                        {
-                            "fn": "reposts_count"
-                        },
-                        {
-                            "fn": "comments_count"
-                        },
-                        {
-                            "fn": "praises_count"
-                        },
-                        {
-                            "fn": "interaction_count"
-                        },
-                        {
-                            "fn": "read_count"
-                        },
-                        {
-                            "fn": "brand_machine"
-                        },
-                        {
-                            "fn": "brand_artificial"
-                        },
-                        {
-                            "fn": "topic_artificial"
-                        },
-                        {
-                            "fn": "topic_machine"
-                        },
-                        {
-                            "fn": "article_emotion_machine"
-                        },
-                        {
-                            "fn": "article_emotion_artificial"
-                        }
-                    ],
-                    "pg": {
-                        "sta": data.start,
-                        "lmt": data.length
-                    },
-                    "sorts": [
-                        {
-                            "fn": "created_at",
-                            "ord": "desc"
-                        }
-                    ]
-                },
-                "tableName": 'siemens'
-            };
-            downloaddata = param
+
             param = {
                 "pageNo": Math.floor(data.start / data.length) + 1,
                 "pageSize": data.length
@@ -215,13 +161,12 @@ function tablesData() {
                 type: "post",
                 url: "/mat/activity/findActivityPage",
                 cache: false,  //禁用缓存
-                data: JSON.stringify(param),  //传入组装的参数?
-                headers: {"Content-type": "text/plain;charset=utf-8"},
+                data: param,  //传入组装的参数?
+                // headers: {"Content-type": "text/plain;charset=utf-8"},
                 dataType: "json",
                 success: function (result) {
                     console.log(result)
                     if (result.success) {
-                        downloaddata.search.pg.lmt = result.page.pageBean.totalNum;
                         var arry = ["actId", "actTitle", "startAt", "endAt", "status"];
                         var tabledata = [];
                         for (var i = 0; i < result.page.result.length; i++) {
@@ -254,6 +199,8 @@ function tablesData() {
                             // $("#dataTables-example_length").find("span").remove();
                             // $("#dataTables-example_length").append(html)
                         }, 200);
+                    } else {
+                        $.MsgBox.Alert("温馨提示", result.msg);
                     }
                     // downloaddata.search.pg.lmt = result.hit;
                 }
@@ -265,6 +212,7 @@ function tablesData() {
             {"data": "actTitle"},
             {"data": "startAt"},
             {"data": "endAt"},
+            {"data": "status"},
             {"data": "status"}
         ],
         aoColumnDefs: [
@@ -276,16 +224,36 @@ function tablesData() {
                 }
             },
             {
+                "aTargets": [5],
+                "mRender": function (data, type, full, meta) {
+                    var text='';
+                    if(data==0){
+                        text="未开始"
+                    }else if(data==1){
+                        text="进行中"
+                    }else if(data==2){
+                        text="已结束"
+                    }
+                    return text;
+                }
+            },
+            {
                 "aTargets": [6],
                 "mRender": function (data, type, full, meta) {
                     // console.log(meta);
                     // console.log(data);
-                    return "<button class='modify_btn btn btn-primary' style='padding: 2px 4px;margin-left: 8px;' >修改</button><button class='see_btn btn btn-primary' style='padding: 2px 4px;margin-left: 8px;' >查看</button>";
+                    var text='';
+                    if(data==0){
+                        text="<button class='modify_btn btn btn-primary' style='padding: 2px 4px;margin-left: 8px;' >编辑</button>"
+                    }else if(data==1||data==2){
+                        text="<button class='see_btn btn btn-primary' style='padding: 2px 4px;margin-left: 8px;' >查看</button>"
+                    }
+                    return text;
                 }
             },
             {
                 "bSortable": false,
-                "aTargets": [1, 2, 3, 4, 5]
+                "aTargets": [0, 1, 2, 3, 4, 5, 6]
             }
 
         ],
@@ -329,53 +297,56 @@ function tablesData() {
         e.preventDefault();
         // var index = $(this).context._DT_RowIndex; //行号
         // console.log(index)
-        var storeId = $(this).parents('tr').find("td")[0].innerHTML.trim();
+        var actId = $(this).parents('tr').find("td")[1].innerHTML.trim();
+        $("#currentActId").attr("data-curr-actid", actId);
         console.log($(this).parents('tr').find("td")[0].innerHTML.trim())
-        // if (confirm("确定要修改该属性？")) {
-        var table = $('#example').DataTable();
-        var rowData = table.row($(this).parents('tr').context._DT_RowIndex).data();
-        console.log(rowData)
         $.ajax({
             type: "post",
-            url: "/system/store/getStoreById",
+            url: "/mat/activity/getMatActivityAllInfo",
             cache: false,  //禁用缓存
-            data: JSON.stringify({storeId: storeId}),  //传入组装的参数?
-            headers: {"Content-type": "text/plain;charset=utf-8"},
+            data: {actId: actId},  //传入组装的参数?
+            // headers: {"Content-type": "text/plain;charset=utf-8"},
             dataType: "json",
             success: function (result) {
                 console.log(result)
                 if (result.success) {
-                    if (result.store) {
-
-                    }
+                    $("#formsearch .modal-footer").show();
+                    //获取活动时间
+                    // activTime();
+                    //反补
+                    reverseSupplement(result);
+                    $("#manageAdd").show();
                 }
             }
         })
-        $("#manageAdd").show();
+
 
     });
     // 查看按钮
     $('#example tbody').on('click', 'button.see_btn', function (e) {
         e.preventDefault();
-        $("#formsearch").hide();
-        $("#storeQRCode").show();
-
-        var storeId = $(this).parents('tr').find("td")[0].innerHTML.trim();
+        // var index = $(this).context._DT_RowIndex; //行号
+        // console.log(index)
+        var actId = $(this).parents('tr').find("td")[1].innerHTML.trim();
+        $("#currentActId").attr("data-curr-actid", actId);
+        console.log($(this).parents('tr').find("td")[0].innerHTML.trim())
         $.ajax({
             type: "post",
-            url: "/system/store/getStoreQrCode",
+            url: "/mat/activity/getMatActivityAllInfo",
             cache: false,  //禁用缓存
-            data: JSON.stringify({storeId: storeId}),  //传入组装的参数?
-            headers: {"Content-type": "text/plain;charset=utf-8"},
+            data: {actId: actId},  //传入组装的参数?
+            // headers: {"Content-type": "text/plain;charset=utf-8"},
             dataType: "json",
             success: function (result) {
                 console.log(result)
                 if (result.success) {
-
+                    $("#formsearch .modal-footer").hide();
+                    //反补
+                    reverseSupplement(result);
+                    $("#manageAdd").show();
                 }
             }
         })
-        $("#manageAdd").show();
 
     });
 }
@@ -540,9 +511,10 @@ function currentTime(myDate) {
 }
 
 //判断字数长度 是否符合要求
-function judgmenLength(text, lens) {
+function judgmenLength(text, lens,con) {
     if (text == "") {
-        $.MsgBox.Alert("温馨提示", "内容不能为空。");
+        $.MsgBox.Alert("温馨提示", con+"不能为空");
+        return false;
     }
     var realLength = 0, len = text.length, charCode = -1;
     for (var i = 0; i < len; i++) {
@@ -553,55 +525,71 @@ function judgmenLength(text, lens) {
             realLength += 2;
     }
     console.log(realLength)
-    if (realLength > lens) {
-        $.MsgBox.Alert("温馨提示", "超出字数限制。");
+    if (realLength > lens*2) {
+        $.MsgBox.Alert("温馨提示", con+lens+"个字以内");
         return false;
     }
+    return true;
 
 }
 
 
 //添加活动
-function addActivity(picId,par) {
+function addActivity(picId, par) {
 
-    var btnCopywritingJson ={
-        bxt_invite:par.invitingButton,
-        bxt_full:"助力已满，我也要领奖",
+    var btnCopywritingJson = {
+        bxt_invite: par.invitingButton,
+        bxt_full: "助力已满，我也要领奖",
         bxt_help: "给他助力",
-        bxt_alhelp:"已助力，我也要领奖",
-        bxt_continue:"立即邀请",
-        bxt_continue1:"继续邀请",
-        bxt_reward:"领取奖励",
-        bxt_share:"分享",
-        bxt_saveImg:"保存图片"
+        bxt_alhelp: "已助力，我也要领奖",
+        bxt_continue: "立即邀请",
+        bxt_continue1: "继续邀请",
+        bxt_reward: "领取奖励",
+        bxt_share: "分享",
+        bxt_saveImg: "保存图片"
     };
-    par.posterCopywriting = '<p style=" font-size: 14px;text-align: center;color: #4A4A4A;margin-bottom: 5px;">'+ par.posterCopywriting+';</p>'
-    par.activityRules = par.activityRules.split("\n");
+    // par.posterCopywriting = '<p style=" font-size: 14px;text-align: center;color: #4A4A4A;margin-bottom: 5px;">'+ par.posterCopywriting+';</p>'
+    // par.activityRules = par.activityRules.split("\n");
     var actRuls = '';
-    for(var i=0;i<par.activityRules.length;i++){
-        actRuls+='<p style="font-size: 13px; line-height: 17px; color: #4A4A4A; margin-top: 5px; font-weight: lighter;"> <span style="display: inline-block;width: 7%; float: left">'+(i+1)+'、</span>'+
-        '<span style="display: inline-block;width: 92%;">'+par.activityRules[i]+'</span> </p>';
+    for (var i = 0; i < par.activityRules.length; i++) {
+        actRuls += '<p style="font-size: 13px; line-height: 17px; color: #4A4A4A; margin-top: 5px; font-weight: lighter;"> <span style="display: inline-block;width: 7%; float: left">' + (i + 1) + '、</span>' +
+            '<span style="display: inline-block;width: 92%;">' + par.activityRules[i] + '</span> </p>';
     }
+    ;
 
+    var rewardActContentJson = [
+        {
+            "command_type": 1,
+            remark: par.invitingAwards
+        },
+        {
+            "command_type": 2,
+            remark: par.aidReward
+        }
+    ];
     var activity = {
-        actName:par.storeTitle,
-        pictureId:picId,
-        actReplay:'',
-        actTitle:par.storeTitle,
-        actShareTitle:par.shareTitle,
-        actShareCopywriting:'',
-        actRule:actRuls,
-        exchangeRule:'',
-        partakeNum:par.helpNumber,
-        rewardUrl:'',
-        startAt:par.startTimes,
-        endAt:par.endTimes
+        actName: par.storeTitle,
+        pictureId: picId,
+        actTitle: par.storeTitle,
+        actShareTitle: par.shareTitle,
+        actShareCopywriting: par.posterCopywriting,
+        actRule: par.activityRules,
+        partakeNum: par.helpNumber,
+        startAt: par.startTimes.replace(/-/g, "/"),
+        endAt: par.endTimes.replace(/-/g, "/"),
+        btnCopywritingJson: JSON.stringify(btnCopywritingJson),
+        rewardActContentJson: JSON.stringify(rewardActContentJson),
+        rewardNum: par.helpNumber
     };
+    var actId = $("#currentActId").attr("data-curr-actid");
+    if (actId != "" || actId != null) {
+        activity.actId = actId;
+    }
     $.ajax({
         type: "post",
         url: "/mat/activity/updateActivity",
         cache: false,  //禁用缓存
-        data: {activity: activity,btnCopywritingJson:JSON.stringify(btnCopywritingJson)},  //传入组装的参数?
+        data: activity,  //传入组装的参数?
         // headers: {"Content-type": "text/plain;charset=utf-8;"},
         dataType: "json",
         success: function (result) {
@@ -610,11 +598,63 @@ function addActivity(picId,par) {
                 var table = $('#example').DataTable();
                 $("#manageAdd").hide();
                 table.draw(false)
-            }else{
-                $.MsgBox.Alert("温馨提示", "添加活动失败。");
+            } else {
+                $.MsgBox.Alert("温馨提示", result.msg);
             }
         }
     })
+}
+
+//修改 条件反补
+function reverseSupplement(data) {
+    var activity = data.matActivity;
+    var rewardList = data.rewardList;
+    $("#formsearch input[name='invitingButton']").val(data.btnMap.bxt_invite);
+    $("#formsearch input[name='storeTitle']").val(activity.actTitle);
+    $("#formsearch input[name='posterCopywriting']").val(activity.actShareCopywriting);
+    $("#formsearch textarea[name='activityRules']").val(activity.actRule);
+    $("#formsearch input[name='startTimes']").val(myDates(activity.startAt));
+    $("#formsearch input[name='endTimes']").val(myDates(activity.endAt));
+    $("#formsearch input[name='helpNumber']").val(activity.partakeNum);
+    $("#formsearch input[name='shareTitle']").val(activity.actShareTitle);
+    $("#formsearch input[name='invitingAwardsNum']").parents("p").hide();
+    for (var i = 0; i < rewardList.length; i++) {
+        if (rewardList[i].commandType == 1) {
+            $("#formsearch input[name='invitingAwards']").val(rewardList[i].remark);
+        } else if(rewardList[i].commandType == 2) {
+            $("#formsearch input[name='aidReward']").val(rewardList[i].remark);
+        }
+    }
+    // var url = "http://p1.pstatp.com/large/435d000085555bd8de10";
+    // getBase64(url)
+    //     .then(function (base64) {
+    //         console.log(base64);//处理成功打印在控制台
+    //         $("#show").parent().show()
+    //         $("#show").attr("src", base64);
+    //     }, function (err) {
+    //         console.log(err);//打印异常信息
+    //     });
+if(activity.filePath){
+    console.log(window.location.host)
+    $("#show").parent().show();
+    var filePath = window.location.host+activity.filePath;
+    convertImgToBase64(filePath, function(base64Img){
+        //转化后的base64
+
+        $("#show").attr("src", base64Img);
+    });
+}
+
+}
+
+//校验字段
+function checkField(dataField) {
+    var flag = judgmenLength(dataField.storeTitle,10,"活动标题");
+    flag = judgmenLength(dataField.invitingButton,18,"邀请按钮文案");
+    flag = judgmenLength(dataField.posterCopywriting,36,"活动玩法说明");
+    flag = judgmenLength(dataField.shareTitle,26,"分享标题");
+
+   return flag;
 }
 
 

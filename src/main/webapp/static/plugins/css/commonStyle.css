@@ -122,5 +122,13 @@ a:hover,a:active,a:link{
     vertical-align: middle;
     /*padding-left: 30px;*/
 }
+table{
+    border: 1px solid #ccc;
+    border-left: 0px;
+}
+table tr th ,table tr td{
+    text-align: center;
+    border-left: 1px solid #ccc
+}
 
 

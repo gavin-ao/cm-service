@@ -14,7 +14,7 @@
     width: 640px;
     margin: auto;
     background-color: #fff;
-    height: 90%;
+    height: 450px;
     margin-top: 50px;
 }
 
@@ -88,9 +88,6 @@
 
 }
 
-table tr th ,table tr td{
-    text-align: center;
-}
 
 .contain_main .addAccount {
     width: 120px;
