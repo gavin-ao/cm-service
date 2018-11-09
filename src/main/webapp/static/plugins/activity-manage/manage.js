@@ -46,15 +46,15 @@ var wholeStartTime, wholeEndTime, startDates, endDates;
         console.log(dataObjArr);
         //校验字段
         var flag = checkField(dataObjArr);
-        if(dataObjArr.helpNumber<=0){
+        if (dataObjArr.helpNumber <= 0) {
             $.MsgBox.Alert("温馨提示", "助力目标人数要大于0");
             flag = false
         }
-        if(dataObjArr.invitingAwardsNum<=0){
+        if (dataObjArr.invitingAwardsNum <= 0) {
             $.MsgBox.Alert("温馨提示", "邀请奖励数量要大于0");
             flag = false
         }
-        if(!flag){
+        if (!flag) {
             return false;
         }
         var src = $("#show").attr("src");
@@ -226,13 +226,13 @@ function tablesData() {
             {
                 "aTargets": [5],
                 "mRender": function (data, type, full, meta) {
-                    var text='';
-                    if(data==0){
-                        text="未开始"
-                    }else if(data==1){
-                        text="进行中"
-                    }else if(data==2){
-                        text="已结束"
+                    var text = '';
+                    if (data == 0) {
+                        text = "未开始"
+                    } else if (data == 1) {
+                        text = "进行中"
+                    } else if (data == 2) {
+                        text = "已结束"
                     }
                     return text;
                 }
@@ -242,11 +242,11 @@ function tablesData() {
                 "mRender": function (data, type, full, meta) {
                     // console.log(meta);
                     // console.log(data);
-                    var text='';
-                    if(data==0){
-                        text="<button class='modify_btn btn btn-primary' style='padding: 2px 4px;margin-left: 8px;' >编辑</button>"
-                    }else if(data==1||data==2){
-                        text="<button class='see_btn btn btn-primary' style='padding: 2px 4px;margin-left: 8px;' >查看</button>"
+                    var text = '';
+                    if (data == 0) {
+                        text = "<button class='modify_btn btn btn-primary' style='padding: 2px 4px;margin-left: 8px;' >编辑</button>"
+                    } else if (data == 1 || data == 2) {
+                        text = "<button class='see_btn btn btn-primary' style='padding: 2px 4px;margin-left: 8px;' >查看</button>"
                     }
                     return text;
                 }
@@ -511,9 +511,9 @@ function currentTime(myDate) {
 }
 
 //判断字数长度 是否符合要求
-function judgmenLength(text, lens,con) {
+function judgmenLength(text, lens, con) {
     if (text == "") {
-        $.MsgBox.Alert("温馨提示", con+"不能为空");
+        $.MsgBox.Alert("温馨提示", con + "不能为空");
         return false;
     }
     var realLength = 0, len = text.length, charCode = -1;
@@ -525,8 +525,8 @@ function judgmenLength(text, lens,con) {
             realLength += 2;
     }
     console.log(realLength)
-    if (realLength > lens*2) {
-        $.MsgBox.Alert("温馨提示", con+lens+"个字以内");
+    if (realLength > lens * 2) {
+        $.MsgBox.Alert("温馨提示", con + lens + "个字以内");
         return false;
     }
     return true;
@@ -561,18 +561,18 @@ function addActivity(picId, par) {
         {
             "commandType": 1,
             remark: par.invitingAwards,
-            contentTitle:"任务达成",
-            contentHead:"恭喜您获得 "+par.invitingAwards,
-            contentFoot:"数量有限，先到先得哦",
-            contentBtn:"我也要领奖励"
+            contentTitle: "任务达成",
+            contentHead: "恭喜您获得 " + par.invitingAwards,
+            contentFoot: "数量有限，先到先得哦",
+            contentBtn: "我也要领奖励"
         },
         {
             "commandType": 2,
             remark: par.aidReward,
-            contentTitle:"为好友助力成功",
-            contentHead:"恭喜您获得 "+par.aidReward,
-            contentFoot:"数量有限，先到先得哦",
-            contentBtn:"我也要领奖励"
+            contentTitle: "为好友助力成功",
+            contentHead: "恭喜您获得 " + par.aidReward,
+            contentFoot: "数量有限，先到先得哦",
+            contentBtn: "我也要领奖励"
         }
     ];
     var activity = {
@@ -629,7 +629,7 @@ function reverseSupplement(data) {
     for (var i = 0; i < rewardList.length; i++) {
         if (rewardList[i].commandType == 1) {
             $("#formsearch input[name='invitingAwards']").val(rewardList[i].remark);
-        } else if(rewardList[i].commandType == 2) {
+        } else if (rewardList[i].commandType == 2) {
             $("#formsearch input[name='aidReward']").val(rewardList[i].remark);
         }
     }
@@ -642,27 +642,25 @@ function reverseSupplement(data) {
     //     }, function (err) {
     //         console.log(err);//打印异常信息
     //     });
-if(activity.filePath){
-    console.log(window.location.host)
-    $("#show").parent().show();
-    var filePath = window.location.host+activity.filePath;
-    convertImgToBase64(filePath, function(base64Img){
-        //转化后的base64
-
-        $("#show").attr("src", base64Img);
-    });
-}
+    if (activity.filePath) {
+        $("#show").parent().show();
+        var filePath = "https://cm-service.easy7share.com" + activity.filePath;
+        convertImgToBase64(filePath, function (base64Img) {
+            //转化后的base64
+            $("#show").attr("src", base64Img);
+        });
+    }
 
 }
 
 //校验字段
 function checkField(dataField) {
-    var flag = judgmenLength(dataField.storeTitle,10,"活动标题");
-    flag = judgmenLength(dataField.invitingButton,18,"邀请按钮文案");
-    flag = judgmenLength(dataField.posterCopywriting,36,"活动玩法说明");
-    flag = judgmenLength(dataField.shareTitle,26,"分享标题");
+    var flag = judgmenLength(dataField.storeTitle, 10, "活动标题");
+    flag = judgmenLength(dataField.invitingButton, 18, "邀请按钮文案");
+    flag = judgmenLength(dataField.posterCopywriting, 36, "活动玩法说明");
+    flag = judgmenLength(dataField.shareTitle, 26, "分享标题");
 
-   return flag;
+    return flag;
 }
 
 
