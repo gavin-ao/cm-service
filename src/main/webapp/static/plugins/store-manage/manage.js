@@ -70,9 +70,9 @@
         params.storeName = dataObjArr.storeName;
         params.appInfoId = "5b699c9171c8a90ec8201703";
         params.storeAddr = dataObjArr.storeAddress;
-        params.province = '北京';
-        params.city = '北京';
-        params.country = '海淀';
+        params.province = '';
+        params.city = '';
+        params.country = '';
         if (!params.storeName) {
             $.MsgBox.Alert("温馨提示", "店铺名称不能为空");
             // $("#formsearch input[name='storeName']").focus();
@@ -111,14 +111,14 @@
                 return false;
             }
         }
-        if (!(dataObjArr.storePassword.length >= 8 && dataObjArr.storePassword.length <= 20)) {
-            $.MsgBox.Alert("温馨提示", "密码长度在8-20之间");
+        if (!(dataObjArr.storePassword.length >= 6 && dataObjArr.storePassword.length <= 20)) {
+            $.MsgBox.Alert("温馨提示", "密码长度在6-20之间");
             // $("#formsearch input[name='storePassword']").focus();
             return false;
         } else {
             var reg = /^[a-zA-Z0-9]{4,10}$/;
             if (reg.test(dataObjArr.storePassword) == false) {
-                $.MsgBox.Alert("温馨提示", "密码不能含有非法字符，长度在8-20之间");
+                $.MsgBox.Alert("温馨提示", "密码不能含有非法字符，长度在6-20之间");
                 // $("#formsearch input[name='storePassword']").focus();
                 return false;
             }
@@ -202,7 +202,7 @@ function tablesData() {
         ordering: true,
         bDestory: true,
         aLengthMenu: [5, 10, 20, 50], //更改显示记录数选项
-        iDisplayLength: 50,
+        iDisplayLength: 20,
         oLanguage: {    // 汉化
             sLengthMenu: "每页显示 _MENU_ 条",
             sZeroRecords: "没有找到符合条件的数据",
@@ -363,9 +363,9 @@ function tablesData() {
             {"data": "cid"},
             {"data": "storeName"},
             {"data": "storeAddr"},
-            {"data": "storeName"},
+            // {"data": "storeName"},
             {"data": "manager"},
-            {"data": "appInfoId"},
+            // {"data": "appInfoId"},
             // {"data": "createAt"}
         ],
         aoColumnDefs: [
@@ -377,14 +377,14 @@ function tablesData() {
                 }
             },
             {
-                "aTargets": [8],
+                "aTargets": [6],
                 "mRender": function (data, type, full, meta) {
                     return "<button class='modify_btn btn btn-primary' style='padding: 2px 4px;margin-left: 8px;' >修改</button><button class='see_btn btn btn-primary' style='padding: 2px 4px;margin-left: 8px;' >查看</button>";
                 }
             },
             {
                 "bSortable": false,
-                "aTargets": [1, 2, 3, 4, 5, 6, 7, 8]
+                "aTargets": [1, 2, 3, 4, 5, 6]
             },
 
         ],

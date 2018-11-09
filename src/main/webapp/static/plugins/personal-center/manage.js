@@ -34,6 +34,7 @@ var tab="";
         var rewardNum = $(".appendLog input[name='rewardNums']").val().trim();
         if (rewardNum > 0) {
             if (actId && commandType) {
+
                 $.ajax({
                     type: "post",
                     url: "/reward/command/insertRewardActCommand",
@@ -68,7 +69,7 @@ function tablesData() {
         ordering: false,
         bDestory: true,
         aLengthMenu: [5, 10, 20, 50], //更改显示记录数选项
-        iDisplayLength: 50,
+        iDisplayLength: 20,
         oLanguage: {    // 汉化
             sLengthMenu: "每页显示 _MENU_ 条",
             sZeroRecords: "没有找到符合条件的数据",

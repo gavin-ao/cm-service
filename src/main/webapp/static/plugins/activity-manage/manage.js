@@ -132,7 +132,7 @@ function tablesData() {
         ordering: false,
         bDestory: true,
         aLengthMenu: [5, 10, 20, 50], //更改显示记录数选项
-        iDisplayLength: 50,
+        iDisplayLength: 20,
         oLanguage: {    // 汉化
             sLengthMenu: "每页显示 _MENU_ 条",
             sZeroRecords: "没有找到符合条件的数据",
@@ -559,12 +559,20 @@ function addActivity(picId, par) {
 
     var rewardActContentJson = [
         {
-            "command_type": 1,
-            remark: par.invitingAwards
+            "commandType": 1,
+            remark: par.invitingAwards,
+            contentTitle:"任务达成",
+            contentHead:"恭喜您获得 "+par.invitingAwards,
+            contentFoot:"数量有限，先到先得哦",
+            contentBtn:"我也要领奖励"
         },
         {
-            "command_type": 2,
-            remark: par.aidReward
+            "commandType": 2,
+            remark: par.aidReward,
+            contentTitle:"为好友助力成功",
+            contentHead:"恭喜您获得 "+par.aidReward,
+            contentFoot:"数量有限，先到先得哦",
+            contentBtn:"我也要领奖励"
         }
     ];
     var activity = {
@@ -582,7 +590,7 @@ function addActivity(picId, par) {
         rewardNum: par.helpNumber
     };
     var actId = $("#currentActId").attr("data-curr-actid");
-    if (actId != "" || actId != null) {
+    if (actId) {
         activity.actId = actId;
     }
     $.ajax({
