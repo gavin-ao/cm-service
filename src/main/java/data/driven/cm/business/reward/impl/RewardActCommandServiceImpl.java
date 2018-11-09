@@ -67,7 +67,7 @@ public class RewardActCommandServiceImpl implements RewardActCommandService {
                 String mapId = map.get("map_id").toString();
                 PictureEntity pictureEntity = insertPicture(wechatUserId, mapId);
                 String updateSql = "update reward_act_command_help_mapping set picture_id = ? where map_id = ?";
-                jdbcBaseDao.executeUpdate(sql, pictureEntity.getPictureId(), mapId);
+                jdbcBaseDao.executeUpdate(updateSql, pictureEntity.getPictureId(), mapId);
                 return pictureEntity.getFilePath();
             }else{
                 return map.get("file_path").toString();
@@ -115,8 +115,8 @@ public class RewardActCommandServiceImpl implements RewardActCommandService {
         }
         PictureEntity pictureEntity = new PictureEntity();
         pictureEntity.setPictureId(UUIDUtil.getUUID());
-        pictureEntity.setFilePath(tempFolderPath + fileUUid + QRCodeUtil.fileType);
-        pictureEntity.setRealName(fileUUid + QRCodeUtil.fileType);
+        pictureEntity.setFilePath(tempFolderPath + fileUUid + "." +QRCodeUtil.fileType);
+        pictureEntity.setRealName(fileUUid + "." + QRCodeUtil.fileType);
         pictureEntity.setCreator(creator);
         pictureEntity.setCreateAt(date);
         pictureService.insertPicture(pictureEntity);
