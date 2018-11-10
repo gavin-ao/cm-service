@@ -549,14 +549,7 @@ function addActivity(picId, par) {
         bxt_share: "分享",
         bxt_saveImg: "保存图片"
     };
-    // par.posterCopywriting = '<p style=" font-size: 14px;text-align: center;color: #4A4A4A;margin-bottom: 5px;">'+ par.posterCopywriting+';</p>'
-    // par.activityRules = par.activityRules.split("\n");
-    var actRuls = '';
-    for (var i = 0; i < par.activityRules.length; i++) {
-        actRuls += '<p style="font-size: 13px; line-height: 17px; color: #4A4A4A; margin-top: 5px; font-weight: lighter;"> <span style="display: inline-block;width: 7%; float: left">' + (i + 1) + '、</span>' +
-            '<span style="display: inline-block;width: 92%;">' + par.activityRules[i] + '</span> </p>';
-    }
-    ;
+
 
     var rewardActContentJson = [
         {

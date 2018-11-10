@@ -43,7 +43,7 @@ a:hover,a:active,a:link{
     width: 100%;
 }
 #main-menu li {
-    text-align: center;
+    padding-left: 55px;
     line-height: 50px;
     cursor: pointer;
     color: #fff;
@@ -105,7 +105,7 @@ a:hover,a:active,a:link{
     background-color: #EEF4F9
 }
 .mineStyle>li{
-    border-bottom: 1px solid #EEF4F9;
+    border-bottom: 1px solid rgba(104,110,128,1);
 }
 .mineStyle>li>div{
     font-weight: 650;
@@ -123,12 +123,25 @@ a:hover,a:active,a:link{
     /*padding-left: 30px;*/
 }
 table{
-    border: 1px solid #ccc;
-    border-left: 0px;
+    border: 1px solid #f0f0f0;
+    border: 0px;
+    color: #333333;
+    margin: 0 auto;
+    margin-top: 5px;
+}
+table thead tr{
+    border: 0px;
+}
+table tbody{
+    border: 0px;
+}
+table thead tr{
+    background-color: #f0f0f0;
 }
 table tr th ,table tr td{
     text-align: center;
-    border-left: 1px solid #ccc
+    border-left: 1px solid #f0f0f0;
 }
+
 
 
