@@ -13,7 +13,7 @@
                 <p>
                     <span class="text">1、活动标题:</span>
                     <a class="anchorss">
-                        <input type="text" name="storeTitle" class="form-control" placeholder="展示在小程序顶部，10个字以内"/>
+                        <input type="text" name="storeTitle" class="form-control" maxlength="18" placeholder="展示在小程序顶部，10个字以内"/>
                     </a>
                 </p>
 ##                <p>
@@ -42,7 +42,7 @@
                 <p>
                     <span class="text">3、邀请按钮文案:</span>
                     <a class="anchorss">
-                        <input type="text" name="invitingButton" class="form-control" placeholder="简单概括活动内容，18个字以内"/>
+                        <input type="text" name="invitingButton" class="form-control" maxlength="30" placeholder="简单概括活动内容，18个字以内"/>
                     </a>
                 </p>
 ##                <p>
@@ -72,7 +72,7 @@
                 <p>
                     <span class="text">4、活动玩法说明:</span>
                     <a class="anchorss">
-                        <input type="text" name="posterCopywriting" class="form-control"  placeholder="说明达标条件和奖励，36个字以内"/>
+                        <input type="text" name="posterCopywriting" class="form-control"  maxlength="72" placeholder="说明达标条件和奖励，36个字以内"/>
                     </a>
                 </p>
                 <p>
@@ -118,7 +118,7 @@
                 <p>
                     <span class="text">8、分享标题:</span>
                     <a class="anchorss">
-                        <input type="text" name="shareTitle" class="form-control" placeholder="小程序转发到会话中展示的标题，26个字以内"/>
+                        <input type="text" name="shareTitle" class="form-control" maxlength="50" placeholder="小程序转发到会话中展示的标题，26个字以内"/>
                     </a>
                 </p>
                 <p>
