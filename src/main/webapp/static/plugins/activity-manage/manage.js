@@ -15,6 +15,7 @@ var wholeStartTime, wholeEndTime, startDates, endDates;
     $("#addAccount").off("click");
     $("#addAccount").on("click", function () {
         $("#show").parent().hide()
+        $("#formsearch .modal-footer").show();
         $("#currentActId").attr("data-curr-actid", "");
         $("#formsearch input[name='invitingAwardsNum']").parents("p").show();
         $("#manageAdd").show();

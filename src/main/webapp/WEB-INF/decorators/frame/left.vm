@@ -36,9 +36,9 @@
                         #if($storeSuperAdmin)
                             <li name="storeManage" class="bgStyle">门店管理</li>
                         #end
-                        <li name="activityManage">活动管理</li>
-                        <li name="awardCancel">奖品核销</li>
-                        <li name="materialDownloading">物料下载</li>
+                        <li name="activityManage" style="display: none;">活动管理</li>
+                        <li name="awardCancel" style="display: none;">奖品核销</li>
+                        <li name="materialDownloading" style="display: none;">物料下载</li>
                     </ul>
 
                 </li>
@@ -55,3 +55,6 @@
 
     </nav>
 </div>
+<script>
+
+</script>

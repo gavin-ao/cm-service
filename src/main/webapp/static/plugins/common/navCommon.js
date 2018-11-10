@@ -4,6 +4,28 @@
 
 (function ($) {
 
+    $.ajax({
+        type: "post",
+        url: "/system/store/getStoreQrCode",
+        cache: false,  //禁用缓存
+//        headers: {"Content-type": "text/plain;charset=utf-8"},
+        dataType: "json",
+        success: function (result) {
+            console.log(result)
+            if (result.success) {
+                if(result.filePath){
+                    $("#main-menu li[name='activityManage']").show();
+                    $("#main-menu li[name='awardCancel']").show();
+                    $("#main-menu li[name='materialDownloading']").show();
+                }else{
+                    $("#main-menu li[name='activityManage']").hide();
+                    $("#main-menu li[name='awardCancel']").hide();
+                    $("#main-menu li[name='materialDownloading']").hide();
+                }
+
+            }
+        }
+    })
     navSelect();
     $($("#main-menu").find("li")[0]).trigger("click");
     console.log($("#main-menu").find("li")[0])
@@ -17,6 +39,7 @@
            }
         }
     })
+
 }(jQuery));
 
 // 提示信息弹窗
@@ -240,3 +263,14 @@ function convertImgToBase64(url, callback, outputFormat){
     img.src = url;
 }
 
+
+//下载二维码
+function downloadImg() {
+    var img = document.getElementById('QRCodeImg');   // 获取要下载的图片
+    var url = img.src;                              // 获取图片地址
+    var a = document.createElement('a');            // 创建一个a节点插入的document
+    var event = new MouseEvent('click')             // 模拟鼠标click点击事件
+    a.download = 'storeQRCode'                    // 设置a节点的download属性值
+    a.href = url;                                   // 将图片的src赋值给a节点的href
+    a.dispatchEvent(event)                          // 触发鼠标点击事件
+}
