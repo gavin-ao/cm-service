@@ -516,8 +516,7 @@ function returnIsNotInArray(arr, obj) {
             obj[key] = "--";
         }
         arry.push(key);
-    }
-    ;
+    };
     for (var i = 0; i < arr.length; i++) {
         if (!isInArray(arry, arr[i])) {
             // if(contains(arrName,arr[i])){

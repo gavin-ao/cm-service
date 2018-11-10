@@ -274,3 +274,28 @@ function downloadImg() {
     a.href = url;                                   // 将图片的src赋值给a节点的href
     a.dispatchEvent(event)                          // 触发鼠标点击事件
 }
+
+
+function returnIsNotInArray(arr, obj) {
+    var arry = [];
+    // var arrName = ["read_count","praises_count","comments_count","reposts_count"];
+    for (var key in obj) {
+        if (key == "text") {
+            obj[key] = obj[key] + "..."
+        } else if (obj[key] === "") {
+            obj[key] = "--";
+        }
+        arry.push(key);
+    };
+    for (var i = 0; i < arr.length; i++) {
+        if (!isInArray(arry, arr[i])) {
+            // if(contains(arrName,arr[i])){
+            //     obj[arr[i]]=0;
+            // }else{
+            obj[arr[i]] = "--";
+            // }
+
+        }
+    }
+    return obj;
+}
