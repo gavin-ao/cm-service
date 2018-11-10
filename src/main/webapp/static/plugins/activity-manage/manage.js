@@ -581,7 +581,7 @@ function addActivity(picId, par) {
         endAt: par.endTimes.replace(/-/g, "/"),
         btnCopywritingJson: JSON.stringify(btnCopywritingJson),
         rewardActContentJson: JSON.stringify(rewardActContentJson),
-        rewardNum: par.helpNumber
+        rewardNum: par.invitingAwardsNum
     };
     var actId = $("#currentActId").attr("data-curr-actid");
     if (actId) {
