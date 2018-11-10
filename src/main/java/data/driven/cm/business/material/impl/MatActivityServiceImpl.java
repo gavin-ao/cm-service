@@ -251,7 +251,10 @@ public class MatActivityServiceImpl implements MatActivityService{
 
     @Override
     public JSONObject checkActivityStartDate(MatActivityVO activity) {
-        JSONObject temp = getNextActivityStartDate(activity.getStoreId());
+        if(activity == null){
+            return JSONUtil.putMsg(false, "101", "参数为空");
+        }
+        JSONObject temp = getNextActivityStartDate(activity.getStoreId(), activity.getActId());
         Long nextTime = temp.getLong("nextDate");
         boolean success = activity.getStartAt().getTime() - nextTime >= 0;
         JSONObject result = JSONUtil.putMsg(success, "200", "调用成功");
@@ -260,9 +263,20 @@ public class MatActivityServiceImpl implements MatActivityService{
 
     @Override
     public JSONObject getNextActivityStartDate(String storeId) {
+        return getNextActivityStartDate(storeId, null);
+    }
+
+    private JSONObject getNextActivityStartDate(String storeId, String actId){
         Date date = DateFormatUtil.convertDate(new Date());
-        String sql = "select end_at from mat_activity where store_id = ? order by end_at desc,act_id limit 1";
-        Object endDateObj = jdbcBaseDao.getColumn(sql, storeId);
+        String sql = "select end_at from mat_activity where store_id = ?";
+        List<Object> paramList = new ArrayList<Object>();
+        paramList.add(storeId);
+        if(actId != null){
+            sql += " and act_id != ?";
+            paramList.add(actId);
+        }
+        sql += " order by end_at desc,act_id limit 1";
+        Object endDateObj = jdbcBaseDao.getColumnWithListParam(sql, paramList);
         Date endDate = (Date) endDateObj;
         JSONObject result = JSONUtil.putMsg(true, "200", "操作成功");
         long nowTime = date.getTime();
@@ -277,6 +291,7 @@ public class MatActivityServiceImpl implements MatActivityService{
         }
         return result;
     }
+
 
     @Override
     public void deleteActivity(String ids) {
