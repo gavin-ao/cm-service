@@ -136,8 +136,8 @@
         </div>
         <div class="explainInfos">
             <div class="titless">样例</div>
-            <div class="" style="">
-                <img src="/static/service/images/activRule.jpg" alt="">
+            <div class="" style="width: 100%;">
+                <img src="/static/service/images/activRule.jpg" alt="" style="width: 100%;">
             </div>
         </div>
     </div>

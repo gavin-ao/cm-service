@@ -64,6 +64,10 @@
             }
         }
     })
+    $("#downloadQRCode").off("click");
+    $("#downloadQRCode").on("click", function () {
+        downloadImg();
+    })
 </script>
 
 
