@@ -11,7 +11,7 @@
             <div class="titless">新建活动</div>
             <form id="formsearch" enctype="multipart/form-data">
                 <p>
-                    <span class="text">活动标题:</span>
+                    <span class="text">1、活动标题:</span>
                     <a class="anchorss">
                         <input type="text" name="storeTitle" class="form-control" placeholder="展示在小程序顶部，10个字以内"/>
                     </a>
@@ -28,7 +28,7 @@
 ##                    </a>
 ##                </p>
                 <p>
-                    <span class="text">活动海报:</span>
+                    <span class="text">2、活动海报:</span>
                     <a class="anchorss">
                         <span class="upImage form-control" id="upImage">上传图片</span>
                         <input id="file" type="file" class="btn btn-primary" alt="海报图片加载失败"
@@ -40,7 +40,7 @@
                             </p>
                 </p>
                 <p>
-                    <span class="text">邀请按钮文案:</span>
+                    <span class="text">3、邀请按钮文案:</span>
                     <a class="anchorss">
                         <input type="text" name="invitingButton" class="form-control" placeholder="简单概括活动内容，18个字以内"/>
                     </a>
@@ -70,36 +70,24 @@
 ##                    </a>
 ##                </p>
                 <p>
-                    <span class="text">活动玩法说明:</span>
+                    <span class="text">4、活动玩法说明:</span>
                     <a class="anchorss">
                         <input type="text" name="posterCopywriting" class="form-control"  placeholder="说明达标条件和奖励，36个字以内"/>
                     </a>
                 </p>
                 <p>
-                    <span class="text">活动规则:</span>
+                    <span class="text">5、活动规则:</span>
                     <a class="anchorss">
                                 <textarea id="" name="activityRules"></textarea>
                     </a>
                 </p>
                 <p>
-                    <span class="text">活动时间:</span>
-                    <a class="anchorss actTimes">
-                        <input type="text" name="startTimes" class="form-control" placeholder="开始时间" id="startTime"/>
-                        至 <input type="text" name="endTimes" class="form-control" placeholder="结束时间" id="endTime"/>
-                    </a>
-                </p>
-                <p>
-                    <span class="text">助力目标:</span>
+                    <span class="text">6、助力目标:</span>
                     <a class="anchorss">
                         <input type="number" name="helpNumber" min="1" value="1" class="form-control"/>
                     </a>
                 </p>
-                <p>
-                    <span class="text">分享标题:</span>
-                    <a class="anchorss">
-                        <input type="text" name="shareTitle" class="form-control" placeholder="小程序转发到会话中展示的标题，26个字以内"/>
-                    </a>
-                </p>
+
 ##                <p>
 ##                    <span class="text">助力是否有奖:</span>
 ##                    <a class="anchorss">
@@ -110,7 +98,7 @@
 ##                    </a>
 ##                </p>
                 <p>
-                    <span class="text">邀请奖励:</span>
+                    <span class="text">7、邀请奖励:</span>
                     <a class="anchorss">
                         <input type="text" name="invitingAwards" class="form-control" placeholder="自由设置，领取后按设置核销，如:满199减30"/>
                     </a>
@@ -127,7 +115,19 @@
                         <input type="text" name="aidReward" class="form-control" placeholder="应比邀请奖励小，以刺激转发，如:满199减10"/>
                     </a>
                 </p>
-
+                <p>
+                    <span class="text">8、分享标题:</span>
+                    <a class="anchorss">
+                        <input type="text" name="shareTitle" class="form-control" placeholder="小程序转发到会话中展示的标题，26个字以内"/>
+                    </a>
+                </p>
+                <p>
+                    <span class="text">9、活动时间:</span>
+                    <a class="anchorss actTimes">
+                        <input type="text" name="startTimes" class="form-control" placeholder="开始时间" id="startTime"/>
+                        至 <input type="text" name="endTimes" class="form-control" placeholder="结束时间" id="endTime"/>
+                    </a>
+                </p>
                 <div class="modal-footer" style="text-align: center;border: 0px;">
                     <button type="button" class="btn btn-default closeBtn1" data-dismiss="modal" id="closeBtn">取 消</button>
                     <button type="button" class="btn btn-primary" id="submitBtn">提 交</button>
@@ -146,7 +146,7 @@
     <div class="addAccount" id="addAccount">新建</div>
     <input type="hidden" data-curr-actid="" id="currentActId">
     <div class="dataTables" style="background-color: #fff;">
-        <table id="example" class="display" style="width:100%;">
+        <table id="example" class="display" style="width:100%;" border="0">
             <thead>
             <tr>
                 <th></th>
