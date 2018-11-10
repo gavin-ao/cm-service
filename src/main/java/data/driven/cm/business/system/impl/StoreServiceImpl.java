@@ -114,6 +114,9 @@ public class StoreServiceImpl implements StoreService {
             return JSONUtil.putMsg(false, "103", "小程序为空");
         }
         String pageUrl = wechatAppInfoEntity.getPageUrl();
+        if(pageUrl == null){
+            return JSONUtil.putMsg(false, "104", "请为小程序添加首页url，用于生成门店二维码");
+        }
         if(pageUrl.indexOf("?") > 0){
             pageUrl += "&";
         }else{
