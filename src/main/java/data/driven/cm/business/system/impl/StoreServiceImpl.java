@@ -117,13 +117,8 @@ public class StoreServiceImpl implements StoreService {
         if(pageUrl == null){
             return JSONUtil.putMsg(false, "104", "请为小程序添加首页url，用于生成门店二维码");
         }
-        if(pageUrl.indexOf("?") > 0){
-            pageUrl += "&";
-        }else{
-            pageUrl += "?";
-        }
         storeEntity.setStoreId(UUIDUtil.getUUID());
-        pageUrl += "storeId="+storeEntity.getStoreId();
+        pageUrl += storeEntity.getStoreId();
         String pictureId = createStoreQRcode(storeEntity, date, pageUrl);
         if(pictureId != null){
             storeEntity.setPictureId(pictureId);
