@@ -17,6 +17,8 @@ var wholeStartTime, wholeEndTime, startDates, endDates;
         $("#show").parent().hide()
         $("#formsearch .modal-footer").show();
         $("#currentActId").attr("data-curr-actid", "");
+        $("#currentActId").attr("data-curr-contentid1","");
+        $("#currentActId").attr("data-curr-contentid2","");
         $("#formsearch input[name='invitingAwardsNum']").parents("p").show();
         $("#manageAdd").show();
         $("#formsearch>p input").each(function () {
@@ -569,6 +571,30 @@ function addActivity(picId, par) {
             contentBtn: "我也要领奖励"
         }
     ];
+    var contentid1 = $("#currentActId").attr("data-curr-contentid1");
+    var contentid2 = $("#currentActId").attr("data-curr-contentid2");
+    if(contentid1&&contentid2){
+        rewardActContentJson = [
+            {
+                "commandType": 1,
+                remark: par.invitingAwards,
+                contentTitle: "任务达成",
+                contentHead: "恭喜您获得 " + par.invitingAwards,
+                contentFoot: "数量有限，先到先得哦",
+                contentBtn: "我也要领奖励",
+                contentId:contentid1
+            },
+            {
+                "commandType": 2,
+                remark: par.aidReward,
+                contentTitle: "为好友助力成功",
+                contentHead: "恭喜您获得 " + par.aidReward,
+                contentFoot: "数量有限，先到先得哦",
+                contentBtn: "我也要领奖励",
+                contentId:contentid2
+            }
+        ];
+    }
     var activity = {
         actName: par.storeTitle,
         pictureId: picId,
@@ -581,11 +607,12 @@ function addActivity(picId, par) {
         endAt: par.endTimes.replace(/-/g, "/"),
         btnCopywritingJson: JSON.stringify(btnCopywritingJson),
         rewardActContentJson: JSON.stringify(rewardActContentJson),
-        rewardNum: par.invitingAwardsNum
     };
     var actId = $("#currentActId").attr("data-curr-actid");
     if (actId) {
         activity.actId = actId;
+    }else{
+        activity.rewardNum = par.invitingAwardsNum
     }
     $.ajax({
         type: "post",
@@ -622,8 +649,10 @@ function reverseSupplement(data) {
     $("#formsearch input[name='invitingAwardsNum']").parents("p").hide();
     for (var i = 0; i < rewardList.length; i++) {
         if (rewardList[i].commandType == 1) {
+            $("#currentActId").attr("data-curr-contentid1",rewardList[i].contentId);
             $("#formsearch input[name='invitingAwards']").val(rewardList[i].remark);
         } else if (rewardList[i].commandType == 2) {
+            $("#currentActId").attr("data-curr-contentid2",rewardList[i].contentId);
             $("#formsearch input[name='aidReward']").val(rewardList[i].remark);
         }
     }
