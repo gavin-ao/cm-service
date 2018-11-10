@@ -12,6 +12,7 @@
     $("#addAccount").off("click");
     $("#addAccount").on("click", function () {
         $("#formsearch1").hide();
+        $("#storeQRCode").hide();
         $("#formsearch").show();
         $("#manageAdd").show();
         // $("#storeQRCode").hide();
@@ -150,14 +151,14 @@
         var storeid = $("#dataStoreId").attr("data-storeid");
         console.log(storeid)
         var pwd = hex_md5(pas);
-        if (!(pas.length >= 8 && pas.length <= 20)) {
-            $.MsgBox.Alert("温馨提示", "密码长度在8-20之间");
+        if (!(pas.length >= 6 && pas.length <= 20)) {
+            $.MsgBox.Alert("温馨提示", "密码长度在6-20之间");
             // $("#formsearch input[name='storePassword1']").focus();
             return false;
         } else {
             var reg = /^[a-zA-Z0-9]{4,10}$/;
             if (reg.test(pas) == false) {
-                $.MsgBox.Alert("温馨提示", "密码不能含有非法字符，长度在8-20之间");
+                $.MsgBox.Alert("温馨提示", "密码不能含有非法字符，长度在6-20之间");
                 // $("#formsearch input[name='storePassword1']").focus();
                 return false;
             }
@@ -426,18 +427,18 @@ function tablesData() {
     // 初始化修改按钮
     $('#example tbody').on('click', 'button.modify_btn', function (e) {
         e.preventDefault();
+        $("#formsearch").hide();
         $("#storeQRCode").hide();
+        $("#formsearch1").show();
         var storeId = $(this).parents('tr').find("td")[0].innerHTML.trim();
         modifyInfos(storeId);
-
-
     });
     // 查看按钮
     $('#example tbody').on('click', 'button.see_btn', function (e) {
         e.preventDefault();
         $("#formsearch").hide();
+        $("#formsearch1").hide();
         $("#storeQRCode").show();
-
         var storeId = $(this).parents('tr').find("td")[0].innerHTML.trim();
         $.ajax({
             type: "post",
