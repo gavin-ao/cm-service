@@ -39,7 +39,7 @@
     overflow-y: auto;
 }
 #example1{
-    /*width: 90% !important;*/
+    width: 100% !important;
     margin: 0 auto;
 }
 .appendReward{

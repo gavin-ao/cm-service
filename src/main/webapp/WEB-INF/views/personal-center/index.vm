@@ -10,7 +10,7 @@
         <div class="closeBtn" id="closeBtn">✖</div>
         <div class="formContain">
 
-            <div style="background-color: #fff;width: 90%;margin: 0 auto;">
+            <div style="background-color: #fff;width: calc(100% - 80px);margin: 0 auto;">
                 <div style="position: relative;left: 15px;top:-10px;font-size: 16px;">
                     活动ID： <span style="display: inline-block;margin-right: 10px;" id="actId"></span>
                     活动名称：<span style="display: inline-block;margin-right: 10px;" id="actName"></span>
