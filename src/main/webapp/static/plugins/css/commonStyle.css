@@ -142,6 +142,25 @@ table tr th ,table tr td{
     text-align: center;
     border-left: 1px solid #f0f0f0;
 }
+.dataTables_wrapper .dataTables_paginate .paginate_button{
+    border: 1px solid transparent;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover,.dataTables_wrapper .dataTables_paginate .paginate_button.current:active{
+    background: #219DEF;
+    color: #fff!important;
+    border: 1px solid transparent;
+    text-decoration:none;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover{
+    background: #219DEF;
+    color: #fff!important;
+    border: 1px solid transparent;
+    text-decoration:none;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button:link,.dataTables_wrapper .dataTables_paginate .paginate_button:active{
+    text-decoration:none;
+    border: 1px solid transparent;
+}
 
 
 
