@@ -3,11 +3,6 @@
  */
 
 (function () {
-    // 退出登录
-    // $("#loginOut").on("click", function (){
-    //     console.log(6645346)
-    //     loginOut();
-    // });
     // 添加账号
     $("#addAccount").off("click");
     $("#addAccount").on("click", function () {
@@ -33,17 +28,16 @@
     });
     $("#closeBtn").off("click");
     $("#closeBtn").on("click", function () {
-        console.log(44444)
+
         $("#manageAdd").hide();
     });
     $("#closeBtn1").off("click");
     $("#closeBtn1").on("click", function () {
-        console.log(44444)
+
         $("#manageAdd").hide();
     });
     $("#closeBtn2").off("click");
     $("#closeBtn2").on("click", function () {
-        console.log(44444)
         $("#manageAdd").hide();
     });
     // 提交用户信息
@@ -62,7 +56,7 @@
             dataObjArr[par[0]] = par[1].trim();
             // dataArr[i] = par[1];
         }
-        console.log(dataObjArr)
+        // console.log(dataObjArr)
         var params = {};
         params.managerName = dataObjArr.storeUser;
         params.manager = dataObjArr.manager;
@@ -132,7 +126,7 @@
             // headers: {"Content-type": "text/plain;charset=utf-8"},
             dataType: "json",
             success: function (result) {
-                console.log(result)
+                // console.log(result)
                 if (result.success) {
                     $("#manageAdd").hide();
                     table.draw(false)
@@ -149,7 +143,7 @@
     $("#submitBtn1").on("click", function () {
         var pas = $("#formsearch1 input[name='storePassword1']").val().trim();
         var storeid = $("#dataStoreId").attr("data-storeid");
-        console.log(storeid)
+        // console.log(storeid)
         var pwd = hex_md5(pas);
         if (!(pas.length >= 6 && pas.length <= 20)) {
             $.MsgBox.Alert("温馨提示", "密码长度在6-20之间");
@@ -170,7 +164,7 @@
             data: {storeId: storeid, pwd: pwd},  //传入组装的参数?
             dataType: "json",
             success: function (result) {
-                console.log(result)
+                // console.log(result)
                 if (result.success) {
                     $("#manageAdd").hide();
                 }
@@ -221,87 +215,8 @@ function tablesData() {
         ajax: function (data, callback, settings) {
             //封装请求参数
 
-            console.log(data)
-            var param = {
-                "search": {
-                    "cdt": {
-                        "op": "and",
-                        "flts": [
-                            {
-                                "op": "range",
-                                "min": 1507601410000,
-                                "max": 1539137410000,
-                                "lf": "created_at"
-                            }
-                        ]
-                    },
-                    "fds": [
-                        {
-                            "fn": "screen_name"
-                        },
-                        {
-                            "fn": "post_title"
-                        },
-                        {
-                            "fn": "text"
-                        },
-                        {
-                            "fn": "page_url"
-                        },
-                        {
-                            "fn": "platform"
-                        },
-                        {
-                            "fn": "created_at"
-                        },
-                        {
-                            "fn": "reposts_count"
-                        },
-                        {
-                            "fn": "comments_count"
-                        },
-                        {
-                            "fn": "praises_count"
-                        },
-                        {
-                            "fn": "interaction_count"
-                        },
-                        {
-                            "fn": "read_count"
-                        },
-                        {
-                            "fn": "brand_machine"
-                        },
-                        {
-                            "fn": "brand_artificial"
-                        },
-                        {
-                            "fn": "topic_artificial"
-                        },
-                        {
-                            "fn": "topic_machine"
-                        },
-                        {
-                            "fn": "article_emotion_machine"
-                        },
-                        {
-                            "fn": "article_emotion_artificial"
-                        }
-                    ],
-                    "pg": {
-                        "sta": data.start,
-                        "lmt": data.length
-                    },
-                    "sorts": [
-                        {
-                            "fn": "created_at",
-                            "ord": "desc"
-                        }
-                    ]
-                },
-                "tableName": 'siemens'
-            };
-            downloaddata = param
+            // console.log(data)
+            var param ;
             param = {
                 "pageNo": Math.floor(data.start / data.length) + 1,
                 "pageSize": data.length
@@ -315,9 +230,7 @@ function tablesData() {
                 // headers: {"Content-type": "text/plain;charset=utf-8"},
                 dataType: "json",
                 success: function (result) {
-                    console.log(result)
                     if (result.success) {
-                        downloaddata.search.pg.lmt = result.page.pageBean.totalNum;
                         var arry = ["storeId", "createAt", "appInfoId", "storeName", "manager", "storeAddr"];
                         var tabledata = [];
                         for (var i = 0; i < result.page.result.length; i++) {
@@ -333,14 +246,7 @@ function tablesData() {
                             returnData.recordsFiltered = result.page.pageBean.totalNum;//后台不实现过滤功能，每次查询均视作全部结果
                             returnData.data = tabledata;//返回的数据列表
                             callback(returnData);
-                            // // 点击页码时，保存当前页码数据
-                            // $("#dataTables-example_paginate .pagination").off("click","li.paginate_button a");
-                            // $("#dataTables-example_paginate .pagination").on("click","li.paginate_button a",function(){
-                            //     $("#select-all").prop("checked",false);
-                            //     if($("#dataTables-example tbody").find(".artificial").length>0){
-                            //         savePageData(table,true);
-                            //     }
-                            // });
+
                             $('table tr td:not(:last-child)').mouseover(function () {
                                 var val = $(this).text().trim();
                                 $(this).attr({title: val});
@@ -447,7 +353,6 @@ function tablesData() {
             // headers: {"Content-type": "text/plain;charset=utf-8"},
             dataType: "json",
             success: function (result) {
-                console.log(result)
                 if (result.success) {
                     $("#QRCodeImg").attr("src", result.filePath)
                     $("#manageAdd").show();
@@ -461,8 +366,6 @@ function tablesData() {
 
 //判断内容是否为空
 function exitNameNull(tar) {
-    console.log($(tar).val())
-    console.log($(tar).attr("name"))
     var titleName = $.trim($(tar).attr("name"));
     var titleValue = $.trim($(tar).val());
     switch (titleName) {
@@ -492,7 +395,6 @@ function exitNameNull(tar) {
 }
 
 function exitName(tar) {
-    console.log($(tar).val())
     return false;
 }
 
@@ -550,7 +452,6 @@ function modifyInfos(id) {
         data: {storeId: id},  //传入组装的参数?
         dataType: "json",
         success: function (result) {
-            console.log(result)
             if (result.success) {
                 if (result.store) {
                     $("#formsearch").hide();

@@ -52,7 +52,7 @@
 //        headers: {"Content-type": "text/plain;charset=utf-8"},
         dataType: "json",
         success: function (result) {
-            console.log(result)
+//            console.log(result)
             if (result.success) {
                 if(result.filePath){
                     $("#QRCodeImg").attr("src",result.filePath);

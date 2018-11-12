@@ -249,61 +249,6 @@ function tablesData() {
     });
 }
 
-//判断活动id是否重复
-function exitId(tar) {
-    return false;
-}
-//判断每个字段允许的长度
-function fieldLength(tar) {
-    return false;
-}
-//js锚点效果
-function anchorss(id) {
-
-    document.getElementById(id).scrollIntoView(true);
-    return false;
-}
-//上传海报图片
-function changepic() {
-    var reads = new FileReader();
-    f = document.getElementById('file').files[0];
-    reads.readAsDataURL(f)
-    console.log(f)
-    if (f) {
-        fileSize = f.size;
-        var size = fileSize / 1024;
-        if (size > 300) {
-            alert("文件大小不能大于300Kb！");
-            file.value = "";
-            return false;
-        } else if (size <= 0) {
-            alert("文件大小不能为0Kb！");
-            file.value = "";
-            return false;
-        } else {
-            reads.onload = function (e) {
-                console.log(this)
-                document.getElementById('show').src = this.result;
-                $("#selShow").attr("src", this.result);
-                //开启裁剪功能
-                $('#show ').imgAreaSelect(
-                    {
-                        handles: true,
-                        fadeSpeed: 200,
-                        imageHeight: 100,
-                        imageWidth: 100,
-                        onSelectEnd: preview
-                    }
-                );
-
-            };
-        }
-    } else {
-        return false;
-    }
-
-
-}
 
 function preview(img, selection) {
     var scaleX = 100 / selection.width;
