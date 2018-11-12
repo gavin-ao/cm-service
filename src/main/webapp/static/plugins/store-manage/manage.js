@@ -53,14 +53,14 @@
         var dataPars = params.split("&");
         var dataObjArr = {}, dataArr = [];
         var table = $('#example').DataTable();
-        var rowData = table.row(0).data();
-        for (var i = 0; i < rowData.length; i++) {
-            dataArr.push("");
-        }
+        // var rowData = table.row(0).data();
+        // for (var i = 0; i < rowData.length; i++) {
+        //     dataArr.push("");
+        // }
         for (var i = 0; i < dataPars.length; i++) {
             var par = dataPars[i].split("=");
             dataObjArr[par[0]] = par[1].trim();
-            dataArr[i] = par[1];
+            // dataArr[i] = par[1];
         }
         console.log(dataObjArr)
         var params = {};
