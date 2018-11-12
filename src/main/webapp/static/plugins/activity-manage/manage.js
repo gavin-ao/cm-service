@@ -50,18 +50,15 @@ var wholeStartTime, wholeEndTime, startDates, endDates;
         //校验字段
         var flag = checkField(dataObjArr);
         if (dataObjArr.helpNumber <= 0) {
+            flag = false;
             $.MsgBox.Alert("温馨提示", "助力目标人数要大于0");
-            flag = false
         }
         if (dataObjArr.invitingAwardsNum <= 0) {
+            flag = false;
             $.MsgBox.Alert("温馨提示", "邀请奖励数量要大于0");
-            flag = false
-        }
-        if (!flag) {
-            return false;
         }
         var src = $("#show").attr("src");
-        if (src) {
+        if (src&&flag) {
             $.ajax({
                 type: "post",
                 url: "/system/file/pictureUpload",
@@ -366,28 +363,16 @@ function fieldLength(tar) {
     var titleValue = $.trim($(tar).val());
     switch (titleName) {
         case 'storeTitle':
-            judgmenLength(titleValue, 20);
+            judgmenLength(titleValue, 10, "活动标题");
             break;
         case 'invitingButton':
-            judgmenLength(titleValue, 36);
+            judgmenLength(titleValue, 18, "邀请按钮文案");
             break;
-        // case 'helpButton':
-        //     judgmenLength(titleValue, 26);
-        //     break;
-        // case 'boosterButton':
-        //     judgmenLength(titleValue, 26);
-        //     break;
-        // case 'fullHelpButton':
-        //     judgmenLength(titleValue, 26);
-        //     break;
-        // case 'partsActivity':
-        //     judgmenLength(titleValue, 18);
-        //     break;
         case 'posterCopywriting':
-            judgmenLength(titleValue, 72);
+            judgmenLength(titleValue, 40, "活动玩法说明");
             break;
         case 'shareTitle':
-            judgmenLength(titleValue, 52);
+            judgmenLength(titleValue, 26, "分享标题");
             break;
     }
     return false;
@@ -679,11 +664,14 @@ function reverseSupplement(data) {
 //校验字段
 function checkField(dataField) {
     var flag = judgmenLength(dataField.storeTitle, 10, "活动标题");
-    flag = judgmenLength(dataField.invitingButton, 18, "邀请按钮文案");
-    flag = judgmenLength(dataField.posterCopywriting, 36, "活动玩法说明");
-    flag = judgmenLength(dataField.shareTitle, 26, "分享标题");
-
-    return flag;
+    var flag1 = judgmenLength(dataField.invitingButton, 18, "邀请按钮文案");
+    var flag2 = judgmenLength(dataField.posterCopywriting, 40, "活动玩法说明");
+    var flag3 = judgmenLength(dataField.shareTitle, 26, "分享标题");
+    if(flag&&flag1&&flag2&&flag3){
+        return true;
+    }else{
+        return false;
+    }
 }
 
 
