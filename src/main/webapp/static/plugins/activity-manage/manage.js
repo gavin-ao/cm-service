@@ -668,3 +668,10 @@ function checkField(dataField) {
 }
 
 
+function keydowns(e,tar) {
+    if(e.keyCode == 13){
+        fieldLength(tar)
+    }
+}
+
+
