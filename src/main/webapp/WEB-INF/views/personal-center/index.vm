@@ -51,7 +51,7 @@
         </div>
     </div>
 ##    <div class="addAccount" id="addAccount">添加账号</div>
-    <div style="background-color: #EEF4F9;height: calc(100% - 10px);padding: 20px;">
+    <div style="background-color: #fff;margin: 20px;">
         <table id="example" class="display" style="width:100%;">
             <thead>
             <tr>

@@ -79,9 +79,9 @@
 }
 
 .dataTables {
-    background-color: #EEF4F9;
+    background-color: #fff;
     /*height: calc(100% - 85px);*/
-    padding: 20px;
+    margin: 20px;
 }
 .dataTables>div{
     width: 100%;
