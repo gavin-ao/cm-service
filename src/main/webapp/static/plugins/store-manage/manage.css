@@ -2,12 +2,13 @@
     position: absolute;
     width: 100%;
     height: 100%;
-    margin-left: -240px;
+    margin-left: -220px;
     max-width: 1366px;
     background-color: rgba(166, 166, 166, 0.8);
     z-index: 100;
-    margin-top: -100px;
+    margin-top: -80px;
     display: none;
+    z-index: 11000;
 }
 
 .contain_main .manageAdd .manangeAddCon {
@@ -78,10 +79,9 @@
 }
 
 .dataTables {
-    background-color: #fff;
-    height: calc(100% - 85px);
-    overflow-y: auto;
-    margin-top: 10px;
+    background-color: #EEF4F9;
+    /*height: calc(100% - 85px);*/
+    padding: 20px;
 }
 .dataTables>div{
     width: 100%;
@@ -99,7 +99,8 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    background-color: rgba(22, 155, 213, 1);;
+    background-color: rgba(22, 155, 213, 1);
+    margin: 20px 0px 0px 20px;
 }
 #storeQRCode{
     display: none;

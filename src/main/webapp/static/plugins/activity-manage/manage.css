@@ -2,11 +2,11 @@
     position: absolute;
     width: calc(100% - 240px);
     height: calc(100% - 80px);
-    margin-left: -20px;
+    /*margin-left: -20px;*/
     max-width: 1146px;
     background-color: rgba(166, 166, 166, 0.8);
     z-index: 100;
-    margin-top: -20px;
+    /*margin-top: -20px;*/
     display: none;
     overflow-y: hidden;
     box-shadow: 0px -3px 3px 0px #d4d4d4;
@@ -121,7 +121,7 @@
 
 .explainInfos {
     width: 50%;
-    height: 100%;
+    height: calc(100% - 30px);
     float: left;
 }
 
@@ -180,6 +180,7 @@
      border-radius: 5px;
      cursor: pointer;
      background-color: rgba(22, 155, 213, 1);
+     margin: 20px 0px 0px 20px;
 }
  .modal-footer>button{
      width: 33%;

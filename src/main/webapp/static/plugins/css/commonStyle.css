@@ -100,9 +100,14 @@ a:hover,a:active,a:link{
 
 .contain_main {
     width: 100%;
-    height: calc(100% - 40px);
-    padding: 20px 20px;
+    height:100%;
+    padding-top: 80px;
     background-color: #EEF4F9
+}
+.contain_main>div{
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
 }
 .mineStyle>li{
     border-bottom: 1px solid rgba(104,110,128,1);
@@ -123,7 +128,7 @@ a:hover,a:active,a:link{
     /*padding-left: 30px;*/
 }
 table{
-    border: 1px solid #f0f0f0;
+    /*border: 1px solid #f0f0f0;*/
     border: 0px;
     color: #333333;
     margin: 0 auto;
@@ -137,10 +142,15 @@ table tbody{
 }
 table thead tr{
     background-color: #f0f0f0;
+    /*border-bottom: 1px solid #f0f0f0;*/
 }
 table tr th ,table tr td{
     text-align: center;
     border-left: 1px solid #f0f0f0;
+
+}
+table.dataTable thead th, table.dataTable thead td{
+    border-bottom: 1px solid #f0f0f0;
 }
 .dataTables_wrapper .dataTables_paginate .paginate_button{
     border: 1px solid transparent;
@@ -161,6 +171,8 @@ table tr th ,table tr td{
     text-decoration:none;
     border: 1px solid transparent;
 }
-
+table.dataTable.no-footer{
+    border-bottom: 1px solid #f0f0f0;
+}
 
 
