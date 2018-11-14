@@ -12,6 +12,8 @@ import java.util.Date;
 public class RewardActContentVO extends RewardActContentEntity {
     /** 门店id **/
     private String storeId;
+    /** 活动编号 **/
+    private String actNum;
     /** 活动名称 **/
     private String actName;
     /** 活动介绍 **/
@@ -22,6 +24,22 @@ public class RewardActContentVO extends RewardActContentEntity {
     private Date endAt;
     /** 活动状态 0 - 未开始； 1 进行中 ； 2 - 已结束 **/
     private Integer status;
+
+    public String getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(String storeId) {
+        this.storeId = storeId;
+    }
+
+    public String getActNum() {
+        return actNum;
+    }
+
+    public void setActNum(String actNum) {
+        this.actNum = actNum;
+    }
 
     public String getActName() {
         return actName;

@@ -35,7 +35,7 @@ public class RewardActContentServiceImpl implements RewardActContentService{
 
     @Override
     public Page<RewardActContentVO> findRewardActContentPage(String keyword, String storeId, PageBean pageBean) {
-        String sql = "select ma.act_id,ma.act_name,ma.act_introduce,ma.start_at,ma.end_at,rac.remark,rac.command_type from reward_act_content rac " +
+        String sql = "select ma.act_id,ma.act_num,ma.act_name,ma.act_introduce,ma.start_at,ma.end_at,rac.remark,rac.command_type from reward_act_content rac " +
                 " left join mat_activity ma on rac.act_id = ma.act_id";
         StringBuffer where = new StringBuffer();
         List<Object> paramList = new ArrayList<Object>();
