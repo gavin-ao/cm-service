@@ -167,7 +167,7 @@ function tablesData() {
                 success: function (result) {
                     // console.log(result)
                     if (result.success) {
-                        var arry = ["actId", "actTitle", "startAt", "endAt", "status"];
+                        var arry = ["actId", "actTitle", "startAt", "endAt", "status","actNum"];
                         var tabledata = [];
                         for (var i = 0; i < result.page.result.length; i++) {
                             result.page.result[i]["startAt"] = result.page.result[i]["startAt"] ? timestampToTime(result.page.result[i]["startAt"] / 1000) : "";
@@ -207,8 +207,9 @@ function tablesData() {
             });
         },
         aoColumns: [
+            {"data": "actId", "sClass": "hidden"},
             {"data": ""},
-            {"data": "actId"},
+            {"data": "actNum"},
             {"data": "actTitle"},
             {"data": "startAt"},
             {"data": "endAt"},
@@ -217,14 +218,14 @@ function tablesData() {
         ],
         aoColumnDefs: [
             {　　//为每一行数据添加一个checkbox，
-                'aTargets': [0],
+                'aTargets': [1],
                 'className': 'dt-body-center',
                 'render': function (data, type, row) {
                     return '<input class="checkbox_select" type="checkbox" data-status="' + row.status + '"name="id[]" value="' + $('<div/>').text(row.id).html() + '">';
                 }
             },
             {
-                "aTargets": [5],
+                "aTargets": [6],
                 "mRender": function (data, type, full, meta) {
                     var text = '';
                     if (data == 0) {
@@ -238,7 +239,7 @@ function tablesData() {
                 }
             },
             {
-                "aTargets": [6],
+                "aTargets": [7],
                 "mRender": function (data, type, full, meta) {
                     // console.log(meta);
                     // console.log(data);
@@ -253,7 +254,7 @@ function tablesData() {
             },
             {
                 "bSortable": false,
-                "aTargets": [0, 1, 2, 3, 4, 5, 6]
+                "aTargets": [0, 1, 2, 3, 4, 5, 6,7]
             }
 
         ],
@@ -297,7 +298,7 @@ function tablesData() {
         e.preventDefault();
         // var index = $(this).context._DT_RowIndex; //行号
         // console.log(index)
-        var actId = $(this).parents('tr').find("td")[1].innerHTML.trim();
+        var actId = $(this).parents('tr').find("td")[0].innerHTML.trim();
         $("#currentActId").attr("data-curr-actid", actId);
         // console.log($(this).parents('tr').find("td")[0].innerHTML.trim())
         $.ajax({
@@ -327,7 +328,7 @@ function tablesData() {
         e.preventDefault();
         // var index = $(this).context._DT_RowIndex; //行号
         // console.log(index)
-        var actId = $(this).parents('tr').find("td")[1].innerHTML.trim();
+        var actId = $(this).parents('tr').find("td")[0].innerHTML.trim();
         $("#currentActId").attr("data-curr-actid", actId);
         // console.log($(this).parents('tr').find("td")[0].innerHTML.trim())
         $.ajax({
