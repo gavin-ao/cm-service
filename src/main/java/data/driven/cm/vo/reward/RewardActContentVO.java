@@ -13,7 +13,7 @@ public class RewardActContentVO extends RewardActContentEntity {
     /** 门店id **/
     private String storeId;
     /** 活动编号 **/
-    private String actNum;
+    private Integer actNum;
     /** 活动名称 **/
     private String actName;
     /** 活动介绍 **/
@@ -33,11 +33,11 @@ public class RewardActContentVO extends RewardActContentEntity {
         this.storeId = storeId;
     }
 
-    public String getActNum() {
+    public Integer getActNum() {
         return actNum;
     }
 
-    public void setActNum(String actNum) {
+    public void setActNum(Integer actNum) {
         this.actNum = actNum;
     }
 
