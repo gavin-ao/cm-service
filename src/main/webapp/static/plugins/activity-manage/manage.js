@@ -39,29 +39,26 @@ var wholeStartTime, wholeEndTime, startDates, endDates;
     $("#submitBtn").off("click");
     $("#submitBtn").on("click", function () {
         var params = decodeURIComponent($("#formsearch").serialize())
-        console.log(params)
+        // console.log(params)
         var dataPars = params.split("&");
         var dataObjArr = []
         for (var i = 0; i < dataPars.length; i++) {
             var par = dataPars[i].split("=");
             dataObjArr[par[0]] = par[1];
         }
-        console.log(dataObjArr);
+        // console.log(dataObjArr);
         //校验字段
         var flag = checkField(dataObjArr);
         if (dataObjArr.helpNumber <= 0) {
+            flag = false;
             $.MsgBox.Alert("温馨提示", "助力目标人数要大于0");
-            flag = false
         }
         if (dataObjArr.invitingAwardsNum <= 0) {
+            flag = false;
             $.MsgBox.Alert("温馨提示", "邀请奖励数量要大于0");
-            flag = false
-        }
-        if (!flag) {
-            return false;
         }
         var src = $("#show").attr("src");
-        if (src) {
+        if (src&&flag) {
             $.ajax({
                 type: "post",
                 url: "/system/file/pictureUpload",
@@ -70,7 +67,7 @@ var wholeStartTime, wholeEndTime, startDates, endDates;
                 // headers: {"Content-type": "text/plain;charset=utf-8;"},
                 dataType: "json",
                 success: function (result) {
-                    console.log(result)
+                    // console.log(result)
                     if (result.success) {
                         if (result.pictureId) {
                             addActivity(result.pictureId, dataObjArr);
@@ -99,7 +96,7 @@ var wholeStartTime, wholeEndTime, startDates, endDates;
     $("#saveCorpper").click(function (e) {
         e.preventDefault();
         var pic = $('#show').attr('src');
-        console.log(pic)
+        // console.log(pic)
         $('#show').attr("src", pic);
     });
 
@@ -114,7 +111,7 @@ function activTime() {
         // headers: {"Content-type": "text/plain;charset=utf-8"},
         dataType: "json",
         success: function (result) {
-            console.log(result)
+            // console.log(result)
             if (result.success) {
 
 //活动时间 选择
@@ -153,7 +150,7 @@ function tablesData() {
         },
         ajax: function (data, callback, settings) {
             //封装请求参数
-            console.log(data)
+            // console.log(data)
 
             param = {
                 "pageNo": Math.floor(data.start / data.length) + 1,
@@ -168,7 +165,7 @@ function tablesData() {
                 // headers: {"Content-type": "text/plain;charset=utf-8"},
                 dataType: "json",
                 success: function (result) {
-                    console.log(result)
+                    // console.log(result)
                     if (result.success) {
                         var arry = ["actId", "actTitle", "startAt", "endAt", "status"];
                         var tabledata = [];
@@ -302,7 +299,7 @@ function tablesData() {
         // console.log(index)
         var actId = $(this).parents('tr').find("td")[1].innerHTML.trim();
         $("#currentActId").attr("data-curr-actid", actId);
-        console.log($(this).parents('tr').find("td")[0].innerHTML.trim())
+        // console.log($(this).parents('tr').find("td")[0].innerHTML.trim())
         $.ajax({
             type: "post",
             url: "/mat/activity/getMatActivityAllInfo",
@@ -311,7 +308,7 @@ function tablesData() {
             // headers: {"Content-type": "text/plain;charset=utf-8"},
             dataType: "json",
             success: function (result) {
-                console.log(result)
+                // console.log(result)
                 if (result.success) {
                     $("#formsearch .modal-footer").show();
                     //获取活动时间
@@ -332,7 +329,7 @@ function tablesData() {
         // console.log(index)
         var actId = $(this).parents('tr').find("td")[1].innerHTML.trim();
         $("#currentActId").attr("data-curr-actid", actId);
-        console.log($(this).parents('tr').find("td")[0].innerHTML.trim())
+        // console.log($(this).parents('tr').find("td")[0].innerHTML.trim())
         $.ajax({
             type: "post",
             url: "/mat/activity/getMatActivityAllInfo",
@@ -341,7 +338,7 @@ function tablesData() {
             // headers: {"Content-type": "text/plain;charset=utf-8"},
             dataType: "json",
             success: function (result) {
-                console.log(result)
+                // console.log(result)
                 if (result.success) {
                     $("#formsearch .modal-footer").hide();
                     //反补
@@ -355,46 +352,31 @@ function tablesData() {
 }
 //判断活动id是否重复
 function exitId(tar) {
-    console.log($(tar).val())
     return false;
 }
 //判断每个字段允许的长度
 function fieldLength(tar) {
-    console.log($(tar).val())
-    console.log($(tar).attr("name"))
     var titleName = $.trim($(tar).attr("name"));
     var titleValue = $.trim($(tar).val());
     switch (titleName) {
         case 'storeTitle':
-            judgmenLength(titleValue, 20);
+            judgmenLength(titleValue, 10, "活动标题");
             break;
         case 'invitingButton':
-            judgmenLength(titleValue, 36);
+            judgmenLength(titleValue, 18, "邀请按钮文案");
             break;
-        // case 'helpButton':
-        //     judgmenLength(titleValue, 26);
-        //     break;
-        // case 'boosterButton':
-        //     judgmenLength(titleValue, 26);
-        //     break;
-        // case 'fullHelpButton':
-        //     judgmenLength(titleValue, 26);
-        //     break;
-        // case 'partsActivity':
-        //     judgmenLength(titleValue, 18);
-        //     break;
         case 'posterCopywriting':
-            judgmenLength(titleValue, 72);
+            judgmenLength(titleValue, 40, "活动玩法说明");
             break;
         case 'shareTitle':
-            judgmenLength(titleValue, 52);
+            judgmenLength(titleValue, 26, "分享标题");
             break;
     }
     return false;
 }
 //js锚点效果
 function anchorss(id) {
-    console.log(id)
+    // console.log(id)
     document.getElementById(id).scrollIntoView(true);
     return false;
 }
@@ -403,23 +385,23 @@ function changepic() {
     var reads = new FileReader();
     f = document.getElementById('file').files[0];
     reads.readAsDataURL(f)
-    console.log(f)
+    // console.log(f)
     if (f) {
         fileSize = f.size;
 
         var size = fileSize / 1024;
         if (size > 200) {
-            alert("文件大小不能大于200Kb！");
+            alert("");
+            $.MsgBox.Alert("温馨提示", "海报图片大小不能大于200Kb！");
             file.value = "";
             return false;
         } else if (size <= 0) {
-            alert("文件大小不能为0Kb！");
+            $.MsgBox.Alert("温馨提示", "海报图片大小不能为0Kb！");
             file.value = "";
             return false;
         } else {
             // $('#show').attr("names",f.name);
             reads.onload = function (e) {
-                console.log(this)
                 $("#show").parent().show();
                 document.getElementById('show').src = this.result;
 
@@ -445,8 +427,6 @@ function changepic() {
 }
 
 function preview(img, selection) {
-    console.log(img)
-    console.log(selection)
     var scaleX = 100 / selection.width;
     var scaleY = 100 / selection.height;
     // var img = new Image();
@@ -458,7 +438,6 @@ function preview(img, selection) {
 function laydateTime(myDate) {
     lay('#version').html('-v' + laydate.v);
     // var myDate = new Date();
-    console.log(myDate)
     var time = myDates(myDate);
     wholeEndTime = wholeStartTime = time
 //执行一个laydate实例
@@ -472,7 +451,6 @@ function laydateTime(myDate) {
             endDates = new Date(Date.parse(wholeEndTime.replace(/-/g, "/")));
             endDates = endDates.getTime();
             if (startDates > endDates) {
-                console.log(wholeEndTime)
                 $("#startTime").val(wholeEndTime)
                 wholeStartTime = wholeEndTime;
                 $.MsgBox.Alert("温馨提示", "开始时间不能大于结束时间。");
@@ -527,7 +505,7 @@ function judgmenLength(text, lens, con) {
         else
             realLength += 2;
     }
-    console.log(realLength)
+    // console.log(realLength)
     if (realLength > lens * 2) {
         $.MsgBox.Alert("温馨提示", con + lens + "个字以内");
         return false;
@@ -622,7 +600,7 @@ function addActivity(picId, par) {
         // headers: {"Content-type": "text/plain;charset=utf-8;"},
         dataType: "json",
         success: function (result) {
-            console.log(result)
+            // console.log(result)
             if (result.success) {
                 var table = $('#example').DataTable();
                 $("#manageAdd").hide();
@@ -679,11 +657,21 @@ function reverseSupplement(data) {
 //校验字段
 function checkField(dataField) {
     var flag = judgmenLength(dataField.storeTitle, 10, "活动标题");
-    flag = judgmenLength(dataField.invitingButton, 18, "邀请按钮文案");
-    flag = judgmenLength(dataField.posterCopywriting, 36, "活动玩法说明");
-    flag = judgmenLength(dataField.shareTitle, 26, "分享标题");
+    var flag1 = judgmenLength(dataField.invitingButton, 18, "邀请按钮文案");
+    var flag2 = judgmenLength(dataField.posterCopywriting, 40, "活动玩法说明");
+    var flag3 = judgmenLength(dataField.shareTitle, 26, "分享标题");
+    if(flag&&flag1&&flag2&&flag3){
+        return true;
+    }else{
+        return false;
+    }
+}
 
-    return flag;
+
+function keydowns(e,tar) {
+    if(e.keyCode == 13){
+        fieldLength(tar)
+    }
 }
 
 

@@ -11,7 +11,7 @@
 //        headers: {"Content-type": "text/plain;charset=utf-8"},
         dataType: "json",
         success: function (result) {
-            console.log(result)
+
             if (result.success) {
                 if(result.filePath){
                     $("#main-menu li[name='activityManage']").show();
@@ -28,7 +28,6 @@
     })
     navSelect();
     $($("#main-menu").find("li")[0]).trigger("click");
-    console.log($("#main-menu").find("li")[0])
     $.ajax({
         url: "/system/store/getStoreId",
         type: "get",
@@ -132,9 +131,7 @@
 function navSelect() {
     $("#main-menu").off("click","li");
     $("#main-menu").on("click","li",function(){
-        console.log(11111)
         var navName = $.trim($(this).attr("name"));
-        console.log(navName)
         $(this).siblings().removeClass("bgStyle");
         $(this).addClass("bgStyle");
         if(navName == "storeManage"){

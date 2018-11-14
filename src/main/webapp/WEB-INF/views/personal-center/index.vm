@@ -4,53 +4,54 @@
 ##<script src="/static/plugins/imgareaselect/scripts/jquery.imgareaselect.js"></script>
 <script src="/static/plugins/personal-center/manage.js"></script>
 
-<div class="manageAdd" id="manageAdd">
-    <input type="hidden" data-actid="" data-commonrtype="" id="saveStatusL">
-    <div class="manangeAddCon">
-        <div class="closeBtn" id="closeBtn">✖</div>
-        <div class="formContain">
 
-            <div style="background-color: #fff;width: calc(100% - 80px);margin: 0 auto;">
-                <div style="position: relative;left: 15px;top:-10px;font-size: 16px;">
-                    活动ID： <span style="display: inline-block;margin-right: 10px;" id="actId"></span>
-                    活动名称：<span style="display: inline-block;margin-right: 10px;" id="actName"></span>
-                    领奖者类型：<span style="display: inline-block;margin-right: 10px;" id="rewardType"></span>
-                    <span class="appendReward">追加</span>
+<div>
+    <div class="manageAdd" id="manageAdd">
+        <input type="hidden" data-actid="" data-commonrtype="" id="saveStatusL">
+        <div class="manangeAddCon">
+            <div class="closeBtn" id="closeBtn">✖</div>
+            <div class="formContain">
+
+                <div style="background-color: #fff;width: calc(100% - 80px);margin: 0 auto;">
+                    <div style="position: relative;left: 15px;top:-10px;font-size: 16px;">
+                        活动ID： <span style="display: inline-block;margin-right: 10px;" id="actId"></span>
+                        活动名称：<span style="display: inline-block;margin-right: 10px;" id="actName"></span>
+                        领奖者类型：<span style="display: inline-block;margin-right: 10px;" id="rewardType"></span>
+                        <span class="appendReward">追加</span>
+                    </div>
+                    <table id="example1" class="display">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>领取者类型</th>
+                            <th>券码</th>
+                            <th>核销状态</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
                 </div>
-                <table id="example1" class="display">
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>领取者类型</th>
-                        <th>券码</th>
-                        <th>核销状态</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-
-                    </tbody>
-                </table>
+            </div>
+        </div>
+        <div class="appendLog">
+        ##        <div class="closeBtn" id="closeBtn1">✖</div>
+            <div style="text-align: center;margin-top: 60px;margin-bottom: 30px;">
+                <span>请输入要追加的奖品数量</span>
+                <a style="display: inline-block;vertical-align: middle;">
+                    <input type="number" min="1" value="1" name="rewardNums" class="form-control" style="text-align: left;">
+                </a>
+            </div>
+            <div class="modal-footer" style="text-align: center;border: 0px;">
+                <button type="button" class="btn btn-primary" id="submitBtn">提 交</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="closeBtn1">取 消
+                </button>
             </div>
         </div>
     </div>
-    <div class="appendLog">
-##        <div class="closeBtn" id="closeBtn1">✖</div>
-        <div style="text-align: center;margin-top: 60px;margin-bottom: 30px;">
-            <span>请输入要追加的奖品数量</span>
-            <a style="display: inline-block;vertical-align: middle;">
-                <input type="number" min="1" value="1" name="rewardNums" class="form-control" style="text-align: left;">
-            </a>
-        </div>
-        <div class="modal-footer" style="text-align: center;border: 0px;">
-            <button type="button" class="btn btn-primary" id="submitBtn">提 交</button>
-            <button type="button" class="btn btn-default" data-dismiss="modal" id="closeBtn1">取 消
-            </button>
-        </div>
-    </div>
-</div>
-<div style="width: 100%;height: 100%;">
 ##    <div class="addAccount" id="addAccount">添加账号</div>
-    <div style="background-color: #fff;height: calc(100% - 10px);overflow-y: auto;padding-bottom: 15px;">
+    <div style="background-color: #fff;margin: 20px;">
         <table id="example" class="display" style="width:100%;">
             <thead>
             <tr>
