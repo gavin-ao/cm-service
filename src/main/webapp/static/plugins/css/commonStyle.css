@@ -101,12 +101,12 @@ a:hover,a:active,a:link{
 .contain_main {
     width: 100%;
     height:100%;
-    padding-top: 80px;
+    /*padding-top: 80px;*/
     background-color: #EEF4F9
 }
 .contain_main>div{
     width: 100%;
-    height: 100%;
+    height: calc(100% - 80px);
     overflow-y: auto;
 }
 .mineStyle>li{

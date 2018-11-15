@@ -5,7 +5,7 @@
 <script src="/static/plugins/store-manage/manage.js"></script>
 
 
-<div style="width: 100%;height: 100%;overflow-y: auto;">
+<div>
     <div class="manageAdd" id="manageAdd">
         <div class="manangeAddCon">
         ##                <div class="closeBtn" id="closeBtn">✖</div>
