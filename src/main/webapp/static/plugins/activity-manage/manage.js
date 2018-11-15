@@ -392,7 +392,6 @@ function changepic() {
 
         var size = fileSize / 1024;
         if (size > 200) {
-            alert("");
             $.MsgBox.Alert("温馨提示", "海报图片大小不能大于200Kb！");
             file.value = "";
             return false;
