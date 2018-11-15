@@ -401,10 +401,10 @@ function changepic() {
             return false;
         } else {
             // $('#show').attr("names",f.name);
-            reads.onload = function (e) {
-                $("#show").parent().show();
-                document.getElementById('show').src = this.result;
 
+            reads.onload = function (e) {
+                // console.log(e)
+                var data = this.result;
                 // $("#selShow").attr("src",this.result);
                 //开启裁剪功能
                 // $('#show ').imgAreaSelect(
@@ -416,12 +416,36 @@ function changepic() {
                 //         onSelectEnd : preview
                 //     }
                 // );
+                var flag =false;
+                var image = new Image();
+                image.src= data;
+                image.onload=function(){
+                    console.log(image.height)
+                    console.log(image.width)
+                    var width = image.width;
+                    var height = image.height;
+
+                    for(var i=1;i<6;){
+                        if(((351*i-10)<=width &&width<=(351*i+10)) && ((523*i-10)<=height&&height<=(523*i+10))){
+                            flag = true;
+                        }
+                        i=i+0.1
+                    }
+                    if (flag){
+                        $("#show").parent().show();
+                        document.getElementById('show').src = data;
+                    }else {
+                        $.MsgBox.Alert("温馨提示", "图片尺寸应为：351*523(或同比例放大)");
+                        return false;
+                    }
+                };
 
             };
         }
     } else {
         return false;
     }
+
 
 
 }
