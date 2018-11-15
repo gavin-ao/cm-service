@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>获客e</title>
+    <title>分销e</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
     <meta http-equiv="Expires" content="0">
@@ -127,7 +127,7 @@
                 <img src="/static/service/images/login/login.png" alt="" style="width: 56px;height: 56px;">
             </div>
             <div style="font-size: 30px;font-weight: bold;display: inline-block;height:56px;line-height: 56px;vertical-align: middle;font-weight: lighter;  background: linear-gradient(to right, #0E91CD, #0CA8FF); -webkit-background-clip: text;color: transparent;;">
-                <span style="color: #0E91CD;font-weight: Bold;">获客e</span>数据管理平台
+                <span style="color: #0E91CD;font-weight: Bold;">分销e</span>数据管理平台
             </div>
         </div>
         <div class="login_div" style="margin-top: 93px;">
