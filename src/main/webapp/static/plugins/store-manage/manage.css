@@ -143,3 +143,8 @@
     width: 330px!important;
     max-width: 330px!important;
 }
+#example thead tr th:nth-child(7), #example tbody tr td:nth-child(7){
+    width: 80px!important;
+    max-width: 80px!important;
+    min-width: 80px!important;
+}
