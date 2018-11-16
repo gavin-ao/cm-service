@@ -110,7 +110,7 @@ function tablesData() {
                         var arry = ["actId", "actName", "startAt", "status", "commandType", "remark","actNum"];
                         var tabledata = [];
                         for (var i = 0; i < result.page.result.length; i++) {
-                            result.page.result[i]["startAt"] = result.page.result[i]["startAt"] ? timestampToTime(result.page.result[i]["startAt"] / 1000) : "";
+                            result.page.result[i]["startAt"] = result.page.result[i]["startAt"] ? myDates(result.page.result[i]["startAt"]) : "";
                             tabledata.push(returnIsNotInArray(arry, result.page.result[i]));
                         }
                         setTimeout(function () {

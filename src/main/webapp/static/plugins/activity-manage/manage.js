@@ -17,8 +17,8 @@ var wholeStartTime, wholeEndTime, startDates, endDates;
         $("#show").parent().hide()
         $("#formsearch .modal-footer").show();
         $("#currentActId").attr("data-curr-actid", "");
-        $("#currentActId").attr("data-curr-contentid1","");
-        $("#currentActId").attr("data-curr-contentid2","");
+        $("#currentActId").attr("data-curr-contentid1", "");
+        $("#currentActId").attr("data-curr-contentid2", "");
         $("#formsearch input[name='invitingAwardsNum']").parents("p").show();
         $("#manageAdd").show();
         $("#formsearch>p input").each(function () {
@@ -58,7 +58,7 @@ var wholeStartTime, wholeEndTime, startDates, endDates;
             $.MsgBox.Alert("温馨提示", "邀请奖励数量要大于0");
         }
         var src = $("#show").attr("src");
-        if (src&&flag) {
+        if (src && flag) {
             $.ajax({
                 type: "post",
                 url: "/system/file/pictureUpload",
@@ -99,8 +99,6 @@ var wholeStartTime, wholeEndTime, startDates, endDates;
         // console.log(pic)
         $('#show').attr("src", pic);
     });
-
-
 }());
 //获取活动时间
 function activTime() {
@@ -115,7 +113,9 @@ function activTime() {
             if (result.success) {
 
 //活动时间 选择
-                laydateTime(result.nextDate);
+                var time = myDates(result.nextDate);
+                wholeEndTime = wholeStartTime = time
+                laydateTime(time);
             }
         }
     })
@@ -167,11 +167,11 @@ function tablesData() {
                 success: function (result) {
                     // console.log(result)
                     if (result.success) {
-                        var arry = ["actId", "actTitle", "startAt", "endAt", "status","actNum"];
+                        var arry = ["actId", "actTitle", "startAt", "endAt", "status", "actNum"];
                         var tabledata = [];
                         for (var i = 0; i < result.page.result.length; i++) {
-                            result.page.result[i]["startAt"] = result.page.result[i]["startAt"] ? timestampToTime(result.page.result[i]["startAt"] / 1000) : "";
-                            result.page.result[i]["endAt"] = result.page.result[i]["endAt"] ? timestampToTime(result.page.result[i]["endAt"] / 1000) : "";
+                            result.page.result[i]["startAt"] = result.page.result[i]["startAt"] ? myDates(result.page.result[i]["startAt"]) : "";
+                            result.page.result[i]["endAt"] = result.page.result[i]["endAt"] ? myDates(result.page.result[i]["endAt"]) : "";
                             tabledata.push(returnIsNotInArray(arry, result.page.result[i]));
                         }
                         setTimeout(function () {
@@ -254,7 +254,7 @@ function tablesData() {
             },
             {
                 "bSortable": false,
-                "aTargets": [0, 1, 2, 3, 4, 5, 6,7]
+                "aTargets": [0, 1, 2, 3, 4, 5, 6, 7]
             }
 
         ],
@@ -416,25 +416,25 @@ function changepic() {
                 //         onSelectEnd : preview
                 //     }
                 // );
-                var flag =false;
+                var flag = false;
                 var image = new Image();
-                image.src= data;
-                image.onload=function(){
+                image.src = data;
+                image.onload = function () {
                     console.log(image.height)
                     console.log(image.width)
                     var width = image.width;
                     var height = image.height;
 
-                    for(var i=1;i<6;){
-                        if(((351*i-10)<=width &&width<=(351*i+10)) && ((523*i-10)<=height&&height<=(523*i+10))){
+                    for (var i = 1; i < 6;) {
+                        if (((351 * i - 10) <= width && width <= (351 * i + 10)) && ((523 * i - 10) <= height && height <= (523 * i + 10))) {
                             flag = true;
                         }
-                        i=i+0.1
+                        i = i + 0.1
                     }
-                    if (flag){
+                    if (flag) {
                         $("#show").parent().show();
                         document.getElementById('show').src = data;
-                    }else {
+                    } else {
                         $.MsgBox.Alert("温馨提示", "图片尺寸应为：351*523(或同比例放大)");
                         return false;
                     }
@@ -445,7 +445,6 @@ function changepic() {
     } else {
         return false;
     }
-
 
 
 }
@@ -459,11 +458,10 @@ function preview(img, selection) {
 
 }
 //活动时间 选择
-function laydateTime(myDate) {
+function laydateTime(time, times) {
     lay('#version').html('-v' + laydate.v);
     // var myDate = new Date();
-    var time = myDates(myDate);
-    wholeEndTime = wholeStartTime = time
+
 //执行一个laydate实例
 //     开始时间
     laydate.render({
@@ -475,36 +473,58 @@ function laydateTime(myDate) {
             endDates = new Date(Date.parse(wholeEndTime.replace(/-/g, "/")));
             endDates = endDates.getTime();
             if (startDates > endDates) {
-                $("#startTime").val(wholeEndTime)
+                $("#startTime").val(wholeEndTime);
                 wholeStartTime = wholeEndTime;
                 $.MsgBox.Alert("温馨提示", "开始时间不能大于结束时间。");
             } else {
-                $(".contain_main_title .time1").html(value)
+                $(".contain_main_title .time1").html(value);
                 wholeStartTime = value;
             }
         }
 
     });
-
-    // 结束时间
-    laydate.render({
-        elem: '#endTime' //指定元素
-        , value: time
-        , done: function (value, date) {
-            startDates = new Date(Date.parse(wholeStartTime.replace(/-/g, "/")));
-            startDates = startDates.getTime();
-            endDates = new Date(Date.parse(value.replace(/-/g, "/")));
-            endDates = endDates.getTime();
-            if (startDates > endDates) {
-                $("#endTime").val(wholeStartTime)
-                wholeEndTime = wholeStartTime
-                $.MsgBox.Alert("温馨提示", "结束时间不能小于开始时间。");
-            } else {
-                $(".contain_main_title .time2").html(value)
-                wholeEndTime = value
+    if (times) {
+        // 结束时间
+        laydate.render({
+            elem: '#endTime' //指定元素
+            , value: times
+            , done: function (value, date) {
+                startDates = new Date(Date.parse(wholeStartTime.replace(/-/g, "/")));
+                startDates = startDates.getTime();
+                endDates = new Date(Date.parse(value.replace(/-/g, "/")));
+                endDates = endDates.getTime();
+                if (startDates > endDates) {
+                    $("#endTime").val(wholeStartTime);
+                    wholeEndTime = wholeStartTime;
+                    $.MsgBox.Alert("温馨提示", "结束时间不能小于开始时间。");
+                } else {
+                    $(".contain_main_title .time2").html(value);
+                    wholeEndTime = value
+                }
             }
-        }
-    });
+        });
+    } else {
+        // 结束时间
+        laydate.render({
+            elem: '#endTime' //指定元素
+            , value: time
+            , done: function (value, date) {
+                startDates = new Date(Date.parse(wholeStartTime.replace(/-/g, "/")));
+                startDates = startDates.getTime();
+                endDates = new Date(Date.parse(value.replace(/-/g, "/")));
+                endDates = endDates.getTime();
+                if (startDates > endDates) {
+                    $("#endTime").val(wholeStartTime);
+                    wholeEndTime = wholeStartTime;
+                    $.MsgBox.Alert("温馨提示", "结束时间不能小于开始时间。");
+                } else {
+                    $(".contain_main_title .time2").html(value);
+                    wholeEndTime = value
+                }
+            }
+        });
+    }
+
 }
 
 // 获取当前时间
@@ -575,7 +595,7 @@ function addActivity(picId, par) {
     ];
     var contentid1 = $("#currentActId").attr("data-curr-contentid1");
     var contentid2 = $("#currentActId").attr("data-curr-contentid2");
-    if(contentid1&&contentid2){
+    if (contentid1 && contentid2) {
         rewardActContentJson = [
             {
                 "commandType": 1,
@@ -584,7 +604,7 @@ function addActivity(picId, par) {
                 contentHead: "恭喜您获得 " + par.invitingAwards,
                 contentFoot: "数量有限，先到先得哦",
                 contentBtn: "我也要领奖励",
-                contentId:contentid1
+                contentId: contentid1
             },
             {
                 "commandType": 2,
@@ -593,7 +613,7 @@ function addActivity(picId, par) {
                 contentHead: "恭喜您获得 " + par.aidReward,
                 contentFoot: "数量有限，先到先得哦",
                 contentBtn: "我也要领奖励",
-                contentId:contentid2
+                contentId: contentid2
             }
         ];
     }
@@ -613,7 +633,7 @@ function addActivity(picId, par) {
     var actId = $("#currentActId").attr("data-curr-actid");
     if (actId) {
         activity.actId = actId;
-    }else{
+    } else {
         activity.rewardNum = par.invitingAwardsNum
     }
     $.ajax({
@@ -649,12 +669,16 @@ function reverseSupplement(data) {
     $("#formsearch input[name='helpNumber']").val(activity.partakeNum);
     $("#formsearch input[name='shareTitle']").val(activity.actShareTitle);
     $("#formsearch input[name='invitingAwardsNum']").parents("p").hide();
+    // var myDate = new Date();
+    wholeStartTime = myDates(activity.startAt);
+    wholeEndTime = myDates(activity.endAt);
+    laydateTime(myDates(activity.startAt), myDates(activity.endAt));
     for (var i = 0; i < rewardList.length; i++) {
         if (rewardList[i].commandType == 1) {
-            $("#currentActId").attr("data-curr-contentid1",rewardList[i].contentId);
+            $("#currentActId").attr("data-curr-contentid1", rewardList[i].contentId);
             $("#formsearch input[name='invitingAwards']").val(rewardList[i].remark);
         } else if (rewardList[i].commandType == 2) {
-            $("#currentActId").attr("data-curr-contentid2",rewardList[i].contentId);
+            $("#currentActId").attr("data-curr-contentid2", rewardList[i].contentId);
             $("#formsearch input[name='aidReward']").val(rewardList[i].remark);
         }
     }
@@ -684,16 +708,16 @@ function checkField(dataField) {
     var flag1 = judgmenLength(dataField.invitingButton, 18, "邀请按钮文案");
     var flag2 = judgmenLength(dataField.posterCopywriting, 40, "活动玩法说明");
     var flag3 = judgmenLength(dataField.shareTitle, 26, "分享标题");
-    if(flag&&flag1&&flag2&&flag3){
+    if (flag && flag1 && flag2 && flag3) {
         return true;
-    }else{
+    } else {
         return false;
     }
 }
 
 
-function keydowns(e,tar) {
-    if(e.keyCode == 13){
+function keydowns(e, tar) {
+    if (e.keyCode == 13) {
         fieldLength(tar)
     }
 }
