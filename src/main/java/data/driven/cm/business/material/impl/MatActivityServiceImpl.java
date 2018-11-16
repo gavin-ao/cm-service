@@ -84,7 +84,7 @@ public class MatActivityServiceImpl implements MatActivityService{
 
     @Override
     public MatActivityVO getValidMatActivityInfo(String actId) {
-        Date date = new Date();
+        Date date = DateFormatUtil.convertDate(new Date());
         String sql = "select ma.store_id,ma.act_id,ma.act_num,ma.act_type,ma.act_name,ma.act_reply,ma.act_title,ma.act_share_title,ma.act_share_copywriting,ma.act_rule,ma.exchange_rule,ma.partake_num from mat_activity ma where ma.act_id = ? and ma.start_at <= ? and ma.end_at >= ?";
         List<MatActivityVO> list = jdbcBaseDao.queryList(MatActivityVO.class, sql, actId, date, date);
         if(list != null && list.size() > 0){
@@ -95,7 +95,7 @@ public class MatActivityServiceImpl implements MatActivityService{
 
     @Override
     public MatActivityVO getMatActivityInfoByStore(String storeId) {
-        Date date = new Date();
+        Date date = DateFormatUtil.convertDate(new Date());
         String sql = "select p.file_path,ma.act_id,ma.act_num,ma.act_type,ma.act_name,ma.act_reply,ma.act_title,ma.act_share_title,ma.act_share_copywriting,ma.act_rule,ma.exchange_rule,ma.partake_num from mat_activity ma" +
                 " left join sys_picture p on p.picture_id = ma.picture_id where ma.store_id = ? and ma.start_at <= ? and ma.end_at >= ?";
         List<MatActivityVO> list = jdbcBaseDao.queryList(MatActivityVO.class, sql, storeId, date, date);
@@ -106,7 +106,7 @@ public class MatActivityServiceImpl implements MatActivityService{
     }
     @Override
     public MatActivityVO getAnyMatActivityInfoByStore(String storeId) {
-        Date date = new Date();
+        Date date = DateFormatUtil.convertDate(new Date());
         String sql = "select ma.act_id,ma.reward_url from mat_activity ma where ma.store_id = ? and ma.start_at <= ? and ma.end_at >= ?";
         List<MatActivityVO> list = jdbcBaseDao.queryList(MatActivityVO.class, sql, storeId, date, date);
         if(list != null && list.size() > 0){
