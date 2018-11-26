@@ -33,6 +33,8 @@ public class WechatApiFilter implements Filter{
         EXCLUDE_URL_SET.add("/wechatapi/service/");
         //不需要授权/登录就可以访问的接口
         EXCLUDE_URL_SET.add("/wechatapi/nologin");
+        //不需要授权/登录就可以访问的接口 - 客服消息
+        EXCLUDE_URL_SET.add("/wechatapi/msg");
 
     }
 
