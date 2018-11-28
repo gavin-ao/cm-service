@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 图片service
@@ -29,5 +30,20 @@ public class PictureServiceImpl implements PictureService {
     @Override
     public void insertPicture(PictureEntity pictureEntity) {
         jdbcBaseDao.insert(pictureEntity, "sys_picture");
+    }
+
+    @Override
+    public List<String> findPictureByIds(List<String> ids) {
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < ids.size(); i++){
+            sb.append(",?");
+        }
+        sb.delete(0, 1);
+        String sql = "select file_path from sys_picture where picture_id in (" + sb + ")";
+        List<PictureEntity> list = jdbcBaseDao.queryListWithListParam(PictureEntity.class, sql, ids);
+        if(list != null && list.size() > 0){
+            return list.stream().collect(Collectors.mapping(o -> o.getFilePath(), Collectors.toList()));
+        }
+        return null;
     }
 }

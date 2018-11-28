@@ -22,4 +22,11 @@ public interface PictureService {
      * @param pictureEntity
      */
     public void insertPicture(PictureEntity pictureEntity);
+
+    /**
+     * 根据id集合查询图片地址
+     * @param ids
+     * @return
+     */
+    public List<String> findPictureByIds(List<String> ids);
 }
