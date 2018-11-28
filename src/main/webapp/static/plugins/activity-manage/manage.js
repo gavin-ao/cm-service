@@ -29,6 +29,18 @@ var wholeStartTime, wholeEndTime, startDates, endDates;
         })
         $("input[name='helpNumber']").val(1);
         $("input[name='invitingAwardsNum']").val(1);
+        //默认助力有奖
+        $("#assistanceExitReward").trigger("click");
+        //默认邀请奖励类型 一人一码
+        $("#invitationRewardType option:first").prop("selected", 'selected');
+        $(".invitationGroup").hide();
+        $(".invitationReward").show();
+        $("input[name='invitingAwards']").attr("placeholder","自由设置，领取后按设置核销，如:满199减30");
+        //默认助力奖励类型 一人一码
+        $("#assistanceRewardType option:first").prop("selected", 'selected');
+        $(".assistanceGroup").hide();
+        $(".showExit").show();
+        $("input[name='aidReward']").attr("placeholder","应比邀请奖励小，以刺激转发，如:满199减10");
         //获取活动时间
         activTime();
     });
@@ -81,24 +93,122 @@ var wholeStartTime, wholeEndTime, startDates, endDates;
 
     });
 
-    //上传图片
-
+    //上传海报图片
     $("#upImage").off("click");
     $("#upImage").on("click", function (e) {
         $("#file").click();
     })
-    $("#corpper").off("click");
-    $("#corpper").on("click", function (e) {
-        e.preventDefault();
-        $('#show').imgAreaSelect({handles: true, onSelectEnd: preview});
-    })
-    $("#saveCorpper").off("click");
-    $("#saveCorpper").click(function (e) {
-        e.preventDefault();
-        var pic = $('#show').attr('src');
-        // console.log(pic)
-        $('#show').attr("src", pic);
+    // $("#corpper").off("click");
+    // $("#corpper").on("click", function (e) {
+    //     e.preventDefault();
+    //     $('#show').imgAreaSelect({handles: true, onSelectEnd: preview});
+    // })
+    // $("#saveCorpper").off("click");
+    // $("#saveCorpper").click(function (e) {
+    //     e.preventDefault();
+    //     var pic = $('#show').attr('src');
+    //     // console.log(pic)
+    //     $('#show').attr("src", pic);
+    // });
+
+    //助力是否有奖
+    //没奖
+    $("#assistanceNoReward").off("click");
+    $("#assistanceNoReward").on("click", function () {
+        $(".showExit").hide();
     });
+    //有奖
+    $("#assistanceExitReward").off("click");
+    $("#assistanceExitReward").on("click", function () {
+        $(".showExit").show();
+        $("#assistanceRewardType option:first").prop("selected", 'selected');
+        $(".showExit input[name='aidReward']").val("");
+        $(".assistanceGroup").hide();
+        $("input[name='aidReward']").attr("placeholder","应比邀请奖励小，以刺激转发，如:满199减10");
+    });
+
+    // 邀请奖励类型
+    $("#invitationRewardType").off("change");
+    $("#invitationRewardType").on("change", function () {
+        console.log($(this).val())
+        var index = parseInt($(this).val().trim())
+        switch (index) {
+            case 1: // 一人一码
+                $(".invitationGroup").hide();
+                $(".invitationReward").show();
+                $("input[name='invitingAwards']").val('');
+                $("input[name='invitingAwards']").attr("placeholder","自由设置，领取后按设置核销，如:满199减30");
+                $("input[name='invitingAwardsNum']").val(1);
+                break;
+            case 2:// 淘口令
+                $(".invitationGroup").hide();
+                $(".invitationReward").show();
+                $("input[name='invitingAwards']").val('');
+                $("input[name='invitingAwardsNum']").val(1);
+                $("input[name='invitingAwards']").attr("placeholder","自由设置，领取后按设置核销，如:€u56pb2a7sOn€");
+                break;
+            case 3: // 进群领奖
+                console.log(22222222)
+                $(".invitationReward").hide();
+                $(".invitationGroup").show();
+                $("input[name='invitationUploadPicture']").val('');
+                $("#invitationImagesShow").html("");
+                break;
+            case 4://落地页
+                $(".invitationGroup").hide();
+                $(".invitationReward").show();
+                $(".invitationNumber").hide();
+                $("input[name='invitingAwards']").val('');
+                break;
+        }
+    });
+
+
+
+    // 助力奖励类型
+    $("#assistanceRewardType").off("change");
+    $("#assistanceRewardType").on("change", function () {
+        console.log($(this).val())
+        var index = parseInt($(this).val().trim())
+        if(index ==1 || index ==2 || index == 4){
+            $(".assistanceGroup").hide();
+            $(".assistanceReward").show();
+            $("input[name='aidReward']").val('');
+        }
+        switch (index) {
+            case 1:
+                $("input[name='aidReward']").attr("placeholder","应比邀请奖励小，以刺激转发，如:满199减10");
+                break;
+            case 2:
+                $("input[name='aidReward']").attr("placeholder","自由设置，领取后按设置核销，如:€u56pb2a7sOn€");
+                break;
+            case 3:
+                $(".assistanceGroup").show();
+                $(".assistanceReward").hide();
+                $("input[name='assistanceUploadPicture']").val('');
+                $("#assistanceImagesShow").html("");
+                break;
+            case 4:
+                $("input[name='aidReward']").attr("placeholder","自由设置，领取后按设置核销，如:€u56pb2a7sOn€");
+                break;
+        }
+    });
+    // 一人一码
+    // 淘口令
+    // 客服消息
+
+    //上传邀请进群图片
+    $("#invitationUpImage").off("click");
+    $("#invitationUpImage").on("click", function (e) {
+        $("#invitationFile").click();
+    })
+    //上传助力进群图片
+    $("#assistanceUpImage").off("click");
+    $("#assistanceUpImage").on("click", function (e) {
+        $("#assistanceFile").click();
+    })
+
+
 }());
 //获取活动时间
 function activTime() {
@@ -351,10 +461,7 @@ function tablesData() {
 
     });
 }
-//判断活动id是否重复
-function exitId(tar) {
-    return false;
-}
+
 //判断每个字段允许的长度
 function fieldLength(tar) {
     var titleName = $.trim($(tar).attr("name"));
@@ -375,12 +482,7 @@ function fieldLength(tar) {
     }
     return false;
 }
-//js锚点效果
-function anchorss(id) {
-    // console.log(id)
-    document.getElementById(id).scrollIntoView(true);
-    return false;
-}
+
 //上传海报图片
 function changepic() {
     var reads = new FileReader();
@@ -449,13 +551,80 @@ function changepic() {
 
 }
 
-function preview(img, selection) {
-    var scaleX = 100 / selection.width;
-    var scaleY = 100 / selection.height;
-    // var img = new Image();
-    //传路径
-    img.src = document.getElementById('show').src;
+//上传邀请进群图片
+function invitationchangepic(id, tar,newId) {
+    var that = this;
+    var reads = new FileReader();
+    f = document.getElementById(id).files[0];
+    reads.readAsDataURL(f);
+    console.log(f)
+    if (f) {
+        fileSize = f.size;
+        var size = fileSize / 1024;
+        if (size > 200) {
+            $.MsgBox.Alert("温馨提示", "图片大小不能大于200Kb！");
+            return false;
+        } else if (size <= 0) {
+            $.MsgBox.Alert("温馨提示", "图片大小不能为0Kb！");
+            return false;
+        } else {
+            reads.onload = function (e) {
+                // console.log(e)
+                var data = this.result;
+                console.log()
+                $("#"+newId).show();
+                var img = '<p class="newImages"><img src="' + data + '" onclick="modifyCurrentImg(this,' + tar + ')"><span onclick="deleteImage(this,'+id+')">✖</span></p>';
+                $("#"+newId).append(img);
+            };
+        }
+    } else {
+        return false;
+    }
+}
+// 修改当前 进群二维码图片
+function modifyCurrentImg(tar, id) {
+    console.log(tar)
+    $(id).trigger("click");
+    $("#modifyCurrentImgs").on("change", function () {
+        modifyCurrentImgFile("modifyCurrentImgs", tar);
+    })
+}
+function modifyCurrentImgFile(id, tar) {
+    var reads = new FileReader();
+    f = document.getElementById(id).files[0];
+    reads.readAsDataURL(f);
+    console.log(f)
+    if (f) {
+        fileSize = f.size;
+        var size = fileSize / 1024;
+        if (size > 200) {
+            $.MsgBox.Alert("温馨提示", "图片大小不能大于200Kb！");
+            return false;
+        } else if (size <= 0) {
+            $.MsgBox.Alert("温馨提示", "图片大小不能为0Kb！");
+            return false;
+        } else {
+            reads.onload = function (e) {
+                // console.log(e)
+                var data = this.result;
+                $(tar).attr("src", data);
 
+            };
+        }
+    } else {
+        return false;
+    }
+}
+
+// 删除 进群二维码图片
+function deleteImage(tar,id) {
+    console.log(tar)
+    var that = $(tar).parent().parent();
+    $(tar).parent().remove();
+    $(id).val('')
+    if(that.find(".newImages").length<=0){
+        that.hide();
+    }
 }
 //活动时间 选择
 function laydateTime(time, times) {
@@ -527,13 +696,6 @@ function laydateTime(time, times) {
 
 }
 
-// 获取当前时间
-function currentTime(myDate) {
-    var year = myDate.getFullYear();
-    var mounth = (myDate.getMonth() + 1) > 9 ? (myDate.getMonth() + 1) : "0" + (myDate.getMonth() + 1);
-    var date = myDate.getDate() > 9 ? myDate.getDate() : "0" + myDate.getDate();
-    return year + "-" + mounth + "-" + date;
-}
 
 //判断字数长度 是否符合要求
 function judgmenLength(text, lens, con) {

@@ -41,7 +41,7 @@
     overflow-y: auto;
 }
 
-.formContain > .titless,.explainInfos>.titless {
+.formContain > .titless, .explainInfos > .titless {
     height: 50px;
     line-height: 50px;
     color: rgb(51, 51, 51);
@@ -58,9 +58,11 @@
     width: 90%;
     /*text-align: center;*/
 }
-.formContain > form > p{
+
+.formContain > form > p {
     margin-bottom: 20px;
 }
+
 .formContain > form > p > span.text {
     display: inline-block;
     width: 200px;
@@ -70,6 +72,13 @@
 
 .formContain form > p > a.anchorss {
     width: 100%;
+    display: inline-block;
+    vertical-align: middle;
+    color: #333;
+}
+
+.formContain form > p.rewardInfos > a.anchorss {
+    width: calc(100% - 110px);
     display: inline-block;
     vertical-align: middle;
 }
@@ -103,11 +112,15 @@
 
 .formContain > form > p > a > span.radios {
     display: inline-block;
-    width:50%;
+    width: 50%;
     float: left;
     height: 34px;
     line-height: 34px;
-    text-align: center;
+    text-align: left;
+}
+
+.formContain > form > p > a.rewardType > span.radios {
+    width: 33.3333%;
 }
 
 .formContain > form > p > a > span.radios > input[name='activityType'] {
@@ -166,27 +179,67 @@
     overflow-y: auto;
     margin-top: 10px;
 }
-.dataTables>div {
+
+.dataTables > div {
     width: 100%;
 }
- .addAccount {
-     width: 120px;
-     height: 40px;
-     line-height: 40px;
-     text-align: center;
-     font-size: 13px;
-     color: #FFF;
-     border: none;
-     border-radius: 5px;
-     cursor: pointer;
-     background-color: rgba(22, 155, 213, 1);
-     margin: 20px 0px 0px 20px;
+
+.addAccount {
+    width: 120px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    font-size: 13px;
+    color: #FFF;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: rgba(22, 155, 213, 1);
+    /*margin: 20px 0px 0px 20px;*/
 }
- .modal-footer>button{
-     width: 33%;
-     height: 40px;
- }
-.modal-footer>button.btn-primary{
-     background-color: rgba(22, 155, 213, 1);
+
+.modal-footer > button {
+    width: 33%;
+    height: 40px;
+}
+
+.modal-footer > button.btn-primary {
+    background-color: rgba(22, 155, 213, 1);
     border: 0px;
- }
+}
+
+.classImages {
+    display: none;
+    width: 100%;
+    text-align: center;
+}
+
+.classImages > img {
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+.newImages {
+    position: relative;
+    display: inline-block;
+    width: auto;
+    height: auto;
+}
+
+.newImages > img {
+    height: 100px;
+}
+
+.newImages > span {
+    width: 10px;
+    height: 10px;
+    text-align: center;
+    font-size: 10px;
+    line-height: 10px;
+    background-color: rgba(255, 255, 255, .9);
+    color: red;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    cursor: pointer;
+}

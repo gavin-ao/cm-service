@@ -220,39 +220,42 @@ function tablesData() {
     // 初始化修改按钮
     $('#example tbody').on('click', 'button.modify_btn', function (e) {
         e.preventDefault();
-        var actId = $(this).parents('tr').find("td")[0].innerHTML.trim();
-        var actNum = $(this).parents('tr').find("td")[2].innerHTML.trim();
-        var actName = $(this).parents('tr').find("td")[4].innerHTML.trim();
-        var commandType = $(this).parents('tr').find("td")[7].innerHTML.trim();
-        $("#actId").html(actNum);
-        $("#actName").html(actName);
-        $("#rewardType").html(commandType);
-        $("#saveStatusL").attr("data-actid", actId);
-        $("#saveStatusL").attr("data-commonrtype", commandType);
+        // var actId = $(this).parents('tr').find("td")[0].innerHTML.trim();
+        // var actNum = $(this).parents('tr').find("td")[2].innerHTML.trim();
+        // var actName = $(this).parents('tr').find("td")[4].innerHTML.trim();
+        // var commandType = $(this).parents('tr').find("td")[7].innerHTML.trim();
+        // $("#actId").html(actNum);
+        // $("#actName").html(actName);
+        // $("#rewardType").html(commandType);
+        // $("#saveStatusL").attr("data-actid", actId);
+        // $("#saveStatusL").attr("data-commonrtype", commandType);
+        // $("#manageAdd").show();
+        // tab = rewardCodetablesData(tab,actId, commandType);
         $(".appendReward").show();
-        $("#manageAdd").show();
-        tab = rewardCodetablesData(tab,actId, commandType);
-
+        codeOperation(this);
     });
     // 查看按钮
     $('#example tbody').on('click', 'button.see_btn', function (e) {
         e.preventDefault();
-        var actId = $(this).parents('tr').find("td")[0].innerHTML.trim();
-        var actNum = $(this).parents('tr').find("td")[2].innerHTML.trim();
-        var actName = $(this).parents('tr').find("td")[4].innerHTML.trim();
-        var commandType = $(this).parents('tr').find("td")[7].innerHTML.trim();
-        $("#actId").html(actNum);
-        $("#actName").html(actName);
-        $("#rewardType").html(commandType);
-        $("#saveStatusL").attr("data-actid", actId);
-        $("#saveStatusL").attr("data-commonrtype", commandType);
         $(".appendReward").hide();
-        $("#manageAdd").show();
-        tab = rewardCodetablesData(tab,actId, commandType);
+        codeOperation(this);
     });
 }
 
-
+// 兑换码的操作
+function codeOperation(tar) {
+    var actId = $(tar).parents('tr').find("td")[0].innerHTML.trim();
+    var actNum = $(tar).parents('tr').find("td")[2].innerHTML.trim();
+    var actName = $(tar).parents('tr').find("td")[4].innerHTML.trim();
+    var commandType = $(tar).parents('tr').find("td")[7].innerHTML.trim();
+    $("#actId").html(actNum);
+    $("#actName").html(actName);
+    $("#rewardType").html(commandType);
+    $("#saveStatusL").attr("data-actid", actId);
+    $("#saveStatusL").attr("data-commonrtype", commandType);
+    $("#manageAdd").show();
+    tab = rewardCodetablesData(tab,actId, commandType);
+}
 function preview(img, selection) {
     var scaleX = 100 / selection.width;
     var scaleY = 100 / selection.height;
@@ -310,7 +313,71 @@ function rewardCodetablesData(table,actId, status) {
     if(table!=""){
         table.fnDestroy();         //销毁datatable
     }
+    var type = 1;
+    var html = '<tr> <th>ID</th> <th>领取者类型</th> <th>券码</th> <th>核销状态</th> </tr>';;
+    var ziduan = ["commandId", "command", "beingUsed", "commandType"];
+    var exPandZiduan =[
+        {"data": "commandId"},
+        {"data": "commandType"},
+        {"data": "command"},
+        {"data": "beingUsed"}
+    ];
+    var defs = [
+        {
+            "aTargets": [1],
+            "mRender": function (data, type, full, meta) {
+                if (data == 2) {
+                    return "助力有奖";
+                } else if (data == 1) {
+                    return "发起邀请";
+                }
+            }
+        },
+        {
+            "aTargets": [3],
+            "mRender": function (data, type, full, meta) {
+                var text='';
+                if(data==0){
+                    text="未使用"
+                }else if(data==1){
+                    text="已核销"
+                }
+                return text;
+            }
+        },
+        {
+            "bSortable": false,
+            "aTargets": [0, 1, 2, 3]
+        }
+    ];
+    if(type == 1){
 
+    }else if(type == 2){
+        html = ' <tr> <th>ID</th> <th>领取者类型</th> <th>券码</th></tr>';
+        ziduan =  ["commandId", "command", "commandType"];
+        exPandZiduan =[
+            {"data": "commandId"},
+            {"data": "commandType"},
+            {"data": "command"}
+        ];
+        defs =  [
+            {
+                "aTargets": [1],
+                "mRender": function (data, type, full, meta) {
+                    if (data == 2) {
+                        return "助力有奖";
+                    } else if (data == 1) {
+                        return "发起邀请";
+                    }
+                }
+            },
+            {
+                "bSortable": false,
+                "aTargets": [0, 1, 2]
+            }
+        ];
+    }
+    $("#example1 thead").html(html);
     $("#example1 tbody").html("");
     var table = $('#example1').dataTable({
         searching: false, //去掉搜索框方法一：百度上的方法，但是我用这没管用
@@ -366,7 +433,7 @@ function rewardCodetablesData(table,actId, status) {
                 dataType: "json",
                 success: function (result) {
                     if (result.success) {
-                        var arry = ["commandId", "command", "beingUsed", "commandType"];
+                        var arry = ziduan;
                         var tabledata = [];
                         for (var i = 0; i < result.page.result.length; i++) {
                             tabledata.push(returnIsNotInArray(arry, result.page.result[i]));
@@ -389,41 +456,8 @@ function rewardCodetablesData(table,actId, status) {
                 }
             });
         },
-        aoColumns: [
-            {"data": "commandId"},
-            {"data": "commandType"},
-            {"data": "command"},
-            {"data": "beingUsed"}
-        ],
-        aoColumnDefs: [
-            {
-                "aTargets": [1],
-                "mRender": function (data, type, full, meta) {
-                    if (data == 2) {
-                        return "助力有奖";
-                    } else if (data == 1) {
-                        return "发起邀请";
-                    }
-                }
-            },
-            {
-                "aTargets": [3],
-                "mRender": function (data, type, full, meta) {
-                    var text='';
-                    if(data==0){
-                        text="未使用"
-                    }else if(data==1){
-                        text="已核销"
-                    }
-                    return text;
-                }
-            },
-            {
-                "bSortable": false,
-                "aTargets": [0, 1, 2, 3]
-            },
-
-        ],
+        aoColumns: exPandZiduan,
+        aoColumnDefs:defs,
         'fnDrawCallback': function (table) {
             $("#example1_paginate").append("<div style='display: inline-block; position: relative;top: -2px;'>到第 <input type='text' id='changePages1' class='input-text' style='width:50px;height:27px'> 页 <a class='btn btn-default shiny' href='javascript:void(0);' id='dataTables-btn1' style='text-align:center'>确认</a></div>");
             var oTable = $("#example1").dataTable();

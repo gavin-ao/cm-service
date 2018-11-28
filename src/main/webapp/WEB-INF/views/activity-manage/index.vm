@@ -15,20 +15,10 @@
                     <p>
                         <span class="text">1、活动标题:</span>
                         <a class="anchorss">
-                            <input type="text" name="storeTitle" class="form-control" onblur="fieldLength(this)" onkeydown="keydowns(event,this)" placeholder="展示在小程序顶部，10个字以内"/>
+                            <input type="text" name="storeTitle" class="form-control" onblur="fieldLength(this)"
+                                   onkeydown="keydowns(event,this)" placeholder="展示在小程序顶部，10个字以内"/>
                         </a>
                     </p>
-                ##                <p>
-                ##                    <span class="text">活动类型:</span>
-                ##                    <a  class="anchorss" onclick="anchorss('activityType')">
-                ##                        <span class="radios"><input type="radio" name="activityType" id="helps" value="1"
-                ##                                                    checked="checked"/><label for="helps">助力</label></span>
-                ##                        <span class="radios"><input type="radio" name="activityType" id="collages" value="2"
-                ##                                                    disabled="disabled"/><label for="collages">拼团</label></span>
-                ##                        <span class="radios"><input type="radio" name="activityType" id="cutDownPrice" value="3"
-                ##                                                    disabled="disabled"/><label for="cutDownPrice">砍价</label></span>
-                ##                    </a>
-                ##                </p>
                     <p>
                         <span class="text">2、活动海报:</span>
                         <a class="anchorss">
@@ -37,44 +27,22 @@
                                    accept="image/gif,image/jpeg,image/jpg,image/png,image/svg" name="uploadPicture"
                                    value="上传图片" onchange="changepic(this)"/>
                         </a>
-                    <p  style="display: none;width: 100%;text-align: center;">
+                    <p style="display: none;width: 100%;text-align: center;">
                         <img src="" id="show" height="200">
                     </p>
                     </p>
                     <p>
                         <span class="text">3、邀请按钮文案:</span>
                         <a class="anchorss">
-                            <input type="text" name="invitingButton" class="form-control" onblur="fieldLength(this)" onkeydown="keydowns(event,this)"   placeholder="简单概括活动内容，18个字以内"/>
+                            <input type="text" name="invitingButton" class="form-control" onblur="fieldLength(this)"
+                                   onkeydown="keydowns(event,this)" placeholder="简单概括活动内容，18个字以内"/>
                         </a>
                     </p>
-                ##                <p>
-                ##                    <span class="text">助力按钮:</span>
-                ##                    <a class="anchorss" >
-                ##                        <input type="text" name="helpButton" class="form-control" onblur="fieldLength(this)"/>
-                ##                    </a>
-                ##                </p>
-                ##                <p>
-                ##                    <span class="text">已助力按钮:</span>
-                ##                    <a class="anchorss">
-                ##                        <input type="text" name="boosterButton" class="form-control" onblur="fieldLength(this)"/>
-                ##                    </a>
-                ##                </p>
-                ##                <p>
-                ##                    <span class="text">助力已满按钮:</span>
-                ##                    <a class="anchorss" >
-                ##                        <input type="text" name="fullHelpButton" class="form-control" onblur="fieldLength(this)"/>
-                ##                    </a>
-                ##                </p>
-                ##                <p>
-                ##                    <span class="text">参加活动按钮:</span>
-                ##                    <a class="anchorss">
-                ##                        <input type="text" name="partsActivity" class="form-control" onblur="fieldLength(this)"/>
-                ##                    </a>
-                ##                </p>
                     <p>
                         <span class="text">4、活动玩法说明:</span>
                         <a class="anchorss">
-                            <input type="text" name="posterCopywriting" class="form-control"  onblur="fieldLength(this)"  onkeydown="keydowns(event,this)"  placeholder="说明达标条件和奖励，40个字以内"/>
+                            <input type="text" name="posterCopywriting" class="form-control" onblur="fieldLength(this)"
+                                   onkeydown="keydowns(event,this)" placeholder="说明达标条件和奖励，40个字以内"/>
                         </a>
                     </p>
                     <p>
@@ -89,49 +57,110 @@
                             <input type="number" name="helpNumber" min="1" value="1" class="form-control"/>
                         </a>
                     </p>
-
-                ##                <p>
-                ##                    <span class="text">助力是否有奖:</span>
-                ##                    <a class="anchorss">
-                ##                                    <span class="radios"><input type="radio" name="activityType" id="helps" value="1"
-                ##                                                                checked="checked"/><label for="helps">是</label></span>
-                ##                        <span class="radios"><input type="radio" name="activityType" id="collages" value="2"
-                ##                                                    disabled="disabled"/><label for="collages">否</label></span>
-                ##                    </a>
-                ##                </p>
-                    <p>
-                        <span class="text">7、邀请奖励:</span>
+                    <p class="rewardInfos">
+                        <span class="text" style="width: 100px;">助力是否有奖:</span>
                         <a class="anchorss">
-                            <input type="text" name="invitingAwards" class="form-control" placeholder="自由设置，领取后按设置核销，如:满199减30"/>
+                            <span class="radios">
+                                <input type="radio" name="assistanceNoReward" id="assistanceExitReward"
+                                       value="2" checked="checked"/>
+                                <label for="collages">是</label>
+                            </span>
+                            <span class="radios">
+                                    <input type="radio" name="assistanceNoReward" id="assistanceNoReward"
+                                           value="1"/>
+                                    <label for="collages">否</label>
+                           </span>
                         </a>
                     </p>
                     <p>
+                        <span class="text">邀请奖励类型:</span>
+                        <a class="anchorss">
+                            <select name="invitationRewardType" id="invitationRewardType" class="form-control">
+                                <option value="1">兑换码</option>
+                                <option value="2">淘口令</option>
+                                <option value="3">进群领奖</option>
+                                <option value="4">落地页</option>
+                            </select>
+                        </a>
+                    </p>
+                    <p class="invitationReward">
+                        <span class="text">7、邀请奖励:</span>
+                        <a class="anchorss">
+                            <input type="text" name="invitingAwards" class="form-control"
+                                   placeholder="自由设置，领取后按设置核销，如:满199减30"/>
+                        </a>
+                    </p>
+                    <p class="invitationReward invitationNumber">
                         <span class="text">邀请奖励数量:</span>
                         <a class="anchorss">
                             <input type="number" name="invitingAwardsNum" min="1" value="1" class="form-control"/>
                         </a>
                     </p>
-                    <p>
+                    <p class="invitationGroup">
+                        <span class="text">7、邀请奖励群二维码:</span>
+                        <a class="anchorss">
+                            <span class="upImage form-control" style="width: 50%;" id="invitationUpImage">上传图片</span>
+                            <span>可上传多张图片</span>
+                            <input id="invitationFile" style="display: none;" type="file" class="btn btn-primary" alt="群图片加载失败"
+                                   accept="image/gif,image/jpeg,image/jpg,image/png,image/svg" name="invitationUploadPicture"
+                                   value="上传图片" onchange="invitationchangepic('invitationFile','modifyCurrentImgs','invitationImagesShow')"/>
+                        </a>
+                        <input id="modifyCurrentImgs" style="display: none;" type="file"/>
+                        <p id="invitationImagesShow" class="classImages">
+
+                        </p>
+                    </p>
+                    <p class="showExit">
+                    ##                    <p class="rewardInfos showExit">
+                        <span class="text">助力奖励类型:</span>
+                        <a class="anchorss">
+                        ##                            <a class="anchorss rewardType">
+                            <select name="assistanceRewardType" id="assistanceRewardType" class="form-control">
+                                <option value="1">兑换码</option>
+                                <option value="2">淘口令</option>
+                                <option value="3">进群领奖</option>
+                                <option value="4">落地页</option>
+                            </select>
+                        </a>
+                    </p>
+                    <p class="showExit assistanceReward">
                         <span class="text">助力奖励:</span>
                         <a class="anchorss">
-                            <input type="text" name="aidReward" class="form-control" placeholder="应比邀请奖励小，以刺激转发，如:满199减10"/>
+                            <input type="text" name="aidReward" class="form-control"
+                                   placeholder="应比邀请奖励小，以刺激转发，如:满199减10"/>
                         </a>
+                    </p>
+                    <p class="assistanceGroup">
+                        <span class="text">助力奖励群二维码:</span>
+                        <a class="anchorss">
+                            <span class="upImage form-control" style="width: 50%;" id="assistanceUpImage">上传图片</span>
+                            <span>可上传多张图片</span>
+                            <input id="assistanceFile" style="display: none;" type="file" class="btn btn-primary" alt="群图片加载失败"
+                                   accept="image/gif,image/jpeg,image/jpg,image/png,image/svg" name="assistanceUploadPicture"
+                                   value="上传图片" onchange="invitationchangepic('assistanceFile','modifyCurrentImgs','assistanceImagesShow')"/>
+                        </a>
+                    <p id="assistanceImagesShow" class="classImages">
+
+                    </p>
                     </p>
                     <p>
                         <span class="text">8、分享标题:</span>
                         <a class="anchorss">
-                            <input type="text" name="shareTitle" class="form-control" onblur="fieldLength(this)" onkeydown="keydowns(event,this)"   placeholder="小程序转发到会话中展示的标题，26个字以内"/>
+                            <input type="text" name="shareTitle" class="form-control" onblur="fieldLength(this)"
+                                   onkeydown="keydowns(event,this)" placeholder="小程序转发到会话中展示的标题，26个字以内"/>
                         </a>
                     </p>
                     <p>
                         <span class="text">9、活动时间:</span>
                         <a class="anchorss actTimes">
-                            <input type="text" name="startTimes" class="form-control" placeholder="开始时间" id="startTime"/>
+                            <input type="text" name="startTimes" class="form-control" placeholder="开始时间"
+                                   id="startTime"/>
                             至 <input type="text" name="endTimes" class="form-control" placeholder="结束时间" id="endTime"/>
                         </a>
                     </p>
                     <div class="modal-footer" style="text-align: center;border: 0px;">
-                        <button type="button" class="btn btn-default closeBtn1" data-dismiss="modal" id="closeBtn">取 消</button>
+                        <button type="button" class="btn btn-default closeBtn1" data-dismiss="modal" id="closeBtn">取 消
+                        </button>
                         <button type="button" class="btn btn-primary" id="submitBtn">提 交</button>
                     </div>
                 </form>
@@ -144,7 +173,28 @@
             </div>
         </div>
     </div>
-    <div class="addAccount" id="addAccount">新建</div>
+    <div style="background-color: transparent;height: 40px;margin: 20px;">
+        <div class="addAccount" id="addAccount" style="float: left;">新建</div>
+    ##    <div class="" style="float: right;">
+    ##        <select name="" id="" style="width: 105px;
+    ##    height: 30px;
+    ##    padding: 3px 2px 3px 5px;
+    ##    font-family: 'ArialMT', 'Arial';
+    ##    font-weight: 400;
+    ##    font-style: normal;
+    ##    font-size: 13px;
+    ##    text-decoration: none;
+    ##    letter-spacing: normal;
+    ##    color: #AAAAAA;vertical-align: none; text-align: left; text-transform: none;background-color: transparent;>
+    ##                <option value="" selected>选择活动状态</option>
+    ##        <option value="">进行中</option>
+    ##        <option value="">已结束</option>
+    ##        <option value="">未开始</option>
+    ##        </select>
+    ##        <input type="text">
+    ##        <span>搜索</span>
+    ##    </div>
+    </div>
     <input type="hidden" data-curr-actid="" data-curr-contentid1="" data-curr-contentid2="" id="currentActId">
     <div style="background-color: #fff;margin: 20px;">
         <table id="example" class="display" style="width:100%;" border="0">
@@ -165,8 +215,6 @@
             </tbody>
         </table>
     </div>
-
-
 
 
 </div>
