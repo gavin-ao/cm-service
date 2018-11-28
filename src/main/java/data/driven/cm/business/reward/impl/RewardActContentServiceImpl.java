@@ -36,7 +36,7 @@ public class RewardActContentServiceImpl implements RewardActContentService{
     @Override
     public Page<RewardActContentVO> findRewardActContentPage(String keyword, String storeId, PageBean pageBean) {
         String sql = "select ma.act_id,ma.act_num,ma.act_name,ma.act_introduce,ma.start_at,ma.end_at,rac.remark,rac.command_type from reward_act_content rac " +
-                " left join mat_activity ma on rac.act_id = ma.act_id";
+                " left join mat_activity ma on rac.act_id = ma.act_id where (ma.initiator_reward_type = 1 or ma.assistance_reward_type = 1) ";
         StringBuffer where = new StringBuffer();
         List<Object> paramList = new ArrayList<Object>();
         if(keyword != null){
@@ -50,7 +50,7 @@ public class RewardActContentServiceImpl implements RewardActContentService{
             return new Page<RewardActContentVO>();
         }
         if(where.length() > 0){
-            sql += " where" + where.delete(0,4);
+            sql += where.delete(0,4);
         }
         sql += " order by rac.create_at desc,rac.act_id";
         return jdbcBaseDao.queryPageWithListParam(RewardActContentVO.class, pageBean, sql, paramList);
