@@ -3,6 +3,7 @@ package data.driven.cm.business.reward.impl;
 import data.driven.cm.business.reward.RewardActCustMsgService;
 import data.driven.cm.dao.JDBCBaseDao;
 import data.driven.cm.entity.reward.RewardActCustMsgEntity;
+import data.driven.cm.util.UUIDUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,7 @@ public class RewardActCustMsgServiceImpl implements RewardActCustMsgService {
     @Override
     public void addRewardActCustMsg(RewardActCustMsgEntity rewardActCustMsgEntity) {
         if(rewardActCustMsgEntity.getGlobalId() == null){
+            rewardActCustMsgEntity.setGlobalId(UUIDUtil.getUUID());
             jdbcBaseDao.insert(rewardActCustMsgEntity, "reward_act_cust_msg");
         }else{
             jdbcBaseDao.update(rewardActCustMsgEntity, "reward_act_cust_msg", "global_id", false);

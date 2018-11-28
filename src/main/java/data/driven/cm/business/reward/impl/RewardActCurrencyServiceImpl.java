@@ -3,6 +3,7 @@ package data.driven.cm.business.reward.impl;
 import data.driven.cm.business.reward.RewardActCurrencyService;
 import data.driven.cm.dao.JDBCBaseDao;
 import data.driven.cm.entity.reward.RewardActCurrencyEntity;
+import data.driven.cm.util.UUIDUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,7 @@ public class RewardActCurrencyServiceImpl implements RewardActCurrencyService {
     @Override
     public void addRewardActCurrency(RewardActCurrencyEntity rewardActCurrencyEntity) {
         if(rewardActCurrencyEntity.getCurrencyId() == null){
+            rewardActCurrencyEntity.setCurrencyId(UUIDUtil.getUUID());
             jdbcBaseDao.insert(rewardActCurrencyEntity, "reward_act_currency");
         }else{
             jdbcBaseDao.update(rewardActCurrencyEntity, "reward_act_currency", "currency_id", false);
