@@ -6,6 +6,8 @@ import data.driven.cm.entity.reward.RewardActCurrencyEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * 活动奖励-通用奖励淘口令service
  * @author hejinkai
@@ -32,6 +34,16 @@ public class RewardActCurrencyServiceImpl implements RewardActCurrencyService {
         Object obj = jdbcBaseDao.getColumn(sql, actId, commandType);
         if(obj != null){
             return obj.toString();
+        }
+        return null;
+    }
+
+    @Override
+    public RewardActCurrencyEntity getRewardActCurrency(String actId, Integer commandType) {
+        String sql = "select currency_id,command,command_type from reward_act_currency where act_id = ? and command_type = ?";
+        List<RewardActCurrencyEntity> list = jdbcBaseDao.queryList(RewardActCurrencyEntity.class, sql, actId, commandType);
+        if(list != null && list.size() > 0){
+            return list.get(0);
         }
         return null;
     }

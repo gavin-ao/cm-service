@@ -24,6 +24,14 @@ public interface RewardActCurrencyService {
     public String getCommand(String actId, Integer commandType);
 
     /**
+     * 根据活动id和奖励类型获取通用口令对象
+     * @param actId
+     * @param commandType
+     * @return
+     */
+    public RewardActCurrencyEntity getRewardActCurrency(String actId, Integer commandType);
+
+    /**
      * 根据活动主键删除所有奖励，淘口令
      * @param actId
      * @param commandType

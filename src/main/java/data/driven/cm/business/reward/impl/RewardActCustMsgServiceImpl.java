@@ -30,7 +30,7 @@ public class RewardActCustMsgServiceImpl implements RewardActCustMsgService {
 
     @Override
     public RewardActCustMsgEntity getRewardActCustMsg(String actId, Integer contextType) {
-        String sql = "select act_id,store_id,context,context_type,type from reward_act_cust_msg where act_id = ? and context_type = ?";
+        String sql = "select global_id,act_id,store_id,context,context_type,type from reward_act_cust_msg where act_id = ? and context_type = ?";
         List<RewardActCustMsgEntity> list = jdbcBaseDao.queryList(RewardActCustMsgEntity.class, sql, actId, contextType);
         if(list != null){
             return list.get(0);

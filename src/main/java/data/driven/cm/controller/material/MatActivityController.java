@@ -4,12 +4,16 @@ import com.alibaba.fastjson.JSONObject;
 import data.driven.cm.business.material.BtnCopywritingService;
 import data.driven.cm.business.material.MatActivityService;
 import data.driven.cm.business.reward.RewardActContentService;
+import data.driven.cm.business.reward.RewardActCurrencyService;
+import data.driven.cm.business.reward.RewardActCustMsgService;
 import data.driven.cm.business.system.StoreService;
 import data.driven.cm.common.ApplicationSessionFactory;
 import data.driven.cm.common.Constant;
 import data.driven.cm.component.Page;
 import data.driven.cm.component.PageBean;
 import data.driven.cm.entity.reward.RewardActContentEntity;
+import data.driven.cm.entity.reward.RewardActCurrencyEntity;
+import data.driven.cm.entity.reward.RewardActCustMsgEntity;
 import data.driven.cm.entity.system.StoreEntity;
 import data.driven.cm.entity.user.UserInfoEntity;
 import data.driven.cm.util.DateFormatUtil;
@@ -47,6 +51,10 @@ public class MatActivityController {
     private BtnCopywritingService btnCopywritingService;
     @Autowired
     private RewardActContentService rewardActContentService;
+    @Autowired
+    private RewardActCurrencyService rewardActCurrencyService;
+    @Autowired
+    private RewardActCustMsgService rewardActCustMsgService;
 
     @ResponseBody
     @RequestMapping(path = "/findActivityPage")
@@ -144,6 +152,28 @@ public class MatActivityController {
 
         List<RewardActContentEntity> rewardList = rewardActContentService.findRewardActContentList(actId);
         result.put("rewardList", rewardList);
+
+        if(matActivityVO.getInitiatorRewardType() != null){
+            if(matActivityVO.getInitiatorRewardType().intValue() == 2){
+                RewardActCurrencyEntity currencyEntity = rewardActCurrencyService.getRewardActCurrency(actId, 1);
+                result.put("initiatorReward", currencyEntity);
+            }else if(matActivityVO.getInitiatorRewardType().intValue() == 3){
+                RewardActCustMsgEntity rewardActCustMsgEntity = rewardActCustMsgService.getRewardActCustMsg(actId, 1);
+                result.put("initiatorReward", rewardActCustMsgEntity);
+            }
+        }
+
+        if(matActivityVO.getAssistanceRewardType() != null){
+            if(matActivityVO.getAssistanceRewardType().intValue() == 2){
+                RewardActCurrencyEntity currencyEntity = rewardActCurrencyService.getRewardActCurrency(actId, 2);
+                result.put("initiatorReward", currencyEntity);
+            }else if(matActivityVO.getAssistanceRewardType().intValue() == 3){
+                RewardActCustMsgEntity rewardActCustMsgEntity = rewardActCustMsgService.getRewardActCustMsg(actId, 2);
+                result.put("initiatorReward", rewardActCustMsgEntity);
+            }
+        }
+
+
         return result;
     }
 

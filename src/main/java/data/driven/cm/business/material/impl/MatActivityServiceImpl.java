@@ -61,7 +61,7 @@ public class MatActivityServiceImpl implements MatActivityService{
 
     @Override
     public MatActivityVO getMatActivityInfo(String actId) {
-        String sql = "select p.file_path,ma.store_id,ma.act_id,ma.act_num,ma.act_type,ma.act_name,ma.act_reply,ma.act_title,ma.act_share_title,ma.act_share_copywriting,ma.act_rule,ma.exchange_rule,ma.partake_num from mat_activity ma left join sys_picture p on p.picture_id = ma.picture_id where ma.act_id = ?";
+        String sql = "select p.file_path,ma.store_id,ma.act_id,ma.act_num,ma.act_type,ma.act_name,ma.act_reply,ma.act_title,ma.act_share_title,ma.act_share_copywriting,ma.act_rule,ma.exchange_rule,ma.partake_num, ma.initiator_reward_type, ma.assistance_reward_type from mat_activity ma left join sys_picture p on p.picture_id = ma.picture_id where ma.act_id = ?";
         List<MatActivityVO> list = jdbcBaseDao.queryList(MatActivityVO.class, sql, actId);
         if(list != null && list.size() > 0){
             return list.get(0);
@@ -71,7 +71,7 @@ public class MatActivityServiceImpl implements MatActivityService{
 
     @Override
     public MatActivityVO getMatActivityAllInfo(String actId, String storeId) {
-        String sql = "select p.file_path,ma.act_id, ma.act_num, ma.act_type, ma.act_name, ma.act_introduce, ma.picture_id, ma.act_url, ma.act_reply, ma.act_title, ma.act_share_title, ma.act_share_copywriting, ma.act_rule, ma.exchange_rule, ma.partake_num, ma.reward_url, ma.start_at, ma.end_at from mat_activity ma" +
+        String sql = "select p.file_path,ma.act_id, ma.act_num, ma.act_type, ma.act_name, ma.act_introduce, ma.picture_id, ma.act_url, ma.act_reply, ma.act_title, ma.act_share_title, ma.act_share_copywriting, ma.act_rule, ma.exchange_rule, ma.partake_num, ma.reward_url, ma.start_at, ma.end_at, ma.initiator_reward_type, ma.assistance_reward_type from mat_activity ma" +
                 " left join sys_picture p on p.picture_id = ma.picture_id where ma.act_id = ? and ma.store_id = ?";
         List<MatActivityVO> list = jdbcBaseDao.queryList(MatActivityVO.class, sql, actId, storeId);
         if(list != null && list.size() > 0){
@@ -82,7 +82,7 @@ public class MatActivityServiceImpl implements MatActivityService{
 
     @Override
     public MatActivityVO getMatActivityAnyID(String actId) {
-        String sql = "select ma.act_id,ma.user_id,ma.store_id,ma.app_info_id,ma.start_at,ma.end_at from mat_activity ma where ma.act_id = ?";
+        String sql = "select ma.act_id,ma.user_id,ma.store_id,ma.app_info_id,ma.start_at,ma.end_at, ma.initiator_reward_type, ma.assistance_reward_type from mat_activity ma where ma.act_id = ?";
         List<MatActivityVO> list = jdbcBaseDao.queryList(MatActivityVO.class, sql, actId);
         if(list != null && list.size() > 0){
             return list.get(0);
@@ -93,7 +93,7 @@ public class MatActivityServiceImpl implements MatActivityService{
     @Override
     public MatActivityVO getValidMatActivityInfo(String actId) {
         Date date = DateFormatUtil.convertDate(new Date());
-        String sql = "select ma.store_id,ma.act_id,ma.act_num,ma.act_type,ma.act_name,ma.act_reply,ma.act_title,ma.act_share_title,ma.act_share_copywriting,ma.act_rule,ma.exchange_rule,ma.partake_num from mat_activity ma where ma.act_id = ? and ma.start_at <= ? and ma.end_at >= ?";
+        String sql = "select ma.store_id,ma.act_id,ma.act_num,ma.act_type,ma.act_name,ma.act_reply,ma.act_title,ma.act_share_title,ma.act_share_copywriting,ma.act_rule,ma.exchange_rule,ma.partake_num, ma.initiator_reward_type, ma.assistance_reward_type from mat_activity ma where ma.act_id = ? and ma.start_at <= ? and ma.end_at >= ?";
         List<MatActivityVO> list = jdbcBaseDao.queryList(MatActivityVO.class, sql, actId, date, date);
         if(list != null && list.size() > 0){
             return list.get(0);
@@ -104,7 +104,7 @@ public class MatActivityServiceImpl implements MatActivityService{
     @Override
     public MatActivityVO getMatActivityInfoByStore(String storeId) {
         Date date = DateFormatUtil.convertDate(new Date());
-        String sql = "select p.file_path,ma.act_id,ma.act_num,ma.act_type,ma.act_name,ma.act_reply,ma.act_title,ma.act_share_title,ma.act_share_copywriting,ma.act_rule,ma.exchange_rule,ma.partake_num from mat_activity ma" +
+        String sql = "select p.file_path,ma.act_id,ma.act_num,ma.act_type,ma.act_name,ma.act_reply,ma.act_title,ma.act_share_title,ma.act_share_copywriting,ma.act_rule,ma.exchange_rule,ma.partake_num, ma.initiator_reward_type, ma.assistance_reward_type from mat_activity ma" +
                 " left join sys_picture p on p.picture_id = ma.picture_id where ma.store_id = ? and ma.start_at <= ? and ma.end_at >= ?";
         List<MatActivityVO> list = jdbcBaseDao.queryList(MatActivityVO.class, sql, storeId, date, date);
         if(list != null && list.size() > 0){
@@ -125,7 +125,7 @@ public class MatActivityServiceImpl implements MatActivityService{
 
     @Override
     public Page<MatActivityVO> findActivityPage(String keyword, String storeId, PageBean pageBean) {
-        String sql = "select ma.act_id,ma.store_id,ma.app_info_id,ma.act_num,ma.act_type,ma.act_name,ma.act_introduce,ma.act_title,ma.start_at,ma.end_at from mat_activity ma";
+        String sql = "select ma.act_id,ma.store_id,ma.app_info_id,ma.act_num,ma.act_type,ma.act_name,ma.act_introduce,ma.act_title,ma.start_at,ma.end_at, ma.initiator_reward_type, ma.assistance_reward_type from mat_activity ma";
         StringBuffer where = new StringBuffer();
         List<Object> paramList = new ArrayList<Object>();
         if(keyword != null){
