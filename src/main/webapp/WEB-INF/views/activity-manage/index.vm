@@ -27,9 +27,9 @@
                                    accept="image/gif,image/jpeg,image/jpg,image/png,image/svg" name="uploadPicture"
                                    value="上传图片" onchange="changepic(this)"/>
                         </a>
-                    <p style="display: none;width: 100%;text-align: center;">
-                        <img src="" id="show" height="200">
-                    </p>
+                        <p style="display: none;width: 100%;text-align: center;">
+                            <img src="" id="show" height="200">
+                        </p>
                     </p>
                     <p>
                         <span class="text">3、邀请按钮文案:</span>
@@ -61,14 +61,12 @@
                         <span class="text" style="width: 100px;">助力是否有奖:</span>
                         <a class="anchorss">
                             <span class="radios">
-                                <input type="radio" name="assistanceNoReward" id="assistanceExitReward"
-                                       value="2" checked="checked"/>
-                                <label for="collages">是</label>
+                                <input type="radio" name="assistanceNoReward" id="assistanceExitReward" value="2" checked="checked"/>
+                                <label for="assistanceExitReward">是</label>
                             </span>
                             <span class="radios">
-                                    <input type="radio" name="assistanceNoReward" id="assistanceNoReward"
-                                           value="1"/>
-                                    <label for="collages">否</label>
+                                    <input type="radio" name="assistanceNoReward" id="assistanceNoReward" value="1"/>
+                                    <label for="assistanceNoReward">否</label>
                            </span>
                         </a>
                     </p>
@@ -111,10 +109,8 @@
                         </p>
                     </p>
                     <p class="showExit">
-                    ##                    <p class="rewardInfos showExit">
                         <span class="text">助力奖励类型:</span>
                         <a class="anchorss">
-                        ##                            <a class="anchorss rewardType">
                             <select name="assistanceRewardType" id="assistanceRewardType" class="form-control">
                                 <option value="1">兑换码</option>
                                 <option value="2">淘口令</option>
@@ -130,6 +126,12 @@
                                    placeholder="应比邀请奖励小，以刺激转发，如:满199减10"/>
                         </a>
                     </p>
+                    <p class="assistanceReward assistanceNumber">
+                        <span class="text">助力奖励数量:</span>
+                        <a class="anchorss">
+                            <input type="number" name="assistanceAwardsNum" min="1" value="1" class="form-control"/>
+                        </a>
+                    </p>
                     <p class="assistanceGroup">
                         <span class="text">助力奖励群二维码:</span>
                         <a class="anchorss">
@@ -139,9 +141,9 @@
                                    accept="image/gif,image/jpeg,image/jpg,image/png,image/svg" name="assistanceUploadPicture"
                                    value="上传图片" onchange="invitationchangepic('assistanceFile','modifyCurrentImgs','assistanceImagesShow')"/>
                         </a>
-                    <p id="assistanceImagesShow" class="classImages">
+                        <p id="assistanceImagesShow" class="classImages">
 
-                    </p>
+                        </p>
                     </p>
                     <p>
                         <span class="text">8、分享标题:</span>

@@ -2,6 +2,7 @@
  * Created by 12045 on 2018/10/22.
  */
 var wholeStartTime, wholeEndTime, startDates, endDates;
+var invitationGlobalId, assistanceGlobalId, invitationCurrencyId, assistanceCurrencyId,  assistanceRewardTypes,initiatorRewardTypes;
 (function () {
     // 退出登录
     // $("#loginOut").on("click", function (){
@@ -16,9 +17,8 @@ var wholeStartTime, wholeEndTime, startDates, endDates;
     $("#addAccount").on("click", function () {
         $("#show").parent().hide()
         $("#formsearch .modal-footer").show();
-        $("#currentActId").attr("data-curr-actid", "");
-        $("#currentActId").attr("data-curr-contentid1", "");
-        $("#currentActId").attr("data-curr-contentid2", "");
+        // 变量初始化
+        initData();
         $("#formsearch input[name='invitingAwardsNum']").parents("p").show();
         $("#manageAdd").show();
         $("#formsearch>p input").each(function () {
@@ -29,18 +29,21 @@ var wholeStartTime, wholeEndTime, startDates, endDates;
         })
         $("input[name='helpNumber']").val(1);
         $("input[name='invitingAwardsNum']").val(1);
+        $("input[name='assistanceAwardsNum']").val(1);
+        $("#assistanceExitReward").val(2);
+        $("#assistanceNoReward").val(1);
         //默认助力有奖
         $("#assistanceExitReward").trigger("click");
         //默认邀请奖励类型 一人一码
         $("#invitationRewardType option:first").prop("selected", 'selected');
         $(".invitationGroup").hide();
         $(".invitationReward").show();
-        $("input[name='invitingAwards']").attr("placeholder","自由设置，领取后按设置核销，如:满199减30");
+        $("input[name='invitingAwards']").attr("placeholder", "自由设置，领取后按设置核销，如:满199减30");
         //默认助力奖励类型 一人一码
         $("#assistanceRewardType option:first").prop("selected", 'selected');
         $(".assistanceGroup").hide();
         $(".showExit").show();
-        $("input[name='aidReward']").attr("placeholder","应比邀请奖励小，以刺激转发，如:满199减10");
+        $("input[name='aidReward']").attr("placeholder", "应比邀请奖励小，以刺激转发，如:满199减10");
         //获取活动时间
         activTime();
     });
@@ -51,14 +54,14 @@ var wholeStartTime, wholeEndTime, startDates, endDates;
     $("#submitBtn").off("click");
     $("#submitBtn").on("click", function () {
         var params = decodeURIComponent($("#formsearch").serialize())
-        // console.log(params)
+        console.log(params)
         var dataPars = params.split("&");
         var dataObjArr = []
         for (var i = 0; i < dataPars.length; i++) {
             var par = dataPars[i].split("=");
             dataObjArr[par[0]] = par[1];
         }
-        // console.log(dataObjArr);
+        console.log(dataObjArr);
         //校验字段
         var flag = checkField(dataObjArr);
         if (dataObjArr.helpNumber <= 0) {
@@ -70,19 +73,52 @@ var wholeStartTime, wholeEndTime, startDates, endDates;
             $.MsgBox.Alert("温馨提示", "邀请奖励数量要大于0");
         }
         var src = $("#show").attr("src");
+        var pictureJson = {};
+        if (dataObjArr.invitationRewardType == 3) {
+            var tarms = $("#invitationImagesShow p");
+            if (tarms.length == 0) {
+                flag = false;
+                $.MsgBox.Alert("温馨提示", "邀请奖励进群二维码不能为空");
+            } else {
+                var invitatorImg = [];
+                for (var i = 0; i < tarms.length; i++) {
+                    var imgSrc = $(tarms[i]).find("img").attr("src");
+                    if (imgSrc) {
+                        invitatorImg.push(imgSrc);
+                    }
+                }
+                pictureJson.invitatorImg = invitatorImg;
+            }
+        }
+        if (dataObjArr.assistanceRewardType == 3) {
+            var tarms = $("#assistanceImagesShow p");
+            if (tarms.length == 0) {
+                flag = false;
+                $.MsgBox.Alert("温馨提示", "助力奖励进群二维码不能为空");
+            } else {
+                var assistanceImg = [];
+                for (var i = 0; i < tarms.length; i++) {
+                    var imgSrc = $(tarms[i]).find("img").attr("src");
+                    if (imgSrc) {
+                        assistanceImg.push(imgSrc);
+                    }
+                }
+                pictureJson.assistanceImg = assistanceImg;
+            }
+        }
         if (src && flag) {
+            pictureJson.first = src;
             $.ajax({
                 type: "post",
-                url: "/system/file/pictureUpload",
+                url: "/system/file/pictureUploads",
                 cache: false,  //禁用缓存
-                data: {pictureJson: src},  //传入组装的参数?
-                // headers: {"Content-type": "text/plain;charset=utf-8;"},
+                data: {paramJson: JSON.stringify(pictureJson)},  //传入组装的参数?
                 dataType: "json",
                 success: function (result) {
                     // console.log(result)
                     if (result.success) {
-                        if (result.pictureId) {
-                            addActivity(result.pictureId, dataObjArr);
+                        if (result.first) {
+                            addActivity(result.first, dataObjArr, result.assistanceImg, result.invitatorImg);
                         }
                     }
                 }
@@ -92,7 +128,20 @@ var wholeStartTime, wholeEndTime, startDates, endDates;
         }
 
     });
-
+    $("input[name='helpNumber']").on("change", function () {
+        console.log($(this).val())
+        var helpNumber = parseInt($(this).val());
+        var invitingAwardsNum = parseInt($("input[name='invitingAwardsNum']").val())
+        $("input[name='assistanceAwardsNum']").val(helpNumber * invitingAwardsNum);
+        $("input[name='assistanceAwardsNum']").attr("min", helpNumber * invitingAwardsNum);
+    })
+    $("input[name='invitingAwardsNum']").on("change", function () {
+        console.log($(this).val())
+        var invitingAwardsNum = parseInt($(this).val());
+        var helpNumber = parseInt($("input[name='helpNumber']").val())
+        $("input[name='assistanceAwardsNum']").val(helpNumber * invitingAwardsNum);
+        $("input[name='assistanceAwardsNum']").attr("min", helpNumber * invitingAwardsNum);
+    })
     //上传海报图片
     $("#upImage").off("click");
     $("#upImage").on("click", function (e) {
@@ -116,6 +165,9 @@ var wholeStartTime, wholeEndTime, startDates, endDates;
     $("#assistanceNoReward").off("click");
     $("#assistanceNoReward").on("click", function () {
         $(".showExit").hide();
+        $(".assistanceGroup").hide();
+        $("#assistanceImagesShow").html("");
+        $("#assistanceImagesShow").hide();
     });
     //有奖
     $("#assistanceExitReward").off("click");
@@ -124,28 +176,37 @@ var wholeStartTime, wholeEndTime, startDates, endDates;
         $("#assistanceRewardType option:first").prop("selected", 'selected');
         $(".showExit input[name='aidReward']").val("");
         $(".assistanceGroup").hide();
-        $("input[name='aidReward']").attr("placeholder","应比邀请奖励小，以刺激转发，如:满199减10");
+        $("input[name='aidReward']").attr("placeholder", "应比邀请奖励小，以刺激转发，如:满199减10");
     });
 
     // 邀请奖励类型
     $("#invitationRewardType").off("change");
     $("#invitationRewardType").on("change", function () {
         console.log($(this).val())
+        var actId = $("#currentActId").attr("data-curr-actid");
         var index = parseInt($(this).val().trim())
         switch (index) {
             case 1: // 一人一码
                 $(".invitationGroup").hide();
                 $(".invitationReward").show();
+                $("#invitationImagesShow").html("");
+                $("#invitationImagesShow").hide();
                 $("input[name='invitingAwards']").val('');
-                $("input[name='invitingAwards']").attr("placeholder","自由设置，领取后按设置核销，如:满199减30");
+                $("input[name='invitingAwards']").attr("placeholder", "自由设置，领取后按设置核销，如:满199减30");
                 $("input[name='invitingAwardsNum']").val(1);
+                if (actId&&initiatorRewardTypes==1) {
+                    $(".invitationNumber").hide();
+                }
                 break;
             case 2:// 淘口令
                 $(".invitationGroup").hide();
                 $(".invitationReward").show();
+                $("#invitationImagesShow").html("");
+                $("#invitationImagesShow").hide();
                 $("input[name='invitingAwards']").val('');
                 $("input[name='invitingAwardsNum']").val(1);
-                $("input[name='invitingAwards']").attr("placeholder","自由设置，领取后按设置核销，如:€u56pb2a7sOn€");
+                $("input[name='invitingAwards']").attr("placeholder", "设置自己的淘口令，如:€u56pb2a7sOn€");
+                $(".invitationNumber").hide();
                 break;
             case 3: // 进群领奖
                 console.log(22222222)
@@ -159,28 +220,36 @@ var wholeStartTime, wholeEndTime, startDates, endDates;
                 $(".invitationReward").show();
                 $(".invitationNumber").hide();
                 $("input[name='invitingAwards']").val('');
+                $("input[name='invitingAwards']").attr("placeholder", "设置领取奖励的链接");
+                $(".invitationNumber").hide();
                 break;
         }
     });
-
 
 
     // 助力奖励类型
     $("#assistanceRewardType").off("change");
     $("#assistanceRewardType").on("change", function () {
         console.log($(this).val())
+        var actId = $("#currentActId").attr("data-curr-actid");
         var index = parseInt($(this).val().trim())
-        if(index ==1 || index ==2 || index == 4){
+        if (index == 1 || index == 2 || index == 4) {
             $(".assistanceGroup").hide();
             $(".assistanceReward").show();
             $("input[name='aidReward']").val('');
+            $("#assistanceImagesShow").html("");
+            $("#assistanceImagesShow").hide();
         }
         switch (index) {
             case 1:
-                $("input[name='aidReward']").attr("placeholder","应比邀请奖励小，以刺激转发，如:满199减10");
+                $("input[name='aidReward']").attr("placeholder", "应比邀请奖励小，以刺激转发，如:满199减10");
+                if (actId&&assistanceRewardTypes==1) {
+                    $(".assistanceNumber").hide();
+                }
                 break;
             case 2:
-                $("input[name='aidReward']").attr("placeholder","自由设置，领取后按设置核销，如:€u56pb2a7sOn€");
+                $("input[name='aidReward']").attr("placeholder", "设置自己的淘口令，如:€u56pb2a7sOn€");
+                $(".assistanceNumber").hide();
                 break;
             case 3:
                 $(".assistanceGroup").show();
@@ -189,7 +258,8 @@ var wholeStartTime, wholeEndTime, startDates, endDates;
                 $("#assistanceImagesShow").html("");
                 break;
             case 4:
-                $("input[name='aidReward']").attr("placeholder","自由设置，领取后按设置核销，如:€u56pb2a7sOn€");
+                $("input[name='aidReward']").attr("placeholder", "设置领取奖励的链接");
+                $(".assistanceNumber").hide();
                 break;
         }
     });
@@ -210,6 +280,14 @@ var wholeStartTime, wholeEndTime, startDates, endDates;
 
 
 }());
+// 变量初始化
+function initData() {
+    invitationGlobalId = '', assistanceGlobalId = '', invitationCurrencyId = '', assistanceCurrencyId = '',assistanceRewardTypes='',initiatorRewardTypes='';
+    $("#currentActId").attr("data-curr-actid", "");
+    $("#currentActId").attr("data-curr-contentid1", "");
+    $("#currentActId").attr("data-curr-contentid2", "");
+}
+
 //获取活动时间
 function activTime() {
     $.ajax({
@@ -406,8 +484,8 @@ function tablesData() {
     // 初始化修改按钮
     $('#example tbody').on('click', 'button.modify_btn', function (e) {
         e.preventDefault();
-        // var index = $(this).context._DT_RowIndex; //行号
-        // console.log(index)
+        // 变量初始化
+        initData();
         var actId = $(this).parents('tr').find("td")[0].innerHTML.trim();
         $("#currentActId").attr("data-curr-actid", actId);
         // console.log($(this).parents('tr').find("td")[0].innerHTML.trim())
@@ -436,8 +514,8 @@ function tablesData() {
     // 查看按钮
     $('#example tbody').on('click', 'button.see_btn', function (e) {
         e.preventDefault();
-        // var index = $(this).context._DT_RowIndex; //行号
-        // console.log(index)
+        // 变量初始化
+        initData();
         var actId = $(this).parents('tr').find("td")[0].innerHTML.trim();
         $("#currentActId").attr("data-curr-actid", actId);
         // console.log($(this).parents('tr').find("td")[0].innerHTML.trim())
@@ -552,7 +630,7 @@ function changepic() {
 }
 
 //上传邀请进群图片
-function invitationchangepic(id, tar,newId) {
+function invitationchangepic(id, tar, newId) {
     var that = this;
     var reads = new FileReader();
     f = document.getElementById(id).files[0];
@@ -572,9 +650,9 @@ function invitationchangepic(id, tar,newId) {
                 // console.log(e)
                 var data = this.result;
                 console.log()
-                $("#"+newId).show();
-                var img = '<p class="newImages"><img src="' + data + '" onclick="modifyCurrentImg(this,' + tar + ')"><span onclick="deleteImage(this,'+id+')">✖</span></p>';
-                $("#"+newId).append(img);
+                $("#" + newId).show();
+                var img = '<p class="newImages"><img src="' + data + '" onclick="modifyCurrentImg(this,' + tar + ')"><span onclick="deleteImage(this,' + id + ')">✖</span></p>';
+                $("#" + newId).append(img);
             };
         }
     } else {
@@ -617,12 +695,12 @@ function modifyCurrentImgFile(id, tar) {
 }
 
 // 删除 进群二维码图片
-function deleteImage(tar,id) {
+function deleteImage(tar, id) {
     console.log(tar)
     var that = $(tar).parent().parent();
     $(tar).parent().remove();
     $(id).val('')
-    if(that.find(".newImages").length<=0){
+    if (that.find(".newImages").length <= 0) {
         that.hide();
     }
 }
@@ -722,82 +800,13 @@ function judgmenLength(text, lens, con) {
 
 
 //添加活动
-function addActivity(picId, par) {
-
-    var btnCopywritingJson = {
-        bxt_invite: par.invitingButton,
-        bxt_full: "助力已满，我也要领奖",
-        bxt_help: "给他助力",
-        bxt_alhelp: "已助力，我也要领奖",
-        bxt_continue: "立即邀请",
-        bxt_continue1: "继续邀请",
-        bxt_reward: "领取奖励",
-        bxt_share: "分享",
-        bxt_saveImg: "保存图片"
-    };
+function addActivity(picId, par, assistanceImg, invitatorImg) {
+    console.log(par)
 
 
-    var rewardActContentJson = [
-        {
-            "commandType": 1,
-            remark: par.invitingAwards,
-            contentTitle: "任务达成",
-            contentHead: "恭喜您获得 " + par.invitingAwards,
-            contentFoot: "数量有限，先到先得哦",
-            contentBtn: "我也要领奖励"
-        },
-        {
-            "commandType": 2,
-            remark: par.aidReward,
-            contentTitle: "为好友助力成功",
-            contentHead: "恭喜您获得 " + par.aidReward,
-            contentFoot: "数量有限，先到先得哦",
-            contentBtn: "我也要领奖励"
-        }
-    ];
-    var contentid1 = $("#currentActId").attr("data-curr-contentid1");
-    var contentid2 = $("#currentActId").attr("data-curr-contentid2");
-    if (contentid1 && contentid2) {
-        rewardActContentJson = [
-            {
-                "commandType": 1,
-                remark: par.invitingAwards,
-                contentTitle: "任务达成",
-                contentHead: "恭喜您获得 " + par.invitingAwards,
-                contentFoot: "数量有限，先到先得哦",
-                contentBtn: "我也要领奖励",
-                contentId: contentid1
-            },
-            {
-                "commandType": 2,
-                remark: par.aidReward,
-                contentTitle: "为好友助力成功",
-                contentHead: "恭喜您获得 " + par.aidReward,
-                contentFoot: "数量有限，先到先得哦",
-                contentBtn: "我也要领奖励",
-                contentId: contentid2
-            }
-        ];
-    }
-    var activity = {
-        actName: par.storeTitle,
-        pictureId: picId,
-        actTitle: par.storeTitle,
-        actShareTitle: par.shareTitle,
-        actShareCopywriting: par.posterCopywriting,
-        actRule: par.activityRules,
-        partakeNum: par.helpNumber,
-        startAt: par.startTimes.replace(/-/g, "/"),
-        endAt: par.endTimes.replace(/-/g, "/"),
-        btnCopywritingJson: JSON.stringify(btnCopywritingJson),
-        rewardActContentJson: JSON.stringify(rewardActContentJson),
-    };
-    var actId = $("#currentActId").attr("data-curr-actid");
-    if (actId) {
-        activity.actId = actId;
-    } else {
-        activity.rewardNum = par.invitingAwardsNum
-    }
+    var activity = addActCondition(picId, par, assistanceImg, invitatorImg);
+
+    console.log(activity)
     $.ajax({
         type: "post",
         url: "/mat/activity/updateActivity",
@@ -817,11 +826,232 @@ function addActivity(picId, par) {
         }
     })
 }
+// 添加活动 参数拼接
+function addActCondition(picId, par, assistanceImg, invitatorImg) {
+    var btnCopywritingJson = {
+        bxt_invite: par.invitingButton,
+        bxt_full: "助力已满，我也要领奖",
+        bxt_help: "给他助力",
+        bxt_alhelp: "已助力，我也要领奖",
+        bxt_continue: "立即邀请",
+        bxt_continue1: "继续邀请",
+        bxt_reward: "领取奖励",
+        bxt_share: "分享",
+        bxt_saveImg: "保存图片"
+    };
+    var rewardActContentJson = [];
+    var contentid1 = $("#currentActId").attr("data-curr-contentid1");
+    var contentid2 = $("#currentActId").attr("data-curr-contentid2");
+    if (par.assistanceNoReward == 1) { //助力没奖
+        var parmas = {
+            "commandType": 1,
+            remark: par.invitingAwards,
+            contentTitle: "任务达成",
+            contentHead: "恭喜您获得 " + par.invitingAwards,
+            contentFoot: "数量有限，先到先得哦",
+            contentBtn: "我也要领奖励"
+        };
+        if (contentid1) {
+            parmas.contentId = contentid1;
+        }
+        par.assistanceRewardType = 0;
+        rewardActContentJson.push(parmas);
+    } else if (par.assistanceNoReward == 2) { //助力有奖
+        var parmas1 = {
+            "commandType": 1,
+            remark: par.invitingAwards,
+            contentTitle: "任务达成",
+            contentHead: "恭喜您获得 " + par.invitingAwards,
+            contentFoot: "数量有限，先到先得哦",
+            contentBtn: "我也要领奖励"
+        };
+        var parmas2 = {
+            "commandType": 2,
+            remark: par.aidReward,
+            contentTitle: "为好友助力成功",
+            contentHead: "恭喜您获得 " + par.aidReward,
+            contentFoot: "数量有限，先到先得哦",
+            contentBtn: "我也要领奖励"
+        };
+        if (contentid1 && contentid2) {
+            parmas1.contentId = contentid1;
+            parmas2.contentId = contentid2;
+        }
+        rewardActContentJson.push(parmas1);
+        rewardActContentJson.push(parmas2);
+    }
+    var invitatorRewardJson = {};
+    var assistanceRewardJson = {};
+    if (par.invitationRewardType == 2) {
+        invitatorRewardJson = {
+            command: par.invitingAwards
+        }
+        if (invitationCurrencyId) {
+            invitatorRewardJson.currencyId = invitationCurrencyId
+        }
+    } else if (par.invitationRewardType == 3) {
+        invitatorRewardJson = {
+            type: 2,
+            context: invitatorImg.join(",")
+        }
 
+        if (invitationGlobalId) {
+            invitatorRewardJson.globalId = invitationGlobalId
+        }
+    } else if (par.invitationRewardType == 4) {
+        invitatorRewardJson = {
+            type: 1,
+            context: par.invitingAwards
+        }
+        if (invitationGlobalId) {
+            invitatorRewardJson.globalId = invitationGlobalId
+        }
+    }
+    if (par.assistanceRewardType == 2) {
+        assistanceRewardJson = {
+            command: par.aidReward
+        }
+        if (assistanceCurrencyId) {
+            assistanceRewardJson.currencyId = assistanceCurrencyId
+        }
+    } else if (par.assistanceRewardType == 3) {
+        assistanceRewardJson = {
+            type: 2,
+            context: assistanceImg.join(",")
+        }
+        if (assistanceGlobalId) {
+            invitatorRewardJson.globalId = assistanceGlobalId
+        }
+    } else if (par.assistanceRewardType == 4) {
+        assistanceRewardJson = {
+            type: 1,
+            context: par.aidReward
+        }
+        if (assistanceGlobalId) {
+            invitatorRewardJson.globalId = assistanceGlobalId
+        }
+    }
+    var activity = {
+        actName: par.storeTitle,
+        pictureId: picId,
+        actTitle: par.storeTitle,
+        actShareTitle: par.shareTitle,
+        actShareCopywriting: par.posterCopywriting,
+        actRule: par.activityRules,
+        partakeNum: par.helpNumber,
+        startAt: par.startTimes.replace(/-/g, "/"),
+        endAt: par.endTimes.replace(/-/g, "/"),
+        btnCopywritingJson: JSON.stringify(btnCopywritingJson),
+        rewardActContentJson: JSON.stringify(rewardActContentJson),
+        initiatorRewardType: par.invitationRewardType,
+        assistanceRewardType: par.assistanceRewardType,
+        initiatorRewardJson: JSON.stringify(invitatorRewardJson),
+        assistanceRewardJson: JSON.stringify(assistanceRewardJson)
+    };
+    if (par.invitationRewardType == 4) {
+        activity.initiatorRewardType = 3
+    }
+    if (par.assistanceRewardType == 4) {
+        activity.assistanceRewardType = 3
+    }
+    var actId = $("#currentActId").attr("data-curr-actid");
+    if (actId) {
+        activity.actId = actId;
+    } else {
+        if (par.invitationRewardType == 1) {
+            activity.rewardNum = par.invitingAwardsNum
+        }
+        if (par.assistanceRewardType == 1) {
+            activity.assistanceAwardsNum = par.assistanceAwardsNum
+        }
+    }
+    return activity;
+}
 //修改 条件反补
 function reverseSupplement(data) {
+    $("#show").attr("src", "");
+    $("#invitationImagesShow").html("");
+    $("#assistanceImagesShow").html("");
     var activity = data.matActivity;
     var rewardList = data.rewardList;
+    assistanceRewardTypes=activity.assistanceRewardType ;
+    initiatorRewardTypes = activity.initiatorRewardType;
+    // 助力是否有奖反补
+    if (activity.assistanceRewardType == 0) {
+        $("#assistanceNoReward").trigger("click");
+        $(".assistanceNumber").hide();
+    } else {
+        $("#assistanceExitReward").trigger("click");
+        if (activity.assistanceRewardType == 3) {
+            if (data.assistanceReward.type == 1) {
+                $($("#assistanceRewardType option")[3]).attr("selected", "selected");
+                $(".assistanceGroup").hide();
+                $(".assistanceReward").show();
+                $(".assistanceNumber").hide();
+            } else if (data.assistanceReward.type == 2) {
+                $($("#assistanceRewardType option")[activity.assistanceRewardType - 1]).attr("selected", "selected");
+                $(".assistanceGroup").show();
+                $(".assistanceReward").hide();
+                if (data.assistanceRewardPicture.length) {
+                    $("#assistanceImagesShow").show();
+                    for (var i = 0; i < data.assistanceRewardPicture.length; i++) {
+                        // var filePath = "https://cm-service.easy7share.com" + data.assistanceRewardPicture[i];
+                        var filePath = "http://localhost:8083" + data.assistanceRewardPicture[i];
+
+                        convertImgToBase64(filePath, function (base64Img) {
+                            //转化后的base64
+                            var img = '<p class="newImages"><img src="' + base64Img + '" onclick="modifyCurrentImg(this,' + "modifyCurrentImgs" + ')"><span onclick="deleteImage(this,' + "assistanceFile" + ')">✖</span></p>';
+                            $("#assistanceImagesShow").append(img);
+                        });
+                    }
+                }
+            }
+            assistanceGlobalId = data.assistanceReward.globalId;
+        } else {
+            $($("#assistanceRewardType option")[activity.assistanceRewardType - 1]).attr("selected", "selected");
+            $(".assistanceReward").show();
+            $(".assistanceNumber").hide();
+            $(".assistanceGroup").hide();
+            if (activity.assistanceRewardType == 2) {
+                assistanceCurrencyId = data.assistanceReward.currencyId;
+            }
+        }
+    }
+
+    // 邀请奖励反补
+    if (activity.initiatorRewardType == 3) {
+        if (data.initiatorReward.type == 1) {
+            $($("#invitationRewardType option")[3]).attr("selected", "selected");
+            $(".invitationGroup").hide();
+            $(".invitationReward").show();
+            $(".invitationNumber").hide();
+        } else if (data.initiatorReward.type == 2) {
+            $($("#invitationRewardType option")[activity.initiatorRewardType - 1]).attr("selected", "selected");
+            $(".invitationGroup").show();
+            $(".invitationReward").hide();
+            if (data.initiatorRewardPicture.length) {
+                $("#invitationImagesShow").show();
+                for (var i = 0; i < data.initiatorRewardPicture.length; i++) {
+                    // var filePath = "https://cm-service.easy7share.com" +data.initiatorRewardPicture[i];
+                    var filePath = "http://localhost:8083" + data.initiatorRewardPicture[i];
+                    convertImgToBase64(filePath, function (base64Img) {
+                        //转化后的base64
+                        var img = '<p class="newImages"><img src="' + base64Img + '" onclick="modifyCurrentImg(this,' + "modifyCurrentImgs" + ')"><span onclick="deleteImage(this,' + "invitationFile" + ')">✖</span></p>';
+                        $("#invitationImagesShow").append(img);
+                    });
+                }
+            }
+        }
+        invitationGlobalId = data.initiatorReward.globalId;
+    } else {
+        $($("#invitationRewardType option")[activity.initiatorRewardType - 1]).attr("selected", "selected");
+        $(".invitationReward").show();
+        $(".invitationNumber").hide();
+        $(".invitationGroup").hide();
+        if (activity.initiatorRewardType == 2) {
+            invitationCurrencyId = data.initiatorReward.currencyId;
+        }
+    }
     $("#formsearch input[name='invitingButton']").val(data.btnMap.bxt_invite);
     $("#formsearch input[name='storeTitle']").val(activity.actTitle);
     $("#formsearch input[name='posterCopywriting']").val(activity.actShareCopywriting);
@@ -844,24 +1074,15 @@ function reverseSupplement(data) {
             $("#formsearch input[name='aidReward']").val(rewardList[i].remark);
         }
     }
-    // var url = "http://p1.pstatp.com/large/435d000085555bd8de10";
-    // getBase64(url)
-    //     .then(function (base64) {
-    //         console.log(base64);//处理成功打印在控制台
-    //         $("#show").parent().show()
-    //         $("#show").attr("src", base64);
-    //     }, function (err) {
-    //         console.log(err);//打印异常信息
-    //     });
     if (activity.filePath) {
         $("#show").parent().show();
-        var filePath = "https://cm-service.easy7share.com" + activity.filePath;
+        // var filePath = "https://cm-service.easy7share.com" + activity.filePath;
+        var filePath = "http://localhost:8083" + activity.filePath;
         convertImgToBase64(filePath, function (base64Img) {
             //转化后的base64
             $("#show").attr("src", base64Img);
         });
     }
-
 }
 
 //校验字段
