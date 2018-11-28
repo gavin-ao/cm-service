@@ -6,6 +6,7 @@ import data.driven.cm.business.material.MatActivityService;
 import data.driven.cm.business.reward.RewardActContentService;
 import data.driven.cm.business.reward.RewardActCurrencyService;
 import data.driven.cm.business.reward.RewardActCustMsgService;
+import data.driven.cm.business.system.PictureService;
 import data.driven.cm.business.system.StoreService;
 import data.driven.cm.common.ApplicationSessionFactory;
 import data.driven.cm.common.Constant;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -55,6 +57,8 @@ public class MatActivityController {
     private RewardActCurrencyService rewardActCurrencyService;
     @Autowired
     private RewardActCustMsgService rewardActCustMsgService;
+    @Autowired
+    private PictureService pictureService;
 
     @ResponseBody
     @RequestMapping(path = "/findActivityPage")
@@ -159,6 +163,11 @@ public class MatActivityController {
                 result.put("initiatorReward", currencyEntity);
             }else if(matActivityVO.getInitiatorRewardType().intValue() == 3){
                 RewardActCustMsgEntity rewardActCustMsgEntity = rewardActCustMsgService.getRewardActCustMsg(actId, 1);
+                if(rewardActCustMsgEntity.getType().intValue() == 2){
+                    String pictureIds = rewardActCustMsgEntity.getContext();
+                    List<String> filePath = pictureService.findPictureByIds(Arrays.asList(pictureIds.split(",")));
+                    result.put("initiatorRewardPicture", filePath);
+                }
                 result.put("initiatorReward", rewardActCustMsgEntity);
             }
         }
@@ -169,6 +178,11 @@ public class MatActivityController {
                 result.put("assistanceReward", currencyEntity);
             }else if(matActivityVO.getAssistanceRewardType().intValue() == 3){
                 RewardActCustMsgEntity rewardActCustMsgEntity = rewardActCustMsgService.getRewardActCustMsg(actId, 2);
+                if(rewardActCustMsgEntity.getType().intValue() == 2){
+                    String pictureIds = rewardActCustMsgEntity.getContext();
+                    List<String> filePath = pictureService.findPictureByIds(Arrays.asList(pictureIds.split(",")));
+                    result.put("assistanceRewardPicture", filePath);
+                }
                 result.put("assistanceReward", rewardActCustMsgEntity);
             }
         }
