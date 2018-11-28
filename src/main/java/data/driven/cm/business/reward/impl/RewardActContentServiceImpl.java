@@ -49,9 +49,6 @@ public class RewardActContentServiceImpl implements RewardActContentService{
         }else{
             return new Page<RewardActContentVO>();
         }
-        if(where.length() > 0){
-            sql += where.delete(0,4);
-        }
         sql += " order by rac.create_at desc,rac.act_id";
         return jdbcBaseDao.queryPageWithListParam(RewardActContentVO.class, pageBean, sql, paramList);
     }
