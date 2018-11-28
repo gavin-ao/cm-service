@@ -155,6 +155,7 @@ public class FileUploadController {
                 }
             }
         }
+        pictureService.insertManyPicture(pictureList);
         result.put("success", true);
         return result;
     }
