@@ -33,6 +33,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 活动controller
@@ -166,7 +167,10 @@ public class MatActivityController {
                 if(rewardActCustMsgEntity.getType().intValue() == 2){
                     String pictureIds = rewardActCustMsgEntity.getContext();
                     List<String> filePath = pictureService.findPictureByIds(Arrays.asList(pictureIds.split(",")));
-                    result.put("initiatorRewardPicture", filePath);
+                    if(filePath != null && filePath.size() > 0){
+                        filePath = filePath.stream().collect(Collectors.mapping(o -> Constant.STATIC_FILE_PATH + o,Collectors.toList()));
+                        result.put("initiatorRewardPicture", filePath);
+                    }
                 }
                 result.put("initiatorReward", rewardActCustMsgEntity);
             }
@@ -181,7 +185,10 @@ public class MatActivityController {
                 if(rewardActCustMsgEntity.getType().intValue() == 2){
                     String pictureIds = rewardActCustMsgEntity.getContext();
                     List<String> filePath = pictureService.findPictureByIds(Arrays.asList(pictureIds.split(",")));
-                    result.put("assistanceRewardPicture", filePath);
+                    if(filePath != null && filePath.size() > 0){
+                        filePath = filePath.stream().collect(Collectors.mapping(o -> Constant.STATIC_FILE_PATH + o,Collectors.toList()));
+                        result.put("assistanceRewardPicture", filePath);
+                    }
                 }
                 result.put("assistanceReward", rewardActCustMsgEntity);
             }
