@@ -166,10 +166,10 @@ public class MatActivityController {
         if(matActivityVO.getAssistanceRewardType() != null){
             if(matActivityVO.getAssistanceRewardType().intValue() == 2){
                 RewardActCurrencyEntity currencyEntity = rewardActCurrencyService.getRewardActCurrency(actId, 2);
-                result.put("initiatorReward", currencyEntity);
+                result.put("assistanceReward", currencyEntity);
             }else if(matActivityVO.getAssistanceRewardType().intValue() == 3){
                 RewardActCustMsgEntity rewardActCustMsgEntity = rewardActCustMsgService.getRewardActCustMsg(actId, 2);
-                result.put("initiatorReward", rewardActCustMsgEntity);
+                result.put("assistanceReward", rewardActCustMsgEntity);
             }
         }
 
