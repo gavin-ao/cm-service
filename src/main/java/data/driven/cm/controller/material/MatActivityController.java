@@ -109,7 +109,7 @@ public class MatActivityController {
 
     @ResponseBody
     @RequestMapping(path = "/updateActivity")
-    public JSONObject updateActivity(HttpServletRequest request, HttpServletResponse response, MatActivityVO activity, String btnCopywritingJson, String rewardActContentJson, String initiatorRewardJson, String assistanceRewardJson, Integer rewardNum){
+    public JSONObject updateActivity(HttpServletRequest request, HttpServletResponse response, MatActivityVO activity, String btnCopywritingJson, String rewardActContentJson, String initiatorRewardJson, String assistanceRewardJson, Integer rewardNum, Integer assistanceAwardsNum){
         UserInfoEntity user = ApplicationSessionFactory.getUser(request, response);
         String storeId = storeService.getStoreIdByCurrentUser(user.getUserId());
         if(storeId == null){
@@ -122,7 +122,7 @@ public class MatActivityController {
         }else{
             return JSONUtil.putMsg(false, "111", "门店为空");
         }
-        return matActivityService.updateActivity(activity, btnCopywritingJson, rewardActContentJson, initiatorRewardJson, assistanceRewardJson, rewardNum, user.getUserId());
+        return matActivityService.updateActivity(activity, btnCopywritingJson, rewardActContentJson, initiatorRewardJson, assistanceRewardJson, rewardNum, assistanceAwardsNum, user.getUserId());
     }
 
     @ResponseBody

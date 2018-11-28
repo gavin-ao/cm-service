@@ -146,7 +146,7 @@ public class MatActivityServiceImpl implements MatActivityService{
     }
 
     @Override
-    public JSONObject updateActivity(MatActivityVO activity, String btnCopywritingJson, String rewardActContentJson, String initiatorRewardJson, String assistanceRewardJson, Integer rewardNum, String creator) {
+    public JSONObject updateActivity(MatActivityVO activity, String btnCopywritingJson, String rewardActContentJson, String initiatorRewardJson, String assistanceRewardJson, Integer rewardNum, Integer assistanceAwardsNum, String creator) {
         if(activity == null || btnCopywritingJson == null || rewardActContentJson == null){
             return JSONUtil.putMsg(false, "101", "参数为空");
         }
@@ -182,19 +182,11 @@ public class MatActivityServiceImpl implements MatActivityService{
             boolean irtNotNull = activity.getInitiatorRewardType() != null;
             //助力奖励
             boolean artNotNull = activity.getAssistanceRewardType() != null;
-            if(irtNotNull && artNotNull){
-                if(activity.getInitiatorRewardType().intValue() == 1 && activity.getAssistanceRewardType().intValue() == 1){
-                    rewardActCommandService.insertRewardActCommandAuto(rewardNum, activity, 3);
-                }else{
-                    //新建发起人奖励
-                    addReward(activity, activity.getInitiatorRewardType(), initiatorRewardJson, rewardNum, date, 1);
-                    //新建助力奖励
-                    addReward(activity, activity.getAssistanceRewardType(), assistanceRewardJson, rewardNum, date, 2);
-                }
-            }else if(irtNotNull){//新建发起人奖励
+            if(irtNotNull){//新建发起人奖励
                 addReward(activity, activity.getInitiatorRewardType(), initiatorRewardJson, rewardNum, date, 1);
-            }else if(artNotNull){//新建助力奖励
-                addReward(activity, activity.getAssistanceRewardType(), assistanceRewardJson, rewardNum, date, 2);
+            }
+            if(artNotNull){//新建助力奖励
+                addReward(activity, activity.getAssistanceRewardType(), assistanceRewardJson, assistanceAwardsNum, date, 2);
             }
 
             //插入奖励文案数据
@@ -289,38 +281,7 @@ public class MatActivityServiceImpl implements MatActivityService{
             //助力奖励
             boolean artNotNull = activity.getAssistanceRewardType() != null;
             activity.setUserId(creator);
-            if(irtNotNull && artNotNull){
-                if(activity.getInitiatorRewardType().intValue() == 1 && activity.getAssistanceRewardType().intValue() == 1){
-                    if(initiatorUpdate && assistanceUpdate){
-                        rewardActCommandService.insertRewardActCommandAuto(rewardNum, activity, 3);
-                    }else if(initiatorUpdate){
-                        //新建/修改发起人奖励
-                        addReward(activity, activity.getInitiatorRewardType(), initiatorRewardJson, rewardNum, date, 1);
-                    }else if(assistanceUpdate){
-                        //新建/修改助力奖励
-                        addReward(activity, activity.getAssistanceRewardType(), assistanceRewardJson, rewardNum, date, 2);
-                    }
-                }else{
-                    if(activity.getInitiatorRewardType().intValue() == 1){
-                        if(initiatorUpdate){
-                            //新建/修改发起人奖励
-                            addReward(activity, activity.getInitiatorRewardType(), initiatorRewardJson, rewardNum, date, 1);
-                        }
-                    }else{
-                        //新建/修改发起人奖励
-                        addReward(activity, activity.getInitiatorRewardType(), initiatorRewardJson, rewardNum, date, 1);
-                    }
-                    if(activity.getAssistanceRewardType().intValue() == 1){
-                        if(assistanceUpdate){
-                            //新建/修改助力奖励
-                            addReward(activity, activity.getAssistanceRewardType(), assistanceRewardJson, rewardNum, date, 2);
-                        }
-                    }else{
-                        //新建/修改助力奖励
-                        addReward(activity, activity.getAssistanceRewardType(), assistanceRewardJson, rewardNum, date, 2);
-                    }
-                }
-            }else if(irtNotNull){//新建/修改发起人奖励
+            if(irtNotNull){//新建/修改发起人奖励
                 if(activity.getInitiatorRewardType().intValue() == 1){
                     if(initiatorUpdate){
                         //新建/修改发起人奖励
@@ -334,11 +295,11 @@ public class MatActivityServiceImpl implements MatActivityService{
                 if(activity.getAssistanceRewardType().intValue() == 1){
                     if(assistanceUpdate){
                         //新建/修改助力奖励
-                        addReward(activity, activity.getAssistanceRewardType(), assistanceRewardJson, rewardNum, date, 2);
+                        addReward(activity, activity.getAssistanceRewardType(), assistanceRewardJson, assistanceAwardsNum, date, 2);
                     }
                 }else{
                     //新建/修改助力奖励
-                    addReward(activity, activity.getAssistanceRewardType(), assistanceRewardJson, rewardNum, date, 2);
+                    addReward(activity, activity.getAssistanceRewardType(), assistanceRewardJson, assistanceAwardsNum, date, 2);
                 }
             }
         }

@@ -84,7 +84,7 @@ public interface MatActivityService {
      * @param rewardNum 奖励数量
      * @param creator   当前用户
      */
-    public JSONObject updateActivity(MatActivityVO activity, String btnCopywritingJson, String rewardActContentJson, String initiatorRewardJson, String assistanceRewardJson, Integer rewardNum, String creator);
+    public JSONObject updateActivity(MatActivityVO activity, String btnCopywritingJson, String rewardActContentJson, String initiatorRewardJson, String assistanceRewardJson, Integer rewardNum, Integer assistanceAwardsNum, String creator);
 
     /**
      * 验证时间是否正确
