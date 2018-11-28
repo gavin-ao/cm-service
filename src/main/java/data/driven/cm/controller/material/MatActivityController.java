@@ -49,7 +49,7 @@ public class MatActivityController {
     private RewardActContentService rewardActContentService;
 
     @ResponseBody
-    @RequestMapping(path = "findActivityPage")
+    @RequestMapping(path = "/findActivityPage")
     public JSONObject findActivityPage(HttpServletRequest request, HttpServletResponse response, String keyword, Integer pageNo, Integer pageSize){
         UserInfoEntity user = ApplicationSessionFactory.getUser(request, response);
         String storeId = storeService.getStoreIdByCurrentUser(user.getUserId());
@@ -95,8 +95,8 @@ public class MatActivityController {
     }
 
     @ResponseBody
-    @RequestMapping(path = "updateActivity")
-    public JSONObject updateActivity(HttpServletRequest request, HttpServletResponse response, MatActivityVO activity, String btnCopywritingJson, String rewardActContentJson, Integer rewardNum){
+    @RequestMapping(path = "/updateActivity")
+    public JSONObject updateActivity(HttpServletRequest request, HttpServletResponse response, MatActivityVO activity, String btnCopywritingJson, String rewardActContentJson, String initiatorRewardJson, String assistanceRewardJson, Integer rewardNum){
         UserInfoEntity user = ApplicationSessionFactory.getUser(request, response);
         String storeId = storeService.getStoreIdByCurrentUser(user.getUserId());
         if(storeId == null){
@@ -106,12 +106,14 @@ public class MatActivityController {
         StoreEntity storeEntity = storeService.getStoreById(storeId);
         if(storeEntity != null){
             activity.setAppInfoId(storeEntity.getAppInfoId());
+        }else{
+            return JSONUtil.putMsg(false, "111", "门店为空");
         }
-        return matActivityService.updateActivity(activity, btnCopywritingJson, rewardActContentJson, rewardNum, user.getUserId());
+        return matActivityService.updateActivity(activity, btnCopywritingJson, rewardActContentJson, initiatorRewardJson, assistanceRewardJson, rewardNum, user.getUserId());
     }
 
     @ResponseBody
-    @RequestMapping(path = "getNextActivityStartDate")
+    @RequestMapping(path = "/getNextActivityStartDate")
     public JSONObject getNextActivityStartDate(HttpServletRequest request, HttpServletResponse response){
         UserInfoEntity user = ApplicationSessionFactory.getUser(request, response);
         String storeId = storeService.getStoreIdByCurrentUser(user.getUserId());
@@ -122,7 +124,7 @@ public class MatActivityController {
     }
 
     @ResponseBody
-    @RequestMapping(path = "getMatActivityAllInfo")
+    @RequestMapping(path = "/getMatActivityAllInfo")
     public JSONObject getMatActivityAllInfo(HttpServletRequest request, HttpServletResponse response, String actId){
         UserInfoEntity user = ApplicationSessionFactory.getUser(request, response);
         String storeId = storeService.getStoreIdByCurrentUser(user.getUserId());

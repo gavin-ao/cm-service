@@ -124,7 +124,7 @@ public class RewardActCommandServiceImpl implements RewardActCommandService {
     }
 
     @Override
-    public void insertRewardActCommandAuto(Integer rewardNum, MatActivityVO matActivity) {
+    public void insertRewardActCommandAuto(Integer rewardNum, MatActivityVO matActivity, int type) {
         String sql = "INSERT INTO `reward_act_command` (`command_id`, `command`, `command_type`, `act_id`, `user_id`, `store_id`, `app_info_id`, `used`, `create_at`, `being_used`)";
         String valueSql = "(:command_id, :command, :command_type, :act_id, :user_id, :store_id, :app_info_id, :used, :create_at, :being_used)";
         Date date = new Date();
@@ -133,14 +133,26 @@ public class RewardActCommandServiceImpl implements RewardActCommandService {
             tempCount = maxCount;
         }
         List<RewardActCommandEntity> commandList = new ArrayList<RewardActCommandEntity>(tempCount);
-        for(int i = 0; i < rewardNum; i++){
-            commandList.add(getRewardActCommandEntity(matActivity, 1, date));
-            for (int j = 0; j < matActivity.getPartakeNum(); j ++){
-                commandList.add(getRewardActCommandEntity(matActivity, 2, date));
+        if(type == 1 || type == 3){
+            for(int i = 0; i < rewardNum; i++){
+                commandList.add(getRewardActCommandEntity(matActivity, 1, date));
+                for (int j = 0; j < matActivity.getPartakeNum(); j ++){
+                    if(type == 3){
+                        commandList.add(getRewardActCommandEntity(matActivity, 2, date));
+                    }
+                }
+                if(commandList.size() >= maxCount){
+                    jdbcBaseDao.executeBachOneSql(sql, valueSql, commandList);
+                    commandList.clear();
+                }
             }
-            if(commandList.size() >= maxCount){
-                jdbcBaseDao.executeBachOneSql(sql, valueSql, commandList);
-                commandList.clear();
+        }else if(type == 2){
+            for(int i = 0; i < rewardNum; i++){
+                commandList.add(getRewardActCommandEntity(matActivity, 2, date));
+                if(commandList.size() >= maxCount){
+                    jdbcBaseDao.executeBachOneSql(sql, valueSql, commandList);
+                    commandList.clear();
+                }
             }
         }
         if(commandList.size() > 0){
@@ -219,6 +231,13 @@ public class RewardActCommandServiceImpl implements RewardActCommandService {
         paramList.add(storeId);
         paramList.addAll(idList);
         jdbcBaseDao.executeUpdateWithListParam(sql, paramList);
+        return true;
+    }
+
+    @Override
+    public boolean deleteRewardActCommandByActId(String actId, Integer commandType, String storeId) {
+        String sql = "delete from reward_act_command where act_id = ? and command_type = ? and store_id = ?";
+        jdbcBaseDao.executeUpdate(sql, actId, commandType, storeId);
         return true;
     }
 }

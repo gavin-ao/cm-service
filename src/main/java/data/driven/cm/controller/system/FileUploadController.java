@@ -1,5 +1,6 @@
 package data.driven.cm.controller.system;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import data.driven.cm.business.system.PictureService;
 import data.driven.cm.common.ApplicationSessionFactory;
@@ -21,10 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -121,6 +119,73 @@ public class FileUploadController {
             logger.error(e.getMessage(), e);
         }
         return result;
+    }
+
+    /**
+     * 图片上传
+     * @param request
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(path = "/pictureUploads")
+    public JSONObject pictureUploads(HttpServletRequest request, HttpServletResponse response, String paramJson) {
+        if(paramJson == null){
+            return JSONUtil.putMsg(false, "101", "参数为空");
+        }
+        UserInfoEntity user = ApplicationSessionFactory.getUser(request, response);
+        JSONObject result = new JSONObject();
+        Date date = new Date();
+        JSONObject param = JSONObject.parseObject(paramJson);
+        List<PictureEntity> pictureList = new ArrayList<PictureEntity>();
+        for(String key : param.keySet()){
+            if(key.equals("first")){
+                String pictureJson = param.getString(key);
+                String pictureId = insertPictures(user, date, pictureList, pictureJson);
+                result.put(key, pictureId);
+            }else{
+                JSONArray jsonArray = param.getJSONArray(key);
+                if(jsonArray != null && jsonArray.size() > 0){
+                    List<String> idList = new ArrayList<String>();
+                    for(int i = 0; i < jsonArray.size(); i++){
+                        String pictureJson = jsonArray.getString(i);
+                        String pictureId = insertPictures(user, date, pictureList, pictureJson);
+                        idList.add(pictureId);
+                    }
+                    result.put(key, idList);
+                }
+            }
+        }
+        result.put("success", true);
+        return result;
+    }
+
+    /**
+     * 批量上传图片
+     * @param user
+     * @param date
+     * @param pictureList
+     * @param pictureJson
+     * @return
+     */
+    private String insertPictures(UserInfoEntity user, Date date, List<PictureEntity> pictureList, String pictureJson) {
+        PictureEntity pictureEntity = new PictureEntity();
+        String fileName = UUIDUtil.getUUID();
+        pictureEntity.setPictureId(fileName);
+        pictureEntity.setRealName(fileName);
+        pictureEntity.setCreator(user.getUserId());
+        pictureEntity.setCreateAt(date);
+        try {
+            fileName = pictureEntity.getPictureId() + ".jpg";
+            String[] pictureJsonArr = pictureJson.split(",");
+            JSONObject uploadResult = FileUtil.uploadFile(decoder.decode(pictureJsonArr[pictureJsonArr.length - 1]), fileName);
+            pictureEntity.setFilePath(uploadResult.getString("relativePath"));
+            pictureList.add(pictureEntity);
+        } catch (Exception e) {
+            pictureList.add(pictureEntity);
+            logger.error(e.getMessage(), e);
+            return "-1";
+        }
+        return pictureEntity.getPictureId();
     }
 
 }

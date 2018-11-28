@@ -50,6 +50,10 @@ public class MatActivityEntity {
     private Date endAt;
     /** 活动状态 0 - 未开始； 1 进行中 ； 2 - 已结束 **/
     private Integer status;
+    /** 发起人奖励类型，1 - 一人一码，2 - 通用口令，3 - 客服消息 **/
+    private Integer initiatorRewardType;
+    /** 助力奖励类型，0 - 无奖励，1 - 一人一码，2 - 通用口令，3 - 客服消息 **/
+    private Integer assistanceRewardType;
     /** 创建日期 **/
     private Date createAt;
 
@@ -219,6 +223,22 @@ public class MatActivityEntity {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Integer getInitiatorRewardType() {
+        return initiatorRewardType;
+    }
+
+    public void setInitiatorRewardType(Integer initiatorRewardType) {
+        this.initiatorRewardType = initiatorRewardType;
+    }
+
+    public Integer getAssistanceRewardType() {
+        return assistanceRewardType;
+    }
+
+    public void setAssistanceRewardType(Integer assistanceRewardType) {
+        this.assistanceRewardType = assistanceRewardType;
     }
 
     public Date getCreateAt() {

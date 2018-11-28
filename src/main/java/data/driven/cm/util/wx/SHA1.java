@@ -60,7 +60,7 @@ public class SHA1 {
 	}
 
 	/**
-	 * 用SHA1算法生成安全签名
+	 * 用SHA1算法生成安全签名 - 用于客服消息配置验证接口调用。
 	 * @param token 票据
 	 * @param timestamp 时间戳
 	 * @param nonce 随机字符串

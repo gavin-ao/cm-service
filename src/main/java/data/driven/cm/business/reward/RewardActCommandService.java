@@ -54,8 +54,9 @@ public interface RewardActCommandService {
      * 根据活动自动生成奖励数据
      * @param rewardNum
      * @param matActivity
+     * @param type 1 - 只生成发起人奖励， 2 - 只生成助力奖励， 3 - 所有奖励都生成
      */
-    public void insertRewardActCommandAuto(Integer rewardNum, MatActivityVO matActivity);
+    public void insertRewardActCommandAuto(Integer rewardNum, MatActivityVO matActivity, int type);
     /**
      * 根据活动生成奖励数据 - 只生成某一种
      * @param rewardNum
@@ -83,4 +84,13 @@ public interface RewardActCommandService {
      * @param ids
      */
     public boolean deleteRewardActCommand(String actId, Integer commandType, String storeId, String ids);
+
+    /**
+     * 清除活动下的所有数据
+     * @param actId
+     * @param commandType
+     * @param storeId
+     * @return
+     */
+    public boolean deleteRewardActCommandByActId(String actId, Integer commandType, String storeId);
 }

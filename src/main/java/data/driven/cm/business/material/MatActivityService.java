@@ -79,10 +79,12 @@ public interface MatActivityService {
      * @param activity 活动信息
      * @param btnCopywritingJson 活动文案部分信息
      * @param rewardActContentJson 活动奖励文案部分信息
+     * @param initiatorRewardJson 发起人奖励信息
+     * @param assistanceRewardJson 接收人奖励信息
      * @param rewardNum 奖励数量
      * @param creator   当前用户
      */
-    public JSONObject updateActivity(MatActivityVO activity, String btnCopywritingJson, String rewardActContentJson, Integer rewardNum, String creator);
+    public JSONObject updateActivity(MatActivityVO activity, String btnCopywritingJson, String rewardActContentJson, String initiatorRewardJson, String assistanceRewardJson, Integer rewardNum, String creator);
 
     /**
      * 验证时间是否正确
