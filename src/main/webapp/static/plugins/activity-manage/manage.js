@@ -849,10 +849,13 @@ function addActCondition(picId, par, assistanceImg, invitatorImg) {
             contentTitle: "任务达成",
             contentHead: "恭喜您获得 " + par.invitingAwards,
             contentFoot: "数量有限，先到先得哦",
-            contentBtn: "我也要领奖励"
+            contentBtn: "我也要参加活动"
         };
         if (contentid1) {
             parmas.contentId = contentid1;
+        }
+        if (par.invitationRewardType == 2) {
+            parmas.contentMid="复制整条信息，打开「手淘」${content}【立即享受优惠】"
         }
         par.assistanceRewardType = 0;
         rewardActContentJson.push(parmas);
@@ -863,7 +866,7 @@ function addActCondition(picId, par, assistanceImg, invitatorImg) {
             contentTitle: "任务达成",
             contentHead: "恭喜您获得 " + par.invitingAwards,
             contentFoot: "数量有限，先到先得哦",
-            contentBtn: "我也要领奖励"
+            contentBtn: "我也参加活动"
         };
         var parmas2 = {
             "commandType": 2,
@@ -871,11 +874,17 @@ function addActCondition(picId, par, assistanceImg, invitatorImg) {
             contentTitle: "为好友助力成功",
             contentHead: "恭喜您获得 " + par.aidReward,
             contentFoot: "数量有限，先到先得哦",
-            contentBtn: "我也要领奖励"
+            contentBtn: "我也要参加活动"
         };
         if (contentid1 && contentid2) {
             parmas1.contentId = contentid1;
             parmas2.contentId = contentid2;
+        }
+        if (par.invitationRewardType == 2) {
+            parmas1.contentMid="复制整条信息，打开「手淘」${content}【立即享受优惠】"
+        }
+        if (par.assistanceRewardType == 2) {
+            parmas2.contentMid="复制整条信息，打开「手淘」${content}【立即享受优惠】"
         }
         rewardActContentJson.push(parmas1);
         rewardActContentJson.push(parmas2);
@@ -885,15 +894,15 @@ function addActCondition(picId, par, assistanceImg, invitatorImg) {
     if (par.invitationRewardType == 2) {
         invitatorRewardJson = {
             command: par.invitingAwards
-        }
+        };
         if (invitationCurrencyId) {
             invitatorRewardJson.currencyId = invitationCurrencyId
         }
     } else if (par.invitationRewardType == 3) {
         invitatorRewardJson = {
             type: 2,
-            context: invitatorImg.join(",")
-        }
+            content: invitatorImg.join(",")
+        };
 
         if (invitationGlobalId) {
             invitatorRewardJson.globalId = invitationGlobalId
@@ -901,8 +910,8 @@ function addActCondition(picId, par, assistanceImg, invitatorImg) {
     } else if (par.invitationRewardType == 4) {
         invitatorRewardJson = {
             type: 1,
-            context: par.invitingAwards
-        }
+            content: par.invitingAwards
+        };
         if (invitationGlobalId) {
             invitatorRewardJson.globalId = invitationGlobalId
         }
@@ -917,7 +926,7 @@ function addActCondition(picId, par, assistanceImg, invitatorImg) {
     } else if (par.assistanceRewardType == 3) {
         assistanceRewardJson = {
             type: 2,
-            context: assistanceImg.join(",")
+            content: assistanceImg.join(",")
         }
         if (assistanceGlobalId) {
             invitatorRewardJson.globalId = assistanceGlobalId
@@ -925,7 +934,7 @@ function addActCondition(picId, par, assistanceImg, invitatorImg) {
     } else if (par.assistanceRewardType == 4) {
         assistanceRewardJson = {
             type: 1,
-            context: par.aidReward
+            content: par.aidReward
         }
         if (assistanceGlobalId) {
             invitatorRewardJson.globalId = assistanceGlobalId
