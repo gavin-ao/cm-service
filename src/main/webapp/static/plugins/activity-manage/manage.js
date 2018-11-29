@@ -43,6 +43,7 @@ var invitationGlobalId, assistanceGlobalId, invitationCurrencyId, assistanceCurr
         $("#assistanceRewardType option:first").prop("selected", 'selected');
         $(".assistanceGroup").hide();
         $(".showExit").show();
+        $(".assistanceReward").show();
         $("input[name='aidReward']").attr("placeholder", "应比邀请奖励小，以刺激转发，如:满199减10");
         //获取活动时间
         activTime();
@@ -286,6 +287,11 @@ function initData() {
     $("#currentActId").attr("data-curr-actid", "");
     $("#currentActId").attr("data-curr-contentid1", "");
     $("#currentActId").attr("data-curr-contentid2", "");
+    $("#assistanceImagesShow").html("");
+    $("#assistanceImagesShow").hide();
+    $("#invitationImagesShow").html("");
+    $("#invitationImagesShow").hide();
+
 }
 
 //获取活动时间
