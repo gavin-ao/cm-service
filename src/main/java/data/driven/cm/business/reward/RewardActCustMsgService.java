@@ -18,17 +18,17 @@ public interface RewardActCustMsgService {
     /**
      * 根据活动查询活动奖励
      * @param actId
-     * @param contextType
+     * @param contentType
      * @return
      */
-    public RewardActCustMsgEntity getRewardActCustMsg(String actId, Integer contextType);
+    public RewardActCustMsgEntity getRewardActCustMsg(String actId, Integer contentType);
 
     /**
      * 根据活动id删除活动奖励 - 微信客服
      * @param actId
-     * @param contextType
+     * @param contentType
      * @param storeId
      * @return
      */
-    public boolean deleteRewardByActId(String actId, Integer contextType, String storeId);
+    public boolean deleteRewardByActId(String actId, Integer contentType, String storeId);
 }

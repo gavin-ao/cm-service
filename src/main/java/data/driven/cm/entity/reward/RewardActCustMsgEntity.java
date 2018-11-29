@@ -19,9 +19,9 @@ public class RewardActCustMsgEntity {
     /** 小程序id **/
     private String appInfoId;
     /** 奖励回复内容 **/
-    private String context;
+    private String content;
     /** 类型，1 - 发起人奖励，2 - 参与人奖励 **/
-    private Integer contextType;
+    private Integer contentType;
     /** 奖励类型，1-文本，2-图片 **/
     private Integer type;
     /** 口令创建时间 **/
@@ -67,20 +67,20 @@ public class RewardActCustMsgEntity {
         this.appInfoId = appInfoId;
     }
 
-    public String getContext() {
-        return context;
+    public String getContent() {
+        return content;
     }
 
-    public void setContext(String context) {
-        this.context = context;
+    public void setContent(String content) {
+        this.content = content;
     }
 
-    public Integer getContextType() {
-        return contextType;
+    public Integer getContentType() {
+        return contentType;
     }
 
-    public void setContextType(Integer contextType) {
-        this.contextType = contextType;
+    public void setContentType(Integer contentType) {
+        this.contentType = contentType;
     }
 
     public Integer getType() {

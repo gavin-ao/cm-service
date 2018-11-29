@@ -364,7 +364,7 @@ public class MatActivityServiceImpl implements MatActivityService{
                 rewardActCustMsgEntity.setStoreId(activity.getStoreId());
                 rewardActCustMsgEntity.setUserId(activity.getUserId());
                 rewardActCustMsgEntity.setAppInfoId(activity.getAppInfoId());
-                rewardActCustMsgEntity.setContextType(type);
+                rewardActCustMsgEntity.setContentType(type);
                 if(rewardActCustMsgEntity.getGlobalId() == null){
                     rewardActCustMsgEntity.setCreateAt(date);
                 }

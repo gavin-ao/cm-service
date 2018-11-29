@@ -165,7 +165,7 @@ public class MatActivityController {
             }else if(matActivityVO.getInitiatorRewardType().intValue() == 3){
                 RewardActCustMsgEntity rewardActCustMsgEntity = rewardActCustMsgService.getRewardActCustMsg(actId, 1);
                 if(rewardActCustMsgEntity.getType().intValue() == 2){
-                    String pictureIds = rewardActCustMsgEntity.getContext();
+                    String pictureIds = rewardActCustMsgEntity.getContent();
                     List<String> filePath = pictureService.findPictureByIds(Arrays.asList(pictureIds.split(",")));
                     if(filePath != null && filePath.size() > 0){
                         filePath = filePath.stream().collect(Collectors.mapping(o -> Constant.STATIC_FILE_PATH + o,Collectors.toList()));
@@ -183,7 +183,7 @@ public class MatActivityController {
             }else if(matActivityVO.getAssistanceRewardType().intValue() == 3){
                 RewardActCustMsgEntity rewardActCustMsgEntity = rewardActCustMsgService.getRewardActCustMsg(actId, 2);
                 if(rewardActCustMsgEntity.getType().intValue() == 2){
-                    String pictureIds = rewardActCustMsgEntity.getContext();
+                    String pictureIds = rewardActCustMsgEntity.getContent();
                     List<String> filePath = pictureService.findPictureByIds(Arrays.asList(pictureIds.split(",")));
                     if(filePath != null && filePath.size() > 0){
                         filePath = filePath.stream().collect(Collectors.mapping(o -> Constant.STATIC_FILE_PATH + o,Collectors.toList()));

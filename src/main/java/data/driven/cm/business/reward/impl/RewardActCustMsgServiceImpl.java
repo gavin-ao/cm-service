@@ -31,19 +31,19 @@ public class RewardActCustMsgServiceImpl implements RewardActCustMsgService {
     }
 
     @Override
-    public RewardActCustMsgEntity getRewardActCustMsg(String actId, Integer contextType) {
-        String sql = "select global_id,act_id,store_id,context,context_type,type from reward_act_cust_msg where act_id = ? and context_type = ?";
-        List<RewardActCustMsgEntity> list = jdbcBaseDao.queryList(RewardActCustMsgEntity.class, sql, actId, contextType);
-        if(list != null){
+    public RewardActCustMsgEntity getRewardActCustMsg(String actId, Integer contentType) {
+        String sql = "select global_id,act_id,store_id,content,content_type,type from reward_act_cust_msg where act_id = ? and content_type = ?";
+        List<RewardActCustMsgEntity> list = jdbcBaseDao.queryList(RewardActCustMsgEntity.class, sql, actId, contentType);
+        if(list != null && list.size() > 0){
             return list.get(0);
         }
         return null;
     }
 
     @Override
-    public boolean deleteRewardByActId(String actId, Integer contextType, String storeId) {
-        String sql = "delete from reward_act_cust_msg where act_id = ? and context_type = ? and store_id = ?";
-        jdbcBaseDao.executeUpdate(sql, actId, contextType, storeId);
+    public boolean deleteRewardByActId(String actId, Integer contentType, String storeId) {
+        String sql = "delete from reward_act_cust_msg where act_id = ? and content_type = ? and store_id = ?";
+        jdbcBaseDao.executeUpdate(sql, actId, contentType, storeId);
         return true;
     }
 }
