@@ -130,7 +130,6 @@ public class WXUtil {
         if(acessToken != null && acessToken.trim().length() > 1){
             JSONObject result = new JSONObject();
             result.put("access_token", acessToken);
-            System.out.println(result);
             return result;
         }
         String url = token_url+"?grant_type="+GRANT_TYPE_CLIENT_CREDENTIAL+"&appid="+appid+"&secret="+secret;
@@ -140,7 +139,7 @@ public class WXUtil {
         }
         JSONObject result = parseObject(resultStr);
         if(result.getString("access_token") != null && result.getString("access_token").trim().length() > 1){
-            RedisFactory.setString(key, result.getString("access_token"), 3600 * 1000);
+            RedisFactory.setString(key, result.getString("access_token"), 2500 * 1000);
         }
         return result;
     }

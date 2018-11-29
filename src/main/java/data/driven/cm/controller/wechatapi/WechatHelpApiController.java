@@ -6,12 +6,12 @@ import data.driven.cm.business.behavioranalysis.BehaviorAnalysisHelpCommandServi
 import data.driven.cm.business.material.MatActivityService;
 import data.driven.cm.business.reward.RewardActCommandService;
 import data.driven.cm.business.reward.RewardActContentService;
+import data.driven.cm.business.reward.RewardActCurrencyService;
+import data.driven.cm.business.reward.RewardActCustMsgService;
 import data.driven.cm.business.wechat.WechatHelpDetailService;
 import data.driven.cm.business.wechat.WechatHelpInfoService;
 import data.driven.cm.business.wechat.WechatUserService;
-import data.driven.cm.common.Constant;
-import data.driven.cm.common.WechatApiSession;
-import data.driven.cm.common.WechatApiSessionBean;
+import data.driven.cm.common.*;
 import data.driven.cm.entity.reward.RewardActCommandEntity;
 import data.driven.cm.entity.reward.RewardActContentEntity;
 import data.driven.cm.entity.wechat.WechatHelpDetailEntity;
@@ -59,6 +59,10 @@ public class WechatHelpApiController {
     private MatActivityService matActivityService;
     @Autowired
     private BehaviorAnalysisHelpCommandService behaviorAnalysisHelpCommandService;
+    @Autowired
+    private RewardActCurrencyService currencyService;
+    @Autowired
+    private RewardActCustMsgService rewardActCustMsgService;
 
     /**
      * 根据actId和当前登录微信用户判断是否发起过助力，如果id为空则没有发起过
@@ -152,13 +156,6 @@ public class WechatHelpApiController {
         }
     }
 
-    private WechatApiSessionBean test(String openId){
-        WechatApiSessionBean wechatApiSessionBean = new WechatApiSessionBean();
-        WechatUserInfoVO userInfo = wechatUserService.getUserInfoByOpenId(openId);
-        wechatApiSessionBean.setUserInfo(userInfo);
-        return wechatApiSessionBean;
-    }
-
     /**
      * 判断当前用户是否助力过 - 在整个活动中 ,并且领取奖励
      * @param sessionID
@@ -181,13 +178,30 @@ public class WechatHelpApiController {
             WechatHelpDetailEntity wechatHelpDetailEntity = wechatHelpDetailService.getWechatHelpDetailEntityByToUser(actId, toUserInfo.getWechatUserId());
             if(wechatHelpDetailEntity != null){
                 JSONObject result = putMsg(true, "200", "已助力");
-                // 判断助力后是否领取奖励
-                JSONObject commondJson = getRewardActCommandByOther(actId, toUserInfo.getWechatUserId(), wechatHelpDetailEntity, type);
-                result.put("command", commondJson.get("command"));
-                result.put("rewardActContent", commondJson.get("rewardActContent"));
-                result.put("filePath", commondJson.get("filePath"));
-                result.put("commandType", 2);
-                return result;
+                MatActivityVO matActivityVO = matActivityService.getMatActivityAnyID(actId);
+                if(matActivityVO != null){
+
+                    if(matActivityVO.getAssistanceRewardType() != null && matActivityVO.getAssistanceRewardType().intValue() != 1){
+                        // 判断助力后是否领取奖励
+                        if(matActivityVO.getAssistanceRewardType().intValue() == 3){
+                            if(result.getBoolean("success")){
+                                RewardActContentEntity rewardActContent = rewardActContentService.getRewardActContentByActAndType(wechatHelpDetailEntity.getActId(), 2);
+                                result.put("rewardActContent", rewardActContent);
+                            }
+                        }else{
+                            JSONObject commondJson = getRewardActCommandByOther(actId, toUserInfo.getWechatUserId(), wechatHelpDetailEntity, type);
+                            result.put("command", commondJson.get("command"));
+                            result.put("rewardActContent", commondJson.get("rewardActContent"));
+                            result.put("filePath", commondJson.get("filePath"));
+                        }
+                        result.put("commandType", 2);
+                        return result;
+                    }else{
+                        return putMsg(false, "106", "助力无奖励");
+                    }
+                }else{
+                    return putMsg(false, "105", "活动为空");
+                }
             }else{
                 return putMsg(false, "101", "未助力");
             }
@@ -353,46 +367,61 @@ public class WechatHelpApiController {
         //判断是否已经达到活动领取奖励的标准
         List<WechatHelpDetailEntity> helpDetailEntityList = wechatHelpDetailService.findHelpDetailListByHelpId(helpInfoEntity.getHelpId());
         MatActivityVO matActivityInfo = matActivityService.getMatActivityInfo(helpInfoEntity.getActId());
+        if(matActivityInfo == null){
+            return putMsg(false, "105", "奖励口令获取失败，活动不存在。");
+        }
+        if(matActivityInfo.getInitiatorRewardType() == null || (matActivityInfo.getInitiatorRewardType().intValue() != 1 && matActivityInfo.getInitiatorRewardType().intValue() != 2)){
+            return putMsg(false, "105", "奖励口令获取失败，奖励类型不匹配。");
+        }
         //如果活动未设置助力上限。默认5个助力达成领取条件
         int max = 5;
         if(matActivityInfo != null && matActivityInfo.getPartakeNum() != null){
             max = matActivityInfo.getPartakeNum();
         }
+        JSONObject result = new JSONObject();
+        int commandType = 1;
+        String command = null;
         if(helpDetailEntityList != null && helpDetailEntityList.size() >= max){
-            //根据助力获取是否已经关联过奖励口令
-            String command = rewardActCommandService.getCommandByHelpId(helpInfoEntity.getHelpId(), wechatApiSessionBean.getUserInfo().getWechatUserId());
-            JSONObject result = new JSONObject();
-            int commandType = 1;
-            if(command == null){
-                RewardActCommandEntity rewardActCommandEntity = null;
-                //锁住奖励口令的读写
-                try{
-                    lock.lock();
-                    rewardActCommandEntity = rewardActCommandService.getNextRewardActCommandByActId(helpInfoEntity.getActId(), commandType);
-                    if(rewardActCommandEntity != null){
-                        rewardActCommandService.updateRewardActCommandUsed(rewardActCommandEntity.getCommandId());
-                        result.put("success", true);
-                        result.put("command", rewardActCommandEntity.getCommand());
-                        command = rewardActCommandEntity.getCommand();
-                    }else{
-                        return putMsg(false, "101", "奖励口令获取失败,奖励领取完毕。");
+            if(matActivityInfo.getInitiatorRewardType().intValue() == 1){
+                //根据助力获取是否已经关联过奖励口令
+                command = rewardActCommandService.getCommandByHelpId(helpInfoEntity.getHelpId(), wechatApiSessionBean.getUserInfo().getWechatUserId());
+                if(command == null){
+                    RewardActCommandEntity rewardActCommandEntity = null;
+                    //锁住奖励口令的读写
+                    try{
+                        lock.lock();
+                        rewardActCommandEntity = rewardActCommandService.getNextRewardActCommandByActId(helpInfoEntity.getActId(), commandType);
+                        if(rewardActCommandEntity != null){
+                            rewardActCommandService.updateRewardActCommandUsed(rewardActCommandEntity.getCommandId());
+                            result.put("success", true);
+                            result.put("command", rewardActCommandEntity.getCommand());
+                            command = rewardActCommandEntity.getCommand();
+                        }else{
+                            return putMsg(false, "101", "奖励口令获取失败,奖励领取完毕。");
+                        }
+                    }catch (Exception e){
+                        logger.error(e.getMessage(), e);
+                        return putMsg(false, "102", "奖励口令获取失败,发生未知错误。");
+                    }finally {
+                        lock.unlock();
                     }
-                }catch (Exception e){
-                    logger.error(e.getMessage(), e);
-                    return putMsg(false, "102", "奖励口令获取失败,发生未知错误。");
-                }finally {
-                    lock.unlock();
+                    //插入奖励口令和助力的关联关系
+                    rewardActCommandService.insertRewardActCommandHelpMapping(rewardActCommandEntity, helpInfoEntity);
+                }else{
+                    result.put("success", true);
+                    result.put("command", command);
                 }
-                //插入奖励口令和助力的关联关系
-                rewardActCommandService.insertRewardActCommandHelpMapping(rewardActCommandEntity, helpInfoEntity);
-            }else{
+
+                if(type == 1){
+                    String filePath = rewardActCommandService.getCommandQrcodeByHelpId(helpInfoEntity.getHelpId(), wechatApiSessionBean.getUserInfo().getWechatUserId());
+                    result.put("filePath", Constant.STATIC_FILE_PATH + filePath);
+                }
+            }else if(matActivityInfo.getInitiatorRewardType().intValue() == 2){
+                command = currencyService.getCommand(helpInfoEntity.getActId(), commandType);
                 result.put("success", true);
                 result.put("command", command);
             }
-            if(type == 1){
-                String filePath = rewardActCommandService.getCommandQrcodeByHelpId(helpInfoEntity.getHelpId(), wechatApiSessionBean.getUserInfo().getWechatUserId());
-                result.put("filePath", Constant.STATIC_FILE_PATH + filePath);
-            }
+
             if(result.getBoolean("success")){
                 RewardActContentEntity rewardActContent = rewardActContentService.getRewardActContentByActAndType(helpInfoEntity.getActId(), commandType);
                 if(rewardActContent != null && rewardActContent.getContentMid() != null && command!=null){
@@ -434,47 +463,70 @@ public class WechatHelpApiController {
         return getRewardActCommandByOther(actId, currentUserId, wechatHelpDetailEntity, 1);
     }
 
+    /**
+     * 根据助力信息获取活动奖励
+     * @param actId
+     * @param currentUserId
+     * @param wechatHelpDetailEntity
+     * @param type
+     * @return
+     */
     private JSONObject getRewardActCommandByOther(String actId, String currentUserId, WechatHelpDetailEntity wechatHelpDetailEntity, int type) {
         if(wechatHelpDetailEntity != null){
-            WechatHelpInfoEntity helpInfoEntity = wechatHelpInfoService.getEntityById(wechatHelpDetailEntity.getHelpId());
+                WechatHelpInfoEntity helpInfoEntity = wechatHelpInfoService.getEntityById(wechatHelpDetailEntity.getHelpId());
             if(helpInfoEntity==null){
                 return putMsg(false, "103", "奖励口令获取失败，助力信息不存在。");
             }
-            //根据助力获取是否已经关联过奖励口令
-            String command = rewardActCommandService.getCommandByHelpId(wechatHelpDetailEntity.getHelpId(), currentUserId);
+            MatActivityVO matActivityVO = matActivityService.getMatActivityAnyID(actId);
+            if(matActivityVO == null){
+                return putMsg(false, "105", "奖励口令获取失败，活动不存在。");
+            }
+            if(matActivityVO.getAssistanceRewardType() == null || (matActivityVO.getAssistanceRewardType().intValue() != 1 && matActivityVO.getAssistanceRewardType().intValue() != 2)){
+                return putMsg(false, "105", "奖励口令获取失败，奖励类型不匹配。");
+            }
             JSONObject result = new JSONObject();
             int commandType = 2;
-            if(command == null){
-                RewardActCommandEntity rewardActCommandEntity = null;
-                //锁住奖励口令的读写
-                try{
-                    lock.lock();
-                    rewardActCommandEntity = rewardActCommandService.getNextRewardActCommandByActId(actId, commandType);
-                    if(rewardActCommandEntity != null){
-                        rewardActCommandService.updateRewardActCommandUsed(rewardActCommandEntity.getCommandId());
-                        result.put("success", true);
-                        result.put("command", rewardActCommandEntity.getCommand());
-                        command = rewardActCommandEntity.getCommand();
-                    }else{
-                        return putMsg(false, "101", "奖励口令获取失败,奖励领取完毕。");
+            String command = null;
+            if(matActivityVO.getAssistanceRewardType().intValue() == 1){
+                //根据助力获取是否已经关联过奖励口令
+                command = rewardActCommandService.getCommandByHelpId(wechatHelpDetailEntity.getHelpId(), currentUserId);
+                if(command == null){
+                    RewardActCommandEntity rewardActCommandEntity = null;
+                    //锁住奖励口令的读写
+                    try{
+                        lock.lock();
+                        rewardActCommandEntity = rewardActCommandService.getNextRewardActCommandByActId(actId, commandType);
+                        if(rewardActCommandEntity != null){
+                            rewardActCommandService.updateRewardActCommandUsed(rewardActCommandEntity.getCommandId());
+                            result.put("success", true);
+                            result.put("command", rewardActCommandEntity.getCommand());
+                            command = rewardActCommandEntity.getCommand();
+                        }else{
+                            return putMsg(false, "101", "奖励口令获取失败,奖励领取完毕。");
+                        }
+                        helpInfoEntity.setWechatUserId(currentUserId);
+                        //插入奖励口令和助力的关联关系
+                        rewardActCommandService.insertRewardActCommandHelpMapping(rewardActCommandEntity, helpInfoEntity);
+                    }catch (Exception e){
+                        logger.error(e.getMessage(), e);
+                        return putMsg(false, "102", "奖励口令获取失败,发生未知错误。");
+                    }finally {
+                        lock.unlock();
                     }
-                    helpInfoEntity.setWechatUserId(currentUserId);
-                    //插入奖励口令和助力的关联关系
-                    rewardActCommandService.insertRewardActCommandHelpMapping(rewardActCommandEntity, helpInfoEntity);
-                }catch (Exception e){
-                    logger.error(e.getMessage(), e);
-                    return putMsg(false, "102", "奖励口令获取失败,发生未知错误。");
-                }finally {
-                    lock.unlock();
+                }else{
+                    result.put("success", true);
+                    result.put("command", command);
                 }
-            }else{
+                if(type == 1){
+                    String filePath = rewardActCommandService.getCommandQrcodeByHelpId(helpInfoEntity.getHelpId(), currentUserId);
+                    result.put("filePath", Constant.STATIC_FILE_PATH + filePath);
+                }
+            }else if(matActivityVO.getAssistanceRewardType().intValue() == 2){
+                command = currencyService.getCommand(actId, commandType);
                 result.put("success", true);
                 result.put("command", command);
             }
-            if(type == 1){
-                String filePath = rewardActCommandService.getCommandQrcodeByHelpId(helpInfoEntity.getHelpId(), currentUserId);
-                result.put("filePath", Constant.STATIC_FILE_PATH + filePath);
-            }
+
             if(result.getBoolean("success")){
                 RewardActContentEntity rewardActContent = rewardActContentService.getRewardActContentByActAndType(wechatHelpDetailEntity.getActId(), commandType);
                 if(rewardActContent != null && rewardActContent.getContentMid() != null && command!=null){

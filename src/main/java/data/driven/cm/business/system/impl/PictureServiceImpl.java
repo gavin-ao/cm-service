@@ -46,4 +46,14 @@ public class PictureServiceImpl implements PictureService {
         }
         return null;
     }
+
+    @Override
+    public String getPicturePath(String pictureId) {
+        String sql = "select file_path from sys_picture where picture_id = ?";
+        Object filePath = jdbcBaseDao.getColumn(sql, pictureId);
+        if(filePath != null){
+            return filePath.toString();
+        }
+        return null;
+    }
 }

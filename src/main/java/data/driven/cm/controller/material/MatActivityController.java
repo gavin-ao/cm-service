@@ -184,10 +184,12 @@ public class MatActivityController {
                 RewardActCustMsgEntity rewardActCustMsgEntity = rewardActCustMsgService.getRewardActCustMsg(actId, 2);
                 if(rewardActCustMsgEntity.getType().intValue() == 2){
                     String pictureIds = rewardActCustMsgEntity.getContent();
-                    List<String> filePath = pictureService.findPictureByIds(Arrays.asList(pictureIds.split(",")));
-                    if(filePath != null && filePath.size() > 0){
-                        filePath = filePath.stream().collect(Collectors.mapping(o -> Constant.STATIC_FILE_PATH + o,Collectors.toList()));
-                        result.put("assistanceRewardPicture", filePath);
+                    if(pictureIds != null && pictureIds.length() > 0){
+                        List<String> filePath = pictureService.findPictureByIds(Arrays.asList(pictureIds.split(",")));
+                        if(filePath != null && filePath.size() > 0){
+                            filePath = filePath.stream().collect(Collectors.mapping(o -> Constant.STATIC_FILE_PATH + o,Collectors.toList()));
+                            result.put("assistanceRewardPicture", filePath);
+                        }
                     }
                 }
                 result.put("assistanceReward", rewardActCustMsgEntity);

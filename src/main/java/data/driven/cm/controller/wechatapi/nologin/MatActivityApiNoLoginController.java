@@ -82,6 +82,8 @@ public class MatActivityApiNoLoginController {
             result.put("actShareCopywriting", matActivityInfo.getActShareCopywriting());
             result.put("actTitle", matActivityInfo.getActTitle());
             result.put("actReply", matActivityInfo.getActReply());
+            result.put("initiatorRewardType", matActivityInfo.getInitiatorRewardType());
+            result.put("assistanceRewardType", matActivityInfo.getAssistanceRewardType());
             Map<String, String> btnCopyWritingMap = btnCopywritingService.findBtnCopyWritingMapByActId(matActivityInfo.getActId());
             result.put("btnText", btnCopyWritingMap);
             return result;
