@@ -13,6 +13,7 @@
  */
 package data.driven.cm.util.wx;
 
+import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.codec.binary.Base64;
 
 import javax.crypto.Cipher;
@@ -208,7 +209,7 @@ public class WXBizMsgCrypt {
 	 * @return 加密后的可以直接回复用户的密文，包括msg_signature, timestamp, nonce, encrypt的xml格式的字符串
 	 * @throws AesException 执行失败，请查看该异常的错误码和具体的错误信息
 	 */
-	public String encryptMsg(String replyMsg, String timeStamp, String nonce) throws AesException {
+	public JSONObject encryptMsg(String replyMsg, String timeStamp, String nonce) throws AesException {
 		// 加密
 		String encrypt = encrypt(getRandomStr(), replyMsg);
 
@@ -221,7 +222,13 @@ public class WXBizMsgCrypt {
 
 		// System.out.println("发送给平台的签名是: " + signature[1].toString());
 		// 生成发送的xml
-		String result = XMLParse.generate(encrypt, signature, timeStamp, nonce);
+//		String result = XMLParse.generate(encrypt, signature, timeStamp, nonce);
+		JSONObject result = new JSONObject();
+		result.put("Encrypt", encrypt);
+		result.put("MsgSignature", signature);
+		result.put("TimeStamp", timeStamp);
+		result.put("Nonce", nonce);
+
 		return result;
 	}
 
@@ -246,10 +253,10 @@ public class WXBizMsgCrypt {
 
 		// 密钥，公众账号的app secret
 		// 提取密文
-		Object[] encrypt = XMLParse.extract(postData);
+//		Object[] encrypt = XMLParse.extract(postData);
 
 		// 验证安全签名
-		String signature = SHA1.getSHA1(token, timeStamp, nonce, encrypt[1].toString());
+		String signature = SHA1.getSHA1(token, timeStamp, nonce, postData);
 
 		// 和URL中的签名比较是否相等
 		// System.out.println("第三方收到URL中的签名：" + msg_sign);
@@ -259,7 +266,7 @@ public class WXBizMsgCrypt {
 		}
 
 		// 解密
-		String result = decrypt(encrypt[1].toString());
+		String result = decrypt(postData);
 		return result;
 	}
 

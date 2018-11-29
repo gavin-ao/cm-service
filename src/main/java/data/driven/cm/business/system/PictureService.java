@@ -29,4 +29,11 @@ public interface PictureService {
      * @return
      */
     public List<String> findPictureByIds(List<String> ids);
+
+    /**
+     * 根据id获取路径
+     * @param pictureId
+     * @return
+     */
+    public String getPicturePath(String pictureId);
 }
