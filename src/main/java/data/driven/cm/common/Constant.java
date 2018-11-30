@@ -22,6 +22,11 @@ public class Constant {
     public static final String mysql_day_format = "%Y-%m-%d";
     public static final String mysql_hour_format = "%Y-%m-%d %H";
 
+    /** 微信群最大值 **/
+    public static final int MAX_WXQ_NUMBER = 500;
+
+
+
     public void setFileUploadPath(String fileUploadPath) {
         FILE_UPLOAD_PATH = fileUploadPath;
     }

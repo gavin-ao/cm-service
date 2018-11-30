@@ -181,7 +181,7 @@ public class WechatHelpApiController {
                 MatActivityVO matActivityVO = matActivityService.getMatActivityAnyID(actId);
                 if(matActivityVO != null){
 
-                    if(matActivityVO.getAssistanceRewardType() != null && matActivityVO.getAssistanceRewardType().intValue() != 1){
+                    if(matActivityVO.getAssistanceRewardType() != null && matActivityVO.getAssistanceRewardType().intValue() != 0){
                         // 判断助力后是否领取奖励
                         if(matActivityVO.getAssistanceRewardType().intValue() == 3){
                             if(result.getBoolean("success")){

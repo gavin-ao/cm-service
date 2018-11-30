@@ -1,12 +1,17 @@
 package data.driven.cm.controller.wechatapi;
 
 import com.alibaba.dubbo.common.utils.IOUtils;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import data.driven.cm.business.reward.RewardActCustMsgLogService;
 import data.driven.cm.business.reward.RewardActCustMsgService;
+import data.driven.cm.business.reward.RewardActCustMsgTotalService;
 import data.driven.cm.business.system.PictureService;
 import data.driven.cm.common.Constant;
 import data.driven.cm.entity.reward.RewardActCustMsgEntity;
+import data.driven.cm.entity.reward.RewardActCustMsgLogEntity;
 import data.driven.cm.util.HttpUtil;
+import data.driven.cm.util.JSONUtil;
 import data.driven.cm.util.WXUtil;
 import data.driven.cm.util.wx.AesException;
 import data.driven.cm.util.wx.SHA1;
@@ -22,7 +27,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Random;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -40,11 +47,14 @@ public class WechatMessageController {
     private static final String token = "mendian";
     private static final String appId = "wx032f66ebe0dcce8f";
     private static final String secret = "64a61af911d59a37a6fe86a8087a1bfa";
-    private Random random = new Random();
     @Autowired
     private RewardActCustMsgService rewardActCustMsgService;
     @Autowired
     private PictureService pictureService;
+    @Autowired
+    private RewardActCustMsgTotalService rewardActCustMsgTotalService;
+    @Autowired
+    private RewardActCustMsgLogService rewardActCustMsgLogService;
 
     /** 发送消息的url **/
     private static final String msgUrl = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=";
@@ -125,6 +135,14 @@ public class WechatMessageController {
         return "fail";
     }
 
+    @ResponseBody
+    @RequestMapping(path = "/putMsgToUserTest")
+    public JSONObject putMsgToUserTest(){
+        JSONObject newData = JSON.parseObject("{\"ToUserName\":\"gh_ecbb7b29b015\",\"FromUserName\":\"ofWmA4mfPyzDl7FDrBN1_GP5USqE\",\"CreateTime\":1543551437,\"MsgType\":\"event\",\"Event\":\"user_enter_tempsession\",\"SessionFrom\":\"{\\\"actId\\\":\\\"5c00ad252aff935b8c44c496\\\",\\\"type\\\":1}\"}");
+        putMsgToUser(newData);
+        return JSONUtil.putMsg(true, "200","111");
+    }
+
     /**
      * 向用户发送消息
      * @param newData
@@ -138,24 +156,62 @@ public class WechatMessageController {
                 Integer type = sessionFrom.getInteger("type");
                 RewardActCustMsgEntity rewardActCustMsgEntity = rewardActCustMsgService.getRewardActCustMsg(actId, type);
                 if(rewardActCustMsgEntity != null){
+                    String openid = newData.getString("FromUserName");
+                    boolean logSuccess = rewardActCustMsgLogService.getSuccessMsg(openid, rewardActCustMsgEntity.getGlobalId(), type);
+                    if(logSuccess){//如果是已经成功发送过奖励，则不再发送
+                        logger.info("已经成功发送过，不再进行发送。actId:"+actId+"--openid:"+openid);
+                        return;
+                    }
+                    String logContent = null;
                     String accessToken = accessTokenJson.getString("access_token");
                     JSONObject paramJson = new JSONObject();
-                    paramJson.put("touser", newData.getString("FromUserName"));
+                    paramJson.put("touser", openid);
                     if(rewardActCustMsgEntity.getType().intValue() == 1){
                         paramJson.put("msgtype", "text");
                         JSONObject content = new JSONObject();
                         content.put("content", rewardActCustMsgEntity.getContent());
                         paramJson.put("text", content);
+                        logContent = rewardActCustMsgEntity.getContent();
                     }else if(rewardActCustMsgEntity.getType().intValue() == 2){
                         paramJson.put("msgtype", "image");
                         JSONObject image = new JSONObject();
                         String pictureId = rewardActCustMsgEntity.getContent();
-                        if(pictureId.indexOf(",") > 0){
-                            String[] arr = pictureId.split(",");
-                            int index = random.nextInt(arr.length);
-                            pictureId = arr[index];
+                        Map<String, Object> lastContentMap = rewardActCustMsgTotalService.getLastContentAndNum(rewardActCustMsgEntity.getGlobalId());
+                        if(lastContentMap != null){
+                            String content = (String) lastContentMap.get("content");
+                            Integer totalNum = Integer.valueOf(lastContentMap.get("totalNum").toString());
+                            if(totalNum < Constant.MAX_WXQ_NUMBER){
+                                pictureId = content;
+                            }else{
+                                if(pictureId.indexOf(",") > 0){
+                                    List<String> pictureIdList = Arrays.asList(pictureId.split(","));
+                                    int index = pictureIdList.indexOf(content);
+                                    if(index < pictureIdList.size()){
+                                        pictureId = pictureIdList.get(index + 1);
+                                    }else{
+                                        logger.info("putMsgToUser失败，已经达到峰值，不能再继续发送了。actId:"+actId+"--openid:"+openid+"--GlobalId:"+rewardActCustMsgEntity.getGlobalId());
+                                        return;
+                                    }
+                                }else{
+                                    logger.info("putMsgToUser失败，已经达到峰值，不能再继续发送了。actId:"+actId+"--openid:"+openid+"--GlobalId:"+rewardActCustMsgEntity.getGlobalId());
+                                    return;
+                                }
+                            }
+                        }else{
+                            List<String> pictureIdList = Arrays.asList(pictureId.split(","));
+                            pictureId = pictureIdList.get(0);
                         }
+                        if(pictureId == null){
+                            logger.info("putMsgToUser失败，pictureId为空。pictureId:"+pictureId);
+                            return;
+                        }
+
                         String filePath = pictureService.getPicturePath(pictureId);
+                        if(filePath == null){
+                            logger.info("putMsgToUser失败，filePath为空。filePath:"+filePath);
+                            return;
+                        }
+
                         filePath = Constant.FILE_UPLOAD_PATH + filePath;
 
                         String resultStr = HttpUtil.doPostSSLUploadImg(imgUploadUrl + accessToken, null, "media", filePath);
@@ -163,6 +219,7 @@ public class WechatMessageController {
                         if(result.containsKey("media_id")){
                             image.put("media_id", result.getString("media_id"));
                             paramJson.put("image", image);
+                            logContent = pictureId;
                         }else{
                             logger.info("putMsgToUser失败，图片上传失败，msg：" + resultStr);
                             return;
@@ -171,9 +228,11 @@ public class WechatMessageController {
                         logger.info("putMsgToUser失败，活动奖励类型不正确,type" + rewardActCustMsgEntity.getType());
                         return;
                     }
-
                     try{
                         String resultStr = HttpUtil.doPostSSLJson(msgUrl + accessToken, paramJson);
+
+                        JSONObject result = JSON.parseObject(resultStr);
+                        addSendWXMsgLog(type, rewardActCustMsgEntity, openid, logContent, resultStr, result);
                         logger.info("putMsgToUser成功： resultStr:" + resultStr);
                     }catch (Exception e){
                         logger.error(e.getMessage(), e);
@@ -184,6 +243,41 @@ public class WechatMessageController {
                 logger.info("putMsgToUser失败： SessionFrom为空");
                 return ;
             }
+        }
+    }
+
+    /**
+     * 发送微信客服消息日志记录
+     * @param type
+     * @param rewardActCustMsgEntity
+     * @param openid
+     * @param logContent
+     * @param resultStr
+     * @param result
+     */
+    private void addSendWXMsgLog(Integer type, RewardActCustMsgEntity rewardActCustMsgEntity, String openid, String logContent, String resultStr, JSONObject result) {
+        if(result.containsKey("errcode")){
+            RewardActCustMsgLogEntity rewardActCustMsgLogEntity = new RewardActCustMsgLogEntity();
+            rewardActCustMsgLogEntity.setGlobalId(rewardActCustMsgEntity.getGlobalId());
+            rewardActCustMsgLogEntity.setActId(rewardActCustMsgEntity.getActId());
+            rewardActCustMsgLogEntity.setStoreId(rewardActCustMsgEntity.getStoreId());
+            rewardActCustMsgLogEntity.setAppInfoId(rewardActCustMsgEntity.getAppInfoId());
+            rewardActCustMsgLogEntity.setOpenid(openid);
+            rewardActCustMsgLogEntity.setContent(logContent);
+            rewardActCustMsgLogEntity.setContentType(rewardActCustMsgEntity.getType());
+            rewardActCustMsgLogEntity.setRewardType(type);
+            rewardActCustMsgLogEntity.setOpenid(openid);
+            rewardActCustMsgLogEntity.setType(1);
+            if(result.getInteger("errcode").intValue() == 0){
+                rewardActCustMsgLogEntity.setStats(1);
+                if(rewardActCustMsgEntity.getType().intValue() == 2){
+                    rewardActCustMsgTotalService.totalReward(rewardActCustMsgEntity.getGlobalId(), logContent);
+                }
+            }else{
+                rewardActCustMsgLogEntity.setStats(2);
+                rewardActCustMsgLogEntity.setErrorMsg(resultStr);
+            }
+            rewardActCustMsgLogService.addLog(rewardActCustMsgLogEntity);
         }
     }
 
