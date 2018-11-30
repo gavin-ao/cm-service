@@ -177,25 +177,25 @@
     </div>
     <div style="background-color: transparent;height: 40px;margin: 20px;">
         <div class="addAccount" id="addAccount" style="float: left;">新建</div>
-        <div class="" style="float: right;">
-            <select name="" id="" style="width: 105px;
-        height: 30px;
-        padding: 3px 2px 3px 5px;
-        font-family: 'ArialMT', 'Arial';
-        font-weight: 400;
-        font-style: normal;
-        font-size: 13px;
-        text-decoration: none;
-        letter-spacing: normal;
-        color: #666;vertical-align: none; text-align: left; text-transform: none;background-color: #fff;>
-                    <option value="" selected>选择活动状态</option>
-            <option value="">进行中</option>
-            <option value="">已结束</option>
-            <option value="">未开始</option>
-            </select>
-            <input type="text" class="form-control" style="display: inline-block;">
-            <span>搜索</span>
-        </div>
+##        <div class="" style="float: right;">
+##            <select name="" id="" style="width: 105px;
+##        height: 30px;
+##        padding: 3px 2px 3px 5px;
+##        font-family: 'ArialMT', 'Arial';
+##        font-weight: 400;
+##        font-style: normal;
+##        font-size: 13px;
+##        text-decoration: none;
+##        letter-spacing: normal;
+##        color: #666;vertical-align: none; text-align: left; text-transform: none;background-color: #fff;>
+##                    <option value="" selected>选择活动状态</option>
+##            <option value="">进行中</option>
+##            <option value="">已结束</option>
+##            <option value="">未开始</option>
+##            </select>
+##            <input type="text" class="form-control" style="display: inline-block;">
+##            <span>搜索</span>
+##        </div>
     </div>
     <input type="hidden" data-curr-actid="" data-curr-contentid1="" data-curr-contentid2="" id="currentActId">
     <div style="background-color: #fff;margin: 20px;">

@@ -1011,8 +1011,8 @@ function reverseSupplement(data) {
                     $("#assistanceImagesShow").show();
                     for (var i = 0; i < data.assistanceRewardPicture.length; i++) {
                         // var filePath = "https://cm-service.easy7share.com" + data.assistanceRewardPicture[i];
-                        var filePath = "http://localhost:8083" + data.assistanceRewardPicture[i];
-
+                        var href = window.location.protocol+"//"+window.location.host;
+                        var filePath = href+ data.assistanceRewardPicture[i];
                         convertImgToBase64(filePath, function (base64Img) {
                             //转化后的base64
                             var img = '<p class="newImages"><img src="' + base64Img + '" onclick="modifyCurrentImg(this,' + "modifyCurrentImgs" + ')"><span onclick="deleteImage(this,' + "assistanceFile" + ')">✖</span></p>';
@@ -1048,7 +1048,8 @@ function reverseSupplement(data) {
                 $("#invitationImagesShow").show();
                 for (var i = 0; i < data.initiatorRewardPicture.length; i++) {
                     // var filePath = "https://cm-service.easy7share.com" +data.initiatorRewardPicture[i];
-                    var filePath = "http://localhost:8083" + data.initiatorRewardPicture[i];
+                    var href = window.location.protocol+"//"+window.location.host;
+                    var filePath = href + data.initiatorRewardPicture[i];
                     convertImgToBase64(filePath, function (base64Img) {
                         //转化后的base64
                         var img = '<p class="newImages"><img src="' + base64Img + '" onclick="modifyCurrentImg(this,' + "modifyCurrentImgs" + ')"><span onclick="deleteImage(this,' + "invitationFile" + ')">✖</span></p>';
@@ -1092,7 +1093,8 @@ function reverseSupplement(data) {
     if (activity.filePath) {
         $("#show").parent().show();
         // var filePath = "https://cm-service.easy7share.com" + activity.filePath;
-        var filePath = "http://localhost:8083" + activity.filePath;
+        var href = window.location.protocol+"//"+window.location.host;
+        var filePath = href + activity.filePath;
         convertImgToBase64(filePath, function (base64Img) {
             //转化后的base64
             $("#show").attr("src", base64Img);
