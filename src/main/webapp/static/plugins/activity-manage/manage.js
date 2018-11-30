@@ -172,6 +172,7 @@ var invitationGlobalId, assistanceGlobalId, invitationCurrencyId, assistanceCurr
     $("#assistanceExitReward").off("click");
     $("#assistanceExitReward").on("click", function () {
         $(".showExit").show();
+        $(".assistanceNumber").show();
         $("#assistanceRewardType option:first").prop("selected", 'selected');
         $(".showExit input[name='aidReward']").val("");
         $(".assistanceGroup").hide();
