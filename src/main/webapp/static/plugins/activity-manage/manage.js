@@ -55,14 +55,13 @@ var invitationGlobalId, assistanceGlobalId, invitationCurrencyId, assistanceCurr
     $("#submitBtn").off("click");
     $("#submitBtn").on("click", function () {
         var params = decodeURIComponent($("#formsearch").serialize())
-        console.log(params)
+        // console.log(params)
         var dataPars = params.split("&");
         var dataObjArr = []
         for (var i = 0; i < dataPars.length; i++) {
             var par = dataPars[i].split("=");
             dataObjArr[par[0]] = par[1];
         }
-        console.log(dataObjArr);
         //校验字段
         var flag = checkField(dataObjArr);
         if (dataObjArr.helpNumber <= 0) {
@@ -130,14 +129,12 @@ var invitationGlobalId, assistanceGlobalId, invitationCurrencyId, assistanceCurr
 
     });
     $("input[name='helpNumber']").on("change", function () {
-        console.log($(this).val())
         var helpNumber = parseInt($(this).val());
         var invitingAwardsNum = parseInt($("input[name='invitingAwardsNum']").val())
         $("input[name='assistanceAwardsNum']").val(helpNumber * invitingAwardsNum);
         $("input[name='assistanceAwardsNum']").attr("min", helpNumber * invitingAwardsNum);
     })
     $("input[name='invitingAwardsNum']").on("change", function () {
-        console.log($(this).val())
         var invitingAwardsNum = parseInt($(this).val());
         var helpNumber = parseInt($("input[name='helpNumber']").val())
         $("input[name='assistanceAwardsNum']").val(helpNumber * invitingAwardsNum);
@@ -210,7 +207,6 @@ var invitationGlobalId, assistanceGlobalId, invitationCurrencyId, assistanceCurr
                 $(".invitationNumber").hide();
                 break;
             case 3: // 进群领奖
-                console.log(22222222)
                 $(".invitationReward").hide();
                 $(".invitationGroup").show();
                 $("input[name='invitationUploadPicture']").val('');
@@ -231,7 +227,6 @@ var invitationGlobalId, assistanceGlobalId, invitationCurrencyId, assistanceCurr
     // 助力奖励类型
     $("#assistanceRewardType").off("change");
     $("#assistanceRewardType").on("change", function () {
-        console.log($(this).val())
         var actId = $("#currentActId").attr("data-curr-actid");
         var index = parseInt($(this).val().trim())
         if (index == 1 || index == 2 || index == 4) {
@@ -606,8 +601,6 @@ function changepic() {
                 var image = new Image();
                 image.src = data;
                 image.onload = function () {
-                    console.log(image.height)
-                    console.log(image.width)
                     var width = image.width;
                     var height = image.height;
 
@@ -641,7 +634,7 @@ function invitationchangepic(id, tar, newId) {
     var reads = new FileReader();
     f = document.getElementById(id).files[0];
     reads.readAsDataURL(f);
-    console.log(f)
+
     if (f) {
         fileSize = f.size;
         var size = fileSize / 1024;
@@ -655,7 +648,7 @@ function invitationchangepic(id, tar, newId) {
             reads.onload = function (e) {
                 // console.log(e)
                 var data = this.result;
-                console.log()
+
                 $("#" + newId).show();
                 var img = '<p class="newImages"><img src="' + data + '" onclick="modifyCurrentImg(this,' + tar + ')"><span onclick="deleteImage(this,' + id + ')">✖</span></p>';
                 $("#" + newId).append(img);
@@ -667,7 +660,7 @@ function invitationchangepic(id, tar, newId) {
 }
 // 修改当前 进群二维码图片
 function modifyCurrentImg(tar, id) {
-    console.log(tar)
+
     $(id).trigger("click");
     $("#modifyCurrentImgs").on("change", function () {
         modifyCurrentImgFile("modifyCurrentImgs", tar);
@@ -677,7 +670,7 @@ function modifyCurrentImgFile(id, tar) {
     var reads = new FileReader();
     f = document.getElementById(id).files[0];
     reads.readAsDataURL(f);
-    console.log(f)
+
     if (f) {
         fileSize = f.size;
         var size = fileSize / 1024;
@@ -702,7 +695,7 @@ function modifyCurrentImgFile(id, tar) {
 
 // 删除 进群二维码图片
 function deleteImage(tar, id) {
-    console.log(tar)
+
     var that = $(tar).parent().parent();
     $(tar).parent().remove();
     $(id).val('')
@@ -807,12 +800,7 @@ function judgmenLength(text, lens, con) {
 
 //添加活动
 function addActivity(picId, par, assistanceImg, invitatorImg) {
-    console.log(par)
-
-
     var activity = addActCondition(picId, par, assistanceImg, invitatorImg);
-
-    console.log(activity)
     $.ajax({
         type: "post",
         url: "/mat/activity/updateActivity",
