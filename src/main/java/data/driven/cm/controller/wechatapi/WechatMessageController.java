@@ -11,7 +11,6 @@ import data.driven.cm.common.Constant;
 import data.driven.cm.entity.reward.RewardActCustMsgEntity;
 import data.driven.cm.entity.reward.RewardActCustMsgLogEntity;
 import data.driven.cm.util.HttpUtil;
-import data.driven.cm.util.JSONUtil;
 import data.driven.cm.util.WXUtil;
 import data.driven.cm.util.wx.AesException;
 import data.driven.cm.util.wx.SHA1;
@@ -133,14 +132,6 @@ public class WechatMessageController {
             logger.error(e.getMessage(), e);
         }
         return "fail";
-    }
-
-    @ResponseBody
-    @RequestMapping(path = "/putMsgToUserTest")
-    public JSONObject putMsgToUserTest(){
-        JSONObject newData = JSON.parseObject("{\"ToUserName\":\"gh_ecbb7b29b015\",\"FromUserName\":\"ofWmA4mfPyzDl7FDrBN1_GP5USqE\",\"CreateTime\":1543551437,\"MsgType\":\"event\",\"Event\":\"user_enter_tempsession\",\"SessionFrom\":\"{\\\"actId\\\":\\\"5c00ad252aff935b8c44c496\\\",\\\"type\\\":1}\"}");
-        putMsgToUser(newData);
-        return JSONUtil.putMsg(true, "200","111");
     }
 
     /**
