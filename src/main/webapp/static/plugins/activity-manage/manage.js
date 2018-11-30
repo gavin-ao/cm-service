@@ -166,6 +166,7 @@ var invitationGlobalId, assistanceGlobalId, invitationCurrencyId, assistanceCurr
         $(".assistanceGroup").hide();
         $("#assistanceImagesShow").html("");
         $("#assistanceImagesShow").hide();
+        $(".assistanceNumber").hide();
     });
     //有奖
     $("#assistanceExitReward").off("click");
