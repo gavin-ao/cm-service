@@ -31,6 +31,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * 微信客服消息
@@ -55,6 +57,7 @@ public class WechatMessageController {
     @Autowired
     private RewardActCustMsgLogService rewardActCustMsgLogService;
 
+    private Lock lock = new ReentrantLock();
     /** 发送消息的url **/
     private static final String msgUrl = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=";
     /** 发送消息的url **/
@@ -157,69 +160,71 @@ public class WechatMessageController {
                     String accessToken = accessTokenJson.getString("access_token");
                     JSONObject paramJson = new JSONObject();
                     paramJson.put("touser", openid);
-                    if(rewardActCustMsgEntity.getType().intValue() == 1){
-                        paramJson.put("msgtype", "text");
-                        JSONObject content = new JSONObject();
-                        content.put("content", rewardActCustMsgEntity.getContent());
-                        paramJson.put("text", content);
-                        logContent = rewardActCustMsgEntity.getContent();
-                    }else if(rewardActCustMsgEntity.getType().intValue() == 2){
-                        paramJson.put("msgtype", "image");
-                        JSONObject image = new JSONObject();
-                        String pictureId = rewardActCustMsgEntity.getContent();
-                        Map<String, Object> lastContentMap = rewardActCustMsgTotalService.getLastContentAndNum(rewardActCustMsgEntity.getGlobalId());
-                        if(lastContentMap != null){
-                            String content = (String) lastContentMap.get("content");
-                            Integer totalNum = Integer.valueOf(lastContentMap.get("totalNum").toString());
-                            if(totalNum < Constant.MAX_WXQ_NUMBER){
-                                pictureId = content;
-                            }else{
-                                if(pictureId.indexOf(",") > 0){
-                                    List<String> pictureIdList = Arrays.asList(pictureId.split(","));
-                                    int index = pictureIdList.indexOf(content);
-                                    if(index < pictureIdList.size()){
-                                        pictureId = pictureIdList.get(index + 1);
+                    try{
+                        lock.lock();
+                        if(rewardActCustMsgEntity.getType().intValue() == 1){
+                            paramJson.put("msgtype", "text");
+                            JSONObject content = new JSONObject();
+                            content.put("content", rewardActCustMsgEntity.getContent());
+                            paramJson.put("text", content);
+                            logContent = rewardActCustMsgEntity.getContent();
+                        }else if(rewardActCustMsgEntity.getType().intValue() == 2){
+                            paramJson.put("msgtype", "image");
+                            JSONObject image = new JSONObject();
+                            String pictureId = rewardActCustMsgEntity.getContent();
+                            Map<String, Object> lastContentMap = rewardActCustMsgTotalService.getLastContentAndNum(rewardActCustMsgEntity.getGlobalId());
+                            if(lastContentMap != null){
+                                String content = (String) lastContentMap.get("content");
+                                Integer totalNum = Integer.valueOf(lastContentMap.get("totalNum").toString());
+                                if(totalNum < Constant.MAX_WXQ_NUMBER){
+                                    pictureId = content;
+                                }else{
+                                    if(pictureId.indexOf(",") > 0){
+                                        List<String> pictureIdList = Arrays.asList(pictureId.split(","));
+                                        int index = pictureIdList.indexOf(content);
+                                        if(index < pictureIdList.size()){
+                                            pictureId = pictureIdList.get(index + 1);
+                                        }else{
+                                            logger.info("putMsgToUser失败，已经达到峰值，不能再继续发送了。actId:"+actId+"--openid:"+openid+"--GlobalId:"+rewardActCustMsgEntity.getGlobalId());
+                                            return;
+                                        }
                                     }else{
                                         logger.info("putMsgToUser失败，已经达到峰值，不能再继续发送了。actId:"+actId+"--openid:"+openid+"--GlobalId:"+rewardActCustMsgEntity.getGlobalId());
                                         return;
                                     }
-                                }else{
-                                    logger.info("putMsgToUser失败，已经达到峰值，不能再继续发送了。actId:"+actId+"--openid:"+openid+"--GlobalId:"+rewardActCustMsgEntity.getGlobalId());
-                                    return;
                                 }
+                            }else{
+                                List<String> pictureIdList = Arrays.asList(pictureId.split(","));
+                                pictureId = pictureIdList.get(0);
+                            }
+                            if(pictureId == null){
+                                logger.info("putMsgToUser失败，pictureId为空。pictureId:"+pictureId);
+                                return;
+                            }
+
+                            String filePath = pictureService.getPicturePath(pictureId);
+                            if(filePath == null){
+                                logger.info("putMsgToUser失败，filePath为空。filePath:"+filePath);
+                                return;
+                            }
+
+                            filePath = Constant.FILE_UPLOAD_PATH + filePath;
+
+                            String resultStr = HttpUtil.doPostSSLUploadImg(imgUploadUrl + accessToken, null, "media", filePath);
+                            JSONObject result = JSONObject.parseObject(resultStr);
+                            if(result.containsKey("media_id")){
+                                image.put("media_id", result.getString("media_id"));
+                                paramJson.put("image", image);
+                                logContent = pictureId;
+                            }else{
+                                logger.info("putMsgToUser失败，图片上传失败，msg：" + resultStr);
+                                return;
                             }
                         }else{
-                            List<String> pictureIdList = Arrays.asList(pictureId.split(","));
-                            pictureId = pictureIdList.get(0);
-                        }
-                        if(pictureId == null){
-                            logger.info("putMsgToUser失败，pictureId为空。pictureId:"+pictureId);
+                            logger.info("putMsgToUser失败，活动奖励类型不正确,type" + rewardActCustMsgEntity.getType());
                             return;
                         }
 
-                        String filePath = pictureService.getPicturePath(pictureId);
-                        if(filePath == null){
-                            logger.info("putMsgToUser失败，filePath为空。filePath:"+filePath);
-                            return;
-                        }
-
-                        filePath = Constant.FILE_UPLOAD_PATH + filePath;
-
-                        String resultStr = HttpUtil.doPostSSLUploadImg(imgUploadUrl + accessToken, null, "media", filePath);
-                        JSONObject result = JSONObject.parseObject(resultStr);
-                        if(result.containsKey("media_id")){
-                            image.put("media_id", result.getString("media_id"));
-                            paramJson.put("image", image);
-                            logContent = pictureId;
-                        }else{
-                            logger.info("putMsgToUser失败，图片上传失败，msg：" + resultStr);
-                            return;
-                        }
-                    }else{
-                        logger.info("putMsgToUser失败，活动奖励类型不正确,type" + rewardActCustMsgEntity.getType());
-                        return;
-                    }
-                    try{
                         String resultStr = HttpUtil.doPostSSLJson(msgUrl + accessToken, paramJson);
 
                         JSONObject result = JSON.parseObject(resultStr);
@@ -228,6 +233,8 @@ public class WechatMessageController {
                     }catch (Exception e){
                         logger.error(e.getMessage(), e);
                         return;
+                    }finally {
+                        lock.unlock();
                     }
                 }
             }else{
