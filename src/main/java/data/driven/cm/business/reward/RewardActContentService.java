@@ -26,10 +26,12 @@ public interface RewardActContentService {
      * 分页查询
      * @param keyword
      * @param storeId
+     * @param actStats
+     * @param type
      * @param pageBean
      * @return
      */
-    public Page<RewardActContentVO> findRewardActContentPage(String keyword, String storeId, PageBean pageBean);
+    public Page<RewardActContentVO> findRewardActContentPage(String keyword, String storeId, Integer actStats, Integer type, PageBean pageBean);
 
     /**
      * 根据活动id查询奖励文案列表
