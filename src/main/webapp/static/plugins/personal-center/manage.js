@@ -71,7 +71,31 @@ var tab="",tabs='';
         // console.log(condition);
         tabs = tablesData(tabs,condition)
     })
-
+// 初始化修改按钮
+    $('#example tbody').off('click', 'button.modify_btn');
+    $('#example tbody').on('click', 'button.modify_btn', function (e) {
+        e.preventDefault();
+        // var actId = $(this).parents('tr').find("td")[0].innerHTML.trim();
+        // var actNum = $(this).parents('tr').find("td")[2].innerHTML.trim();
+        // var actName = $(this).parents('tr').find("td")[4].innerHTML.trim();
+        // var commandType = $(this).parents('tr').find("td")[7].innerHTML.trim();
+        // $("#actId").html(actNum);
+        // $("#actName").html(actName);
+        // $("#rewardType").html(commandType);
+        // $("#saveStatusL").attr("data-actid", actId);
+        // $("#saveStatusL").attr("data-commonrtype", commandType);
+        // $("#manageAdd").show();
+        // tab = rewardCodetablesData(tab,actId, commandType);
+        $(".appendReward").show();
+        codeOperation(this);
+    });
+// 查看按钮
+    $('#example tbody').off('click', 'button.see_btn');
+    $('#example tbody').on('click', 'button.see_btn', function (e) {
+        e.preventDefault();
+        $(".appendReward").hide();
+        codeOperation(this);
+    });
 }());
 //表格数据
 function tablesData(tabs,condition) {
@@ -240,29 +264,7 @@ function tablesData(tabs,condition) {
         }
     });
 
-    // 初始化修改按钮
-    $('#example tbody').on('click', 'button.modify_btn', function (e) {
-        e.preventDefault();
-        // var actId = $(this).parents('tr').find("td")[0].innerHTML.trim();
-        // var actNum = $(this).parents('tr').find("td")[2].innerHTML.trim();
-        // var actName = $(this).parents('tr').find("td")[4].innerHTML.trim();
-        // var commandType = $(this).parents('tr').find("td")[7].innerHTML.trim();
-        // $("#actId").html(actNum);
-        // $("#actName").html(actName);
-        // $("#rewardType").html(commandType);
-        // $("#saveStatusL").attr("data-actid", actId);
-        // $("#saveStatusL").attr("data-commonrtype", commandType);
-        // $("#manageAdd").show();
-        // tab = rewardCodetablesData(tab,actId, commandType);
-        $(".appendReward").show();
-        codeOperation(this);
-    });
-    // 查看按钮
-    $('#example tbody').on('click', 'button.see_btn', function (e) {
-        e.preventDefault();
-        $(".appendReward").hide();
-        codeOperation(this);
-    });
+
 
     return table;
 }

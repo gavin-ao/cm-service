@@ -288,6 +288,75 @@ var invitationGlobalId, assistanceGlobalId, invitationCurrencyId, assistanceCurr
         // console.log(condition);
         tab = tablesData(tab,condition)
     })
+
+    // 初始化刪除按钮
+    $('#example tbody').on('click', 'button.delete_btn', function (e) {
+        e.preventDefault();
+        if (confirm("确定要删除该属性？")) {
+            var table = $('#example').DataTable();
+            table.row($(this).parents('tr')).remove().draw();
+        }
+
+    });
+// 初始化修改按钮
+    $('#example tbody').off('click', 'button.modify_btn');
+    $('#example tbody').on('click', 'button.modify_btn', function (e) {
+        e.preventDefault();
+        // 变量初始化
+        initData();
+        var actId = $(this).parents('tr').find("td")[0].innerHTML.trim();
+        $("#currentActId").attr("data-curr-actid", actId);
+        // console.log($(this).parents('tr').find("td")[0].innerHTML.trim())
+        $.ajax({
+            type: "post",
+            url: "/mat/activity/getMatActivityAllInfo",
+            cache: false,  //禁用缓存
+            data: {actId: actId},  //传入组装的参数?
+            // headers: {"Content-type": "text/plain;charset=utf-8"},
+            dataType: "json",
+            success: function (result) {
+                // console.log(result)
+                if (result.success) {
+                    $("#formsearch .modal-footer").show();
+                    //获取活动时间
+                    // activTime();
+                    //反补
+                    reverseSupplement(result);
+                    $("#manageAdd").show();
+                }
+            }
+        })
+
+
+    });
+// 查看按钮
+    $('#example tbody').off('click', 'button.see_btn');
+    $('#example tbody').on('click', 'button.see_btn', function (e) {
+        e.preventDefault();
+        // 变量初始化
+        initData();
+        var actId = $(this).parents('tr').find("td")[0].innerHTML.trim();
+        $("#currentActId").attr("data-curr-actid", actId);
+        // console.log($(this).parents('tr').find("td")[0].innerHTML.trim())
+        $.ajax({
+            type: "post",
+            url: "/mat/activity/getMatActivityAllInfo",
+            cache: false,  //禁用缓存
+            data: {actId: actId},  //传入组装的参数?
+            // headers: {"Content-type": "text/plain;charset=utf-8"},
+            dataType: "json",
+            success: function (result) {
+                // console.log(result)
+                if (result.success) {
+                    $("#formsearch .modal-footer").hide();
+                    //反补
+                    reverseSupplement(result);
+                    $("#manageAdd").show();
+                }
+            }
+        })
+
+    });
 }());
 // 变量初始化
 function initData() {
@@ -493,72 +562,6 @@ function tablesData(tables,condition) {
         }
     });
 
-    // 初始化刪除按钮
-    $('#example tbody').on('click', 'button.delete_btn', function (e) {
-        e.preventDefault();
-        if (confirm("确定要删除该属性？")) {
-            var table = $('#example').DataTable();
-            table.row($(this).parents('tr')).remove().draw();
-        }
-
-    });
-    // 初始化修改按钮
-    $('#example tbody').on('click', 'button.modify_btn', function (e) {
-        e.preventDefault();
-        // 变量初始化
-        initData();
-        var actId = $(this).parents('tr').find("td")[0].innerHTML.trim();
-        $("#currentActId").attr("data-curr-actid", actId);
-        // console.log($(this).parents('tr').find("td")[0].innerHTML.trim())
-        $.ajax({
-            type: "post",
-            url: "/mat/activity/getMatActivityAllInfo",
-            cache: false,  //禁用缓存
-            data: {actId: actId},  //传入组装的参数?
-            // headers: {"Content-type": "text/plain;charset=utf-8"},
-            dataType: "json",
-            success: function (result) {
-                // console.log(result)
-                if (result.success) {
-                    $("#formsearch .modal-footer").show();
-                    //获取活动时间
-                    // activTime();
-                    //反补
-                    reverseSupplement(result);
-                    $("#manageAdd").show();
-                }
-            }
-        })
-
-
-    });
-    // 查看按钮
-    $('#example tbody').on('click', 'button.see_btn', function (e) {
-        e.preventDefault();
-        // 变量初始化
-        initData();
-        var actId = $(this).parents('tr').find("td")[0].innerHTML.trim();
-        $("#currentActId").attr("data-curr-actid", actId);
-        // console.log($(this).parents('tr').find("td")[0].innerHTML.trim())
-        $.ajax({
-            type: "post",
-            url: "/mat/activity/getMatActivityAllInfo",
-            cache: false,  //禁用缓存
-            data: {actId: actId},  //传入组装的参数?
-            // headers: {"Content-type": "text/plain;charset=utf-8"},
-            dataType: "json",
-            success: function (result) {
-                // console.log(result)
-                if (result.success) {
-                    $("#formsearch .modal-footer").hide();
-                    //反补
-                    reverseSupplement(result);
-                    $("#manageAdd").show();
-                }
-            }
-        })
-
-    });
     return table;
 }
 

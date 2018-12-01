@@ -194,6 +194,51 @@ var tab = '';
         // console.log(condition);
         tab = tablesData(tab,condition)
     })
+
+    // 初始化刪除按钮
+    $('#example tbody').on('click', 'button.delete_btn', function (e) {
+        e.preventDefault();
+        if (confirm("确定要删除该属性？")) {
+            var table = $('#example').DataTable();
+            table.row($(this).parents('tr')).remove().draw();
+        }
+
+    });
+// 初始化修改按钮
+    $('#example tbody').off('click', 'button.modify_btn');
+    $('#example tbody').on('click', 'button.modify_btn', function (e) {
+        e.preventDefault();
+        $("#formsearch").hide();
+        $("#storeQRCode").hide();
+        $("#formsearch1").show();
+        var storeId = $(this).parents('tr').find("td")[0].innerHTML.trim();
+        modifyInfos(storeId);
+    });
+// 查看按钮
+    $('#example tbody').off('click', 'button.see_btn');
+    $('#example tbody').on('click', 'button.see_btn', function (e) {
+        e.preventDefault();
+        $("#formsearch").hide();
+        $("#formsearch1").hide();
+        $("#storeQRCode").show();
+        var storeId = $(this).parents('tr').find("td")[0].innerHTML.trim();
+        $.ajax({
+            type: "post",
+            url: "/system/store/getStoreQrCode",
+            cache: false,  //禁用缓存
+            data: {storeId: storeId},  //传入组装的参数?
+            // headers: {"Content-type": "text/plain;charset=utf-8"},
+            dataType: "json",
+            success: function (result) {
+                if (result.success) {
+                    $("#QRCodeImg").attr("src", result.filePath)
+                    $("#manageAdd").show();
+                }
+            }
+        })
+
+
+    });
 }());
 
 function tablesData(datatable,condition) {
@@ -348,51 +393,9 @@ function tablesData(datatable,condition) {
         }
     });
 
-    // 初始化刪除按钮
-    $('#example tbody').on('click', 'button.delete_btn', function (e) {
-        e.preventDefault();
-        if (confirm("确定要删除该属性？")) {
-            var table = $('#example').DataTable();
-            table.row($(this).parents('tr')).remove().draw();
-        }
-
-    });
-    // 初始化修改按钮
-    $('#example tbody').on('click', 'button.modify_btn', function (e) {
-        e.preventDefault();
-        $("#formsearch").hide();
-        $("#storeQRCode").hide();
-        $("#formsearch1").show();
-        var storeId = $(this).parents('tr').find("td")[0].innerHTML.trim();
-        modifyInfos(storeId);
-    });
-    // 查看按钮
-    $('#example tbody').on('click', 'button.see_btn', function (e) {
-        e.preventDefault();
-        $("#formsearch").hide();
-        $("#formsearch1").hide();
-        $("#storeQRCode").show();
-        var storeId = $(this).parents('tr').find("td")[0].innerHTML.trim();
-        $.ajax({
-            type: "post",
-            url: "/system/store/getStoreQrCode",
-            cache: false,  //禁用缓存
-            data: {storeId: storeId},  //传入组装的参数?
-            // headers: {"Content-type": "text/plain;charset=utf-8"},
-            dataType: "json",
-            success: function (result) {
-                if (result.success) {
-                    $("#QRCodeImg").attr("src", result.filePath)
-                    $("#manageAdd").show();
-                }
-            }
-        })
-
-
-    });
-
     return table;
 }
+
 
 //判断内容是否为空
 function exitNameNull(tar) {
