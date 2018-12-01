@@ -45,7 +45,7 @@ public class StoreServiceImpl implements StoreService {
 
     @Override
     public StoreEntity getStoreById(String storeId) {
-        String sql = "select store_id,app_info_id,user_id,store_name,store_addr,province,city,country,manager from sys_store where store_id = ?";
+        String sql = "select store_id,app_info_id,user_id,store_name,store_addr,province,city,country,stats,manager from sys_store where store_id = ?";
         List<StoreEntity> storeList = jdbcBaseDao.queryList(StoreEntity.class, sql, storeId);
         if(storeList != null && storeList.size() > 0){
             return storeList.get(0);
@@ -65,7 +65,7 @@ public class StoreServiceImpl implements StoreService {
 
     @Override
     public Page<StoreEntity> findStorePage(String keyword, String appInfoId, Integer stats, PageBean pageBean) {
-        String sql = "select store_id,app_info_id,user_id,store_name,store_addr,province,city,country,picture_id,manager,create_at from sys_store";
+        String sql = "select store_id,app_info_id,user_id,store_name,store_addr,province,city,country,picture_id,manager,stats,create_at from sys_store";
         StringBuffer where = new StringBuffer();
         List<Object> paramList = new ArrayList<Object>();
         if(keyword != null){
@@ -89,7 +89,7 @@ public class StoreServiceImpl implements StoreService {
 
     @Override
     public List<StoreEntity> findStoreTopList(String keyword, String appInfoId) {
-        String sql = "select store_id,store_name,store_addr,province,city,country,create_at from sys_store";
+        String sql = "select store_id,store_name,store_addr,province,city,country,stats,create_at from sys_store";
         StringBuffer where = new StringBuffer();
         List<Object> paramList = new ArrayList<Object>();
         if(keyword != null){
