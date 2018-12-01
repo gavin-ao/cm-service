@@ -40,7 +40,7 @@ public class StoreController {
 
     @ResponseBody
     @RequestMapping(path = "/findStorePage")
-    public JSONObject findStorePage(String keyword, String appInfoId, Integer pageNo, Integer pageSize){
+    public JSONObject findStorePage(String keyword, String appInfoId, Integer stats,Integer pageNo, Integer pageSize){
         JSONObject result = new JSONObject();
         PageBean pageBean = new PageBean();
         if(pageNo == null){
@@ -52,7 +52,7 @@ public class StoreController {
         pageBean.setPageNo(pageNo);
         pageBean.setPageSize(pageSize);
 
-        Page<StoreEntity> page = storeService.findStorePage(keyword, appInfoId, pageBean);
+        Page<StoreEntity> page = storeService.findStorePage(keyword, appInfoId, stats, pageBean);
         if(page != null && page.getResult() != null && page.getResult().size() > 0){
             List<StoreEntity> storeList = page.getResult();
             List<String> managerList = storeList.stream().filter(storeEntity -> storeEntity.getManager() != null).collect(Collectors.mapping(o -> o.getManager(), Collectors.toList()));

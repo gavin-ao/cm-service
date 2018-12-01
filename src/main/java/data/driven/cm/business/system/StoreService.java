@@ -32,10 +32,11 @@ public interface StoreService {
      * 分页查询数据
      * @param keyword   关键词查询
      * @param appInfoId   小程序id
+     * @param stats
      * @param pageBean  分页信息
      * @return
      */
-    public Page<StoreEntity> findStorePage(String keyword, String appInfoId, PageBean pageBean);
+    public Page<StoreEntity> findStorePage(String keyword, String appInfoId, Integer stats, PageBean pageBean);
 
     /**
      * 根据小程序id和关键词查询前十个门店

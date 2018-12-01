@@ -64,7 +64,7 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public Page<StoreEntity> findStorePage(String keyword, String appInfoId, PageBean pageBean) {
+    public Page<StoreEntity> findStorePage(String keyword, String appInfoId, Integer stats, PageBean pageBean) {
         String sql = "select store_id,app_info_id,user_id,store_name,store_addr,province,city,country,picture_id,manager,create_at from sys_store";
         StringBuffer where = new StringBuffer();
         List<Object> paramList = new ArrayList<Object>();
@@ -75,6 +75,10 @@ public class StoreServiceImpl implements StoreService {
         if(appInfoId != null){
             where.append(" and app_info_id = ?");
             paramList.add(appInfoId);
+        }
+        if(stats != null){
+            where.append(" and stats = ?");
+            paramList.add(stats);
         }
         if(where.length() > 0){
             sql += " where" + where.delete(0,4);
