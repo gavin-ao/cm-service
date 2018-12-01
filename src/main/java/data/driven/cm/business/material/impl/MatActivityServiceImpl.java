@@ -124,7 +124,7 @@ public class MatActivityServiceImpl implements MatActivityService{
     }
 
     @Override
-    public Page<MatActivityVO> findActivityPage(String keyword, String storeId, PageBean pageBean) {
+    public Page<MatActivityVO> findActivityPage(String keyword, String storeId, Integer stats, PageBean pageBean) {
         String sql = "select ma.act_id,ma.store_id,ma.app_info_id,ma.act_num,ma.act_type,ma.act_name,ma.act_introduce,ma.act_title,ma.start_at,ma.end_at, ma.initiator_reward_type, ma.assistance_reward_type from mat_activity ma";
         StringBuffer where = new StringBuffer();
         List<Object> paramList = new ArrayList<Object>();
@@ -137,6 +137,20 @@ public class MatActivityServiceImpl implements MatActivityService{
             paramList.add(storeId);
         }else{
             return new Page<MatActivityVO>();
+        }
+        if(stats != null){
+            Date date = DateFormatUtil.convertDate(new Date());
+            if(stats == 0){//未开始
+                where.append(" and ma.start_at > ?");
+                paramList.add(date);
+            }else if(stats == 1){//进行中
+                where.append(" and ma.start_at <= ? and end_at >= ?");
+                paramList.add(date);
+                paramList.add(date);
+            }else if(stats == 2){//已结束
+                where.append(" and end_at < ?");
+                paramList.add(date);
+            }
         }
         if(where.length() > 0){
             sql += " where" + where.delete(0,4);
