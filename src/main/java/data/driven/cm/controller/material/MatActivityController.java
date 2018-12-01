@@ -63,7 +63,7 @@ public class MatActivityController {
 
     @ResponseBody
     @RequestMapping(path = "/findActivityPage")
-    public JSONObject findActivityPage(HttpServletRequest request, HttpServletResponse response, String keyword, Integer pageNo, Integer pageSize){
+    public JSONObject findActivityPage(HttpServletRequest request, HttpServletResponse response, String keyword, Integer stats, Integer pageNo, Integer pageSize){
         UserInfoEntity user = ApplicationSessionFactory.getUser(request, response);
         String storeId = storeService.getStoreIdByCurrentUser(user.getUserId());
         if(storeId == null){
@@ -80,7 +80,7 @@ public class MatActivityController {
         pageBean.setPageNo(pageNo);
         pageBean.setPageSize(pageSize);
 
-        Page<MatActivityVO> page = matActivityService.findActivityPage(keyword, storeId, pageBean);
+        Page<MatActivityVO> page = matActivityService.findActivityPage(keyword, storeId, stats, pageBean);
         if(page != null && page.getResult() != null && page.getResult().size() > 0){
             Date date = DateFormatUtil.convertDate(new Date());
             //判断活动状态
@@ -88,17 +88,17 @@ public class MatActivityController {
                 if(matActivityVO.getStartAt() == null || matActivityVO.getEndAt() == null){
                     continue;
                 }
-                int stats = 0;
+                int tempStats = 0;
                 if(matActivityVO.getStartAt().after(date)){
-                    stats = 0;
+                    tempStats = 0;
                 }else{
                     if(matActivityVO.getEndAt().before(date)){
-                        stats = 2;
+                        tempStats = 2;
                     }else{
-                        stats = 1;
+                        tempStats = 1;
                     }
                 }
-                matActivityVO.setStatus(stats);
+                matActivityVO.setStatus(tempStats);
             }
         }
 

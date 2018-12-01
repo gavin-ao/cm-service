@@ -69,10 +69,11 @@ public interface MatActivityService {
      * 分页查询活动列表
      * @param keyword
      * @param storeId
+     * @param stats
      * @param pageBean
      * @return
      */
-    public Page<MatActivityVO> findActivityPage(String keyword, String storeId, PageBean pageBean);
+    public Page<MatActivityVO> findActivityPage(String keyword, String storeId, Integer stats, PageBean pageBean);
 
     /**
      * 更新活动 - 新增actId为空，修改时actId不为空
