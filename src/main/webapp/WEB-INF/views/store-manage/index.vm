@@ -22,7 +22,7 @@
                         <span class="text">状态:</span>
                         <select name="storeStatus" id="" class="form-control">
                             <option value="1">正常营业</option>
-                            <option value="0">暂停营业</option>
+                            <option value="2">暂停营业</option>
                         </select>
                     </div>
                     <div>
@@ -75,7 +75,18 @@
             </div>
         </div>
     </div>
-    <div class="addAccount" id="addAccount">添加账号</div>
+    <div class="searchPar" style="">
+        <div class="addAccount" id="addAccount" style="float: left;">添加账号</div>
+        <div class="search" style="float: right;">
+            <select name="" id="selectStatus" class="form-control" style="">
+                    <option value="" selected>选择营业状态</option>
+                    <option value="1">正常营业</option>
+                    <option value="2">暂停营业</option>
+            </select>
+            <input type="text" id="inputKeyword" class="form-control" placeholder="请输入门店关键词搜索">
+            <span id="selectBtn">搜索</span>
+        </div>
+    </div>
     <div class="dataTables" style="">
         <table id="example" class="display" style="width:100%">
             <thead>
@@ -85,7 +96,7 @@
                 <th>编号</th>
                 <th>门店名称</th>
                 <th>地址</th>
-##                <th>状态</th>
+                <th>状态</th>
                 <th>账号</th>
 ##                <th>联系电话</th>
                 <th>操作</th>

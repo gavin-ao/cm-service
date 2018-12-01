@@ -1,7 +1,7 @@
 /**
  * Created by 12045 on 2018/10/22.
  */
-var wholeStartTime, wholeEndTime, startDates, endDates;
+var wholeStartTime, wholeEndTime, startDates, endDates,tab='';
 var invitationGlobalId, assistanceGlobalId, invitationCurrencyId, assistanceCurrencyId,  assistanceRewardTypes,initiatorRewardTypes;
 (function () {
     // 退出登录
@@ -10,7 +10,7 @@ var invitationGlobalId, assistanceGlobalId, invitationCurrencyId, assistanceCurr
     //     loginOut();
     // });
 //表格数据
-    tablesData();
+    tab = tablesData(tab);
     $("#manageAdd").hide();
     $("#currentActId").attr("data-curr-actid", "");
     $("#addAccount").off("click");
@@ -276,7 +276,18 @@ var invitationGlobalId, assistanceGlobalId, invitationCurrencyId, assistanceCurr
         $("#assistanceFile").click();
     })
 
-
+    //搜索
+    $("#selectBtn").off("click");
+    $("#selectBtn").on("click",function () {
+        var selectStatus = $("#selectStatus").val();
+        var inputKeyword = $("#inputKeyword").val();
+        var condition = {
+            selectStatus:selectStatus,
+            inputKeyword:inputKeyword.trim()
+        };
+        // console.log(condition);
+        tab = tablesData(tab,condition)
+    })
 }());
 // 变量初始化
 function initData() {
@@ -313,9 +324,12 @@ function activTime() {
 }
 
 //表格数据
-function tablesData() {
+function tablesData(tables,condition) {
+    if(tables!=""){
+        tables.fnDestroy();         //销毁datatable
+    }
     $("#example tbody").html("");
-    $('#example').dataTable({
+    var table = $('#example').dataTable({
         searching: false, //去掉搜索框方法一：百度上的方法，但是我用这没管用
         bLengthChange: false,   //去掉每页显示多少条数据方法
         processing: true,  //隐藏加载提示,自行处理
@@ -346,6 +360,10 @@ function tablesData() {
             param = {
                 "pageNo": Math.floor(data.start / data.length) + 1,
                 "pageSize": data.length
+            }
+            if(condition){
+                param.stats = condition.selectStatus;
+                param.keyword = condition.inputKeyword;
             }
             // console.log(JSON.stringify(condition));
             $.ajax({
@@ -541,6 +559,7 @@ function tablesData() {
         })
 
     });
+    return table;
 }
 
 //判断每个字段允许的长度

@@ -1,9 +1,9 @@
 /**
  * Created by 12045 on 2018/10/22.
  */
-var tab="";
+var tab="",tabs='';
 (function () {
-    tablesData();
+    tabs = tablesData(tabs);
     $("#addAccount").off("click");
     $("#addAccount").on("click", function () {
         $("#manageAdd").show();
@@ -57,11 +57,29 @@ var tab="";
 
     });
 
+    //搜索
+    $("#selectBtn").off("click");
+    $("#selectBtn").on("click",function () {
+        var selectStatus = $("#selectStatus").val();
+        var selectType = $("#selectType").val();
+        var inputKeyword = $("#inputKeyword").val();
+        var condition = {
+            selectStatus:selectStatus,
+            selectType:selectType,
+            inputKeyword:inputKeyword.trim()
+        };
+        // console.log(condition);
+        tabs = tablesData(tabs,condition)
+    })
+
 }());
 //表格数据
-function tablesData() {
+function tablesData(tabs,condition) {
+    if(tabs!=""){
+        tabs.fnDestroy();         //销毁datatable
+    }
     $("#example tbody").html("");
-    $('#example').dataTable({
+    var table = $('#example').dataTable({
         searching: false, //去掉搜索框方法一：百度上的方法，但是我用这没管用
         bLengthChange: false,   //去掉每页显示多少条数据方法
         processing: true,  //隐藏加载提示,自行处理
@@ -96,6 +114,11 @@ function tablesData() {
                 "storeId": datastoreids,
                 "pageNo": Math.floor(data.start / data.length) + 1,
                 "pageSize": data.length
+            }
+            if(condition){
+                param.actStats = condition.selectStatus;
+                param.keyword = condition.inputKeyword;
+                param.type = condition.selectType;
             }
             // console.log(JSON.stringify(condition));
             $.ajax({
@@ -240,6 +263,8 @@ function tablesData() {
         $(".appendReward").hide();
         codeOperation(this);
     });
+
+    return table;
 }
 
 // 兑换码的操作

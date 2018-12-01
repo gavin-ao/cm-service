@@ -1,7 +1,7 @@
 /**
  * Created by 12045 on 2018/10/22.
  */
-
+var tab = '';
 (function () {
     // 添加账号
     $("#addAccount").off("click");
@@ -63,6 +63,7 @@
         params.storePhone = dataObjArr.storePhone;
         params.pwd = hex_md5(dataObjArr.storePassword);
         params.storeName = dataObjArr.storeName;
+        params.stats = dataObjArr.storeStatus;
         params.appInfoId = "5b699c9171c8a90ec8201703";
         params.storeAddr = dataObjArr.storeAddress;
         params.province = '';
@@ -174,21 +175,34 @@
 
     });
     //获取表格数据
-    tablesData();
+    tab = tablesData(tab);
 
     $("#downloadQRCode").off("click");
     $("#downloadQRCode").on("click", function () {
         downloadImg();
     })
+
+    //搜索
+    $("#selectBtn").off("click");
+    $("#selectBtn").on("click",function () {
+        var selectStatus = $("#selectStatus").val();
+        var inputKeyword = $("#inputKeyword").val();
+        var condition = {
+            selectStatus:selectStatus,
+            inputKeyword:inputKeyword.trim()
+        };
+        // console.log(condition);
+        tab = tablesData(tab,condition)
+    })
 }());
 
-function tablesData() {
-    var datatable = $("#example").dataTable();
-    if (datatable) {
-        datatable.fnClearTable();    //清空数据
+function tablesData(datatable,condition) {
+
+    if (datatable!='') {
         datatable.fnDestroy();         //销毁datatable
     }
-    $('#example').dataTable({
+    $("#example tbody").html("");
+    var table = $('#example').dataTable({
         searching: false, //去掉搜索框方法一：百度上的方法，但是我用这没管用
         bLengthChange: false,   //去掉每页显示多少条数据方法
         processing: true,  //隐藏加载提示,自行处理
@@ -220,6 +234,10 @@ function tablesData() {
             param = {
                 "pageNo": Math.floor(data.start / data.length) + 1,
                 "pageSize": data.length
+            };
+            if(condition){
+                param.stats = condition.selectStatus;
+                param.keyword = condition.inputKeyword;
             }
             // console.log(JSON.stringify(condition));
             $.ajax({
@@ -231,7 +249,7 @@ function tablesData() {
                 dataType: "json",
                 success: function (result) {
                     if (result.success) {
-                        var arry = ["storeId", "createAt", "appInfoId", "storeName", "manager", "storeAddr"];
+                        var arry = ["storeId", "createAt", "appInfoId", "storeName", "manager", "storeAddr","stats"];
                         var tabledata = [];
                         for (var i = 0; i < result.page.result.length; i++) {
                             result.page.result[i]["cid"] = data.start + i + 1;
@@ -269,7 +287,7 @@ function tablesData() {
             {"data": "cid"},
             {"data": "storeName"},
             {"data": "storeAddr"},
-            // {"data": "storeName"},
+            {"data": "stats"},
             {"data": "manager"},
             // {"data": "appInfoId"},
             // {"data": "createAt"}
@@ -283,14 +301,24 @@ function tablesData() {
                 }
             },
             {
-                "aTargets": [6],
+                "aTargets": [5],
+                "mRender": function (data, type, full, meta) {
+                    if(data == 1){
+                        return "正在营业"
+                    }else if(data==2){
+                        return "暂停营业"
+                    }
+                }
+            },
+            {
+                "aTargets": [7],
                 "mRender": function (data, type, full, meta) {
                     return "<button class='modify_btn btn btn-primary' style='padding: 2px 4px;margin-left: 8px;' >修改</button><button class='see_btn btn btn-primary' style='padding: 2px 4px;margin-left: 8px;' >查看</button>";
                 }
             },
             {
                 "bSortable": false,
-                "aTargets": [1, 2, 3, 4, 5, 6]
+                "aTargets": [1, 2, 3, 4, 5, 6,7]
             },
 
         ],
@@ -362,6 +390,8 @@ function tablesData() {
 
 
     });
+
+    return table;
 }
 
 //判断内容是否为空

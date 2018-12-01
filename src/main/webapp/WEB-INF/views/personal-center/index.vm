@@ -46,7 +46,26 @@
         </div>
     </div>
 ##    <div class="addAccount" id="addAccount">添加账号</div>
+    <div class="searchPar">
+    ##            <div class="addAccount" id="addAccount" style="float: left;">新建</div>
+        <div class="search" style="float: right;">
+            <select name="" id="selectStatus" class="form-control" style="">
+                <option value="" selected>选择活动状态</option>
+                <option value="1">进行中</option>
+                <option value="2">已结束</option>
+                <option value="0">未开始</option>
+            </select>
+            <select name="" id="selectType" class="form-control" style="">
+                <option value="" selected>领取者类型</option>
+                <option value="1">发起邀请</option>
+                <option value="2">助力有奖</option>
+            </select>
+            <input type="text" id="inputKeyword" class="form-control" placeholder="请输入活动标题关键词搜索">
+            <span id="selectBtn">搜索</span>
+        </div>
+    </div>
     <div style="background-color: #fff;margin: 20px;">
+
         <table id="example" class="display" style="width:100%;">
             <thead>
             <tr>
