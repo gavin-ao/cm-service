@@ -71,7 +71,7 @@ public class WechatMessageController {
      */
     @ResponseBody
     @RequestMapping(path = "/getMessage")
-    public String getMessage(HttpServletRequest request, String signature, String timestamp, String nonce, String msg_signature){
+    public String getMessage(HttpServletRequest request, String signature, String timestamp, String nonce, String msg_signature, String echostr){
         String postData = null;
         try{
             BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream()));
@@ -101,7 +101,7 @@ public class WechatMessageController {
     private String getMessageVali(String signature, String timestamp, String nonce, String echostr){
         logger.info("signature : " + signature + "----timestamp : " + timestamp + "----nonce : " + nonce + "----echostr : " + echostr);
         try{
-            String temp = SHA1.getSHA1(token, timestamp, nonce);
+            String temp = SHA1.getSHA1(token, timestamp, nonce, echostr);
             logger.info("signature : " + signature + "----temp : " + temp);
             if(signature.equals(temp)){
                 logger.info("getMessage : " + true);

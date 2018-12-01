@@ -30,7 +30,7 @@ public class RewardActContentController {
 
     @ResponseBody
     @RequestMapping(path = "/findRewardActContentPage")
-    public JSONObject getRewardActContentPage(String keyword, String storeId, Integer pageNo, Integer pageSize){
+    public JSONObject getRewardActContentPage(String keyword, String storeId, Integer actStats, Integer type, Integer pageNo, Integer pageSize){
         JSONObject result = new JSONObject();
         PageBean pageBean = new PageBean();
         if(pageNo == null){
@@ -41,7 +41,7 @@ public class RewardActContentController {
         }
         pageBean.setPageNo(pageNo);
         pageBean.setPageSize(pageSize);
-        Page<RewardActContentVO> page = rewardActContentService.findRewardActContentPage(keyword, storeId, pageBean);
+        Page<RewardActContentVO> page = rewardActContentService.findRewardActContentPage(keyword, storeId, actStats, type, pageBean);
         if(page != null && page.getResult() != null && page.getResult().size() > 0){
             Date date = DateFormatUtil.convertDate(new Date());
             //判断活动状态
