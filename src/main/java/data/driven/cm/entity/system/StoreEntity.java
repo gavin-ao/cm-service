@@ -28,6 +28,8 @@ public class StoreEntity {
     private String pictureId;
     /** 门店管理员 **/
     private String manager;
+    /** 门店状态，1 - 营业， 2 - 暂停营业 **/
+    private Integer stats;
     /** 创建日期 **/
     private Date createAt;
 
@@ -109,6 +111,14 @@ public class StoreEntity {
 
     public void setManager(String manager) {
         this.manager = manager;
+    }
+
+    public Integer getStats() {
+        return stats;
+    }
+
+    public void setStats(Integer stats) {
+        this.stats = stats;
     }
 
     public Date getCreateAt() {
